@@ -4,6 +4,9 @@ import FeaturesSection from './components/FeaturesSection';
 import FooterSection from './components/FooterSection';
 import HeaderSection from './components/HeaderSection';
 import HeroSection from './components/HeroSection';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import PrivacyPolicyPage from './components/PrivacyPolicy';
+import InstructionPage from './components/Instruction';
 
 function App() {
   useEffect(() => {
@@ -36,11 +39,24 @@ function App() {
 
   return (
     <div className='font-sans overflow-x-hidden'>
-      <HeaderSection />
-      <HeroSection />
-      <FeaturesSection />
-      <DownloadSection />
-      <FooterSection />
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                <HeaderSection />
+                <HeroSection />
+                <FeaturesSection />
+                <DownloadSection />
+                <FooterSection />
+              </>
+            }
+          />
+          <Route path='/privacy-policy' element={<PrivacyPolicyPage />} />
+          <Route path='/instruction' element={<InstructionPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

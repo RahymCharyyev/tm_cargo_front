@@ -34,10 +34,7 @@ const FooterSection = () => {
         <div>
           <h3 className='font-semibold mb-2'>{t('footer.support')}</h3>
           <p>
-            <a
-              href='https://wedding.infoportal.news/privacy-policy'
-              className='hover:text-[#3D7EF9]'
-            >
+            <a href='/privacy-policy' className='hover:text-[#3D7EF9]'>
               {t('footer.privacyPolicy')}
             </a>
           </p>

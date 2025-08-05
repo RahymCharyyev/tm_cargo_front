@@ -114,6 +114,21 @@ export default async function RootLayout({
           `}
         </Script>
 
+        <Script
+          strategy='afterInteractive'
+          src='https://www.googletagmanager.com/gtag/js?id=G-F2PJ29HX1B'
+        />
+
+        {/* Google Analytics: config */}
+        <Script id='gtag-init' strategy='afterInteractive'>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-F2PJ29HX1B');
+          `}
+        </Script>
+
         {/* Yandex Metrika <noscript> fallback */}
         <noscript>
           <div>

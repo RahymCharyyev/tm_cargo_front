@@ -1,0 +1,47 @@
+export default {
+  home: 'Baş sahypa',
+  features: 'Mümkinçilikler',
+  download: 'Ýükläp al',
+  contact: 'Habarlaşmak',
+  hero: {
+    title: 'Täze nesil ýük daşamalary',
+    description:
+      'TmCargo – halkara, şäherara we ýerli ýük daşamalary üçin döwrebap çözgüt.',
+    download: 'Goşundyny ýükläp al',
+    learnMore: 'Giňişleýin öwrenmek',
+    downloadAndroid: 'Android üçin ýüklemek',
+    downloadIOS: 'iOS üçin ýüklemek',
+  },
+  featuresTitle: 'TmCargo mümkinçilikleri',
+  featuresText: [
+    {
+      title: 'Halkara ýük daşamalary',
+      desc: 'Dünýä boýunça iberişleri yzarlaýyş bilen gurnaň',
+    },
+    {
+      title: 'Şäherara we ýerli',
+      desc: 'Ýurduň içinde we şäherara tiz eltmek',
+    },
+    {
+      title: 'Ýolagçy gözlegi',
+      desc: 'Bir wagta daşamak we tygşytlamak',
+    },
+    {
+      title: 'Ýönekeý hasaba alyş',
+      desc: 'Telefon belgisi ýa-da email arkaly',
+    },
+  ],
+  downloadText: {
+    title: 'TmCargo ykjam goşundyny şu gün ýükläň',
+    subtitle: 'Müňlerçe ulanyjynyň ynam gazanan ýkjam goşundysy bilen tanyşyň',
+  },
+  footer: {
+    description: 'Ýük daşamak üçin döwrebap çözgüt. Ynamly, çalt we amatly.',
+    contacts: 'Habarlaşmak',
+    emailLabel: 'Kömek üçin email:',
+    phoneLabel: 'Reklama üçin telefon belgi:',
+    support: 'Goldaw',
+    privacyPolicy: 'Gizlinlik syýasaty',
+    rights: 'Ähli hukuklar goralan.',
+  },
+} as const;

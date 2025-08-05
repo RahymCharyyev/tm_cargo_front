@@ -1,0 +1,48 @@
+export default {
+  home: 'Home',
+  features: 'Features',
+  download: 'Download',
+  contact: 'Contact',
+  hero: {
+    title: 'Next-Generation Freight Transportation',
+    description:
+      'TmCargo is a modern solution for international, intercity, and local shipping.',
+    download: 'Download the app',
+    learnMore: 'Learn more',
+    downloadAndroid: 'Download for Android',
+    downloadIOS: 'Download for iOS',
+  },
+  featuresTitle: 'TmCargo Features',
+  featuresText: [
+    {
+      title: 'International Deliveries',
+      desc: 'Ship goods worldwide with real-time tracking',
+    },
+    {
+      title: 'Intercity & Local',
+      desc: 'Fast deliveries across the country and city',
+    },
+    {
+      title: 'Find Travel Companions',
+      desc: 'Share transport and reduce delivery costs',
+    },
+    {
+      title: 'Easy Registration',
+      desc: 'Sign up via phone number or email',
+    },
+  ],
+  downloadText: {
+    title: 'Download TmCargo Today',
+    subtitle: 'Join thousands of users who trust our app',
+  },
+  footer: {
+    description:
+      'A modern solution for cargo delivery. Reliable, fast, convenient.',
+    contacts: 'Contacts',
+    emailLabel: 'Support email:',
+    phoneLabel: 'Ad inquiries:',
+    support: 'Support',
+    privacyPolicy: 'Privacy Policy',
+    rights: 'All rights reserved.',
+  },
+} as const;

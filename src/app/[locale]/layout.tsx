@@ -73,7 +73,10 @@ export default async function RootLayout({
   const { locale } = await params;
   return (
     <html lang={locale}>
-      <head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
         {/* Yandex Metrika Script */}
         <Script id='yandex-metrika' strategy='afterInteractive'>
           {`
@@ -110,11 +113,6 @@ export default async function RootLayout({
             });
           `}
         </Script>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
 
         {/* Yandex Metrika <noscript> fallback */}
         <noscript>

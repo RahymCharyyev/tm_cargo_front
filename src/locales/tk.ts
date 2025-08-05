@@ -6,7 +6,7 @@ export default {
   hero: {
     title: 'Täze nesil ýük daşamalary',
     description:
-      'TmCargo – halkara, şäherara we ýerli ýük daşamalary üçin döwrebap çözgüt.',
+      'TmCargo — ýük iberijiler bilen ýük daşaýjylaruň arasynda aňsat we täsirli hyzmatdaşlygy üpjün edýän döwrebap platformadyr. Biz halkara, şäherara we ýerli ýük daşamalary üçin netijeli çözgütleri hödürleýäris. Bu hyzmatlar Türkmenistanyň, Gazagystanyň, Özbegistanyň, Eýranyň, Russiýanyň we beýleki ýurtlaryň çäklerini öz içine alýar. Maksadymyz — fiziki we hukuk şahslar üçin ulag tapmak we ýük daşamak prosesini mümkin boldugyça ýönekeýleşdirmek. TmCargo-yň amatly interfeýsi arkaly siz bary-ýogy birnäçe minutda ýüküňizi ýerleşdirip ýa-da ulag tapyp bilersiňiz.',
     download: 'Goşundyny ýükläp al',
     learnMore: 'Giňişleýin öwrenmek',
     downloadAndroid: 'Android üçin ýüklemek',

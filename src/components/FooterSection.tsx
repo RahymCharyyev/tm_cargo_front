@@ -1,4 +1,5 @@
 import { getI18n } from '@/locales/server';
+import Link from 'next/link';
 
 const FooterSection = async () => {
   const t = await getI18n();
@@ -14,29 +15,29 @@ const FooterSection = async () => {
           <h3 className='font-semibold mb-2'>{t('footer.contacts')}</h3>
           <p>
             {t('footer.emailLabel')}{' '}
-            <a
+            <Link
               href='mailto:tm-cargo@sanly.tm'
               className='text-[#3D7EF9] hover:underline'
             >
               tm-cargo@sanly.tm
-            </a>
+            </Link>
           </p>
           <p>
             {t('footer.phoneLabel')}{' '}
-            <a
+            <Link
               href='tel:+99365607799'
               className='text-[#3D7EF9] hover:underline'
             >
               +993 65 60 77 99
-            </a>
+            </Link>
           </p>
         </div>
         <div>
           <h3 className='font-semibold mb-2'>{t('footer.support')}</h3>
           <p>
-            <a href='/privacy-policy' className='hover:text-[#3D7EF9]'>
+            <Link href='/privacy-policy' className='hover:text-[#3D7EF9]'>
               {t('footer.privacyPolicy')}
-            </a>
+            </Link>
           </p>
         </div>
       </div>

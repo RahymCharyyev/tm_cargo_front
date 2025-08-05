@@ -1,8 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
+import { ReactElement } from 'react';
 import './globals.css';
-import Image from 'next/image';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
   ],
   robots: 'index, follow',
   openGraph: {
+    locale: 'ru_RU',
     title: 'TM Cargo — Грузоперевозки по всей Азии',
     description: 'Разместите груз или найдите транспорт в пару кликов.',
     url: 'https://tm-cargo.com.tm/',
@@ -61,13 +63,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
+  params,
   children,
 }: {
-  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+  children: ReactElement;
 }) {
+  const { locale } = await params;
   return (
-    <html lang='ru'>
+    <html lang={locale}>
       <head>
         {/* Yandex Metrika Script */}
         <Script id='yandex-metrika' strategy='afterInteractive'>
@@ -114,9 +119,7 @@ export default function RootLayout({
         {/* Yandex Metrika <noscript> fallback */}
         <noscript>
           <div>
-            <Image
-              width={100}
-              height={100}
+            <img
               src='https://mc.yandex.ru/watch/103419917'
               style={{ position: 'absolute', left: '-9999px' }}
               alt=''

@@ -6,7 +6,7 @@ export default {
   hero: {
     title: 'Next-Generation Freight Transportation',
     description:
-      'TmCargo is a modern solution for international, intercity, and local shipping.',
+      'TmCargo is a modern platform designed for easy and efficient interaction between cargo senders and carriers. We offer effective solutions for international, intercity, and local transportation across the Asian region, including Turkmenistan, Kazakhstan, Uzbekistan, Iran, Russia, and other countries. Our goal is to simplify the process of finding transport and delivering cargo for both individuals and businesses. With TmCargo’s user-friendly interface, you can post your cargo or find a suitable vehicle in just a few minutes.',
     download: 'Download the app',
     learnMore: 'Learn more',
     downloadAndroid: 'Download for Android',

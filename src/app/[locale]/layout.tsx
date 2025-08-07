@@ -1,7 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
+import GoogleAnalytics from '@/components/GoogleAnalytics';
+import YandexMetrika from '@/components/YandexMetrika';
+import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { Geist, Geist_Mono } from 'next/font/google';
-import Script from 'next/script';
+import { notFound } from 'next/navigation';
 import { ReactElement } from 'react';
 import './globals.css';
 
@@ -35,27 +38,27 @@ export async function generateMetadata({
         'tm cargo',
         'логистика',
       ],
-      openGraph: {
-        locale: 'ru_RU',
-        title: 'TM Cargo — Грузоперевозки по всей Азии',
-        description: 'Разместите груз или найдите транспорт в пару кликов.',
-        url: 'https://tm-cargo.com.tm/',
-        type: 'website',
-        images: [
-          {
-            url: 'https://tm-cargo.com.tm/icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'TM Cargo',
-          },
-        ],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'TM Cargo',
-        description: 'Платформа для грузоперевозок по всей Азии',
-        images: ['https://tm-cargo.com.tm/icon.png'],
-      },
+      // openGraph: {
+      //   locale: 'ru_RU',
+      //   title: 'TM Cargo — Грузоперевозки по всей Азии',
+      //   description: 'Разместите груз или найдите транспорт в пару кликов.',
+      //   url: 'https://tm-cargo.com.tm/',
+      //   type: 'website',
+      //   images: [
+      //     {
+      //       url: 'https://tm-cargo.com.tm/icon.png',
+      //       width: 1200,
+      //       height: 630,
+      //       alt: 'TM Cargo',
+      //     },
+      //   ],
+      // },
+      // twitter: {
+      //   card: 'summary_large_image',
+      //   title: 'TM Cargo',
+      //   description: 'Платформа для грузоперевозок по всей Азии',
+      //   images: ['https://tm-cargo.com.tm/icon.png'],
+      // },
     },
     en: {
       title: 'TM Cargo — Cargo and Transport Services Across Asia',
@@ -69,27 +72,27 @@ export async function generateMetadata({
         'tm cargo',
         'shipping',
       ],
-      openGraph: {
-        locale: 'en_US',
-        title: 'TM Cargo — Cargo and Transport Services Across Asia',
-        description: 'Post cargo or find transport in just a few clicks.',
-        url: 'https://tm-cargo.com.tm/',
-        type: 'website',
-        images: [
-          {
-            url: 'https://tm-cargo.com.tm/icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'TM Cargo',
-          },
-        ],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'TM Cargo',
-        description: 'Platform for cargo and transport services across Asia',
-        images: ['https://tm-cargo.com.tm/icon.png'],
-      },
+      // openGraph: {
+      //   locale: 'en_US',
+      //   title: 'TM Cargo — Cargo and Transport Services Across Asia',
+      //   description: 'Post cargo or find transport in just a few clicks.',
+      //   url: 'https://tm-cargo.com.tm/',
+      //   type: 'website',
+      //   images: [
+      //     {
+      //       url: 'https://tm-cargo.com.tm/icon.png',
+      //       width: 1200,
+      //       height: 630,
+      //       alt: 'TM Cargo',
+      //     },
+      //   ],
+      // },
+      // twitter: {
+      //   card: 'summary_large_image',
+      //   title: 'TM Cargo',
+      //   description: 'Platform for cargo and transport services across Asia',
+      //   images: ['https://tm-cargo.com.tm/icon.png'],
+      // },
     },
     tk: {
       title: 'TM Cargo — Aziýa boýunça ýük we ulag hyzmatlary',
@@ -101,29 +104,29 @@ export async function generateMetadata({
         'logistika',
         'Türkmenistan',
         'tm cargo',
-        'daşamagy',
+        'daşamak',
       ],
-      openGraph: {
-        locale: 'tk_TM',
-        title: 'TM Cargo — Aziýa boýunça ýük we ulag hyzmatlary',
-        description: 'Ýük ýerleşdiriň ýa-da birnäçe basmak bilen ulag tapyň.',
-        url: 'https://tm-cargo.com.tm/',
-        type: 'website',
-        images: [
-          {
-            url: 'https://tm-cargo.com.tm/icon.png',
-            width: 1200,
-            height: 630,
-            alt: 'TM Cargo',
-          },
-        ],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'TM Cargo',
-        description: 'Aziýa boýunça ýük we ulag hyzmatlary üçin platforma',
-        images: ['https://tm-cargo.com.tm/icon.png'],
-      },
+      // openGraph: {
+      //   locale: 'tk_TM',
+      //   title: 'TM Cargo — Aziýa boýunça ýük we ulag hyzmatlary',
+      //   description: 'Ýük ýerleşdiriň ýa-da birnäçe basmak bilen ulag tapyň.',
+      //   url: 'https://tm-cargo.com.tm/',
+      //   type: 'website',
+      //   images: [
+      //     {
+      //       url: 'https://tm-cargo.com.tm/icon.png',
+      //       width: 1200,
+      //       height: 630,
+      //       alt: 'TM Cargo',
+      //     },
+      //   ],
+      // },
+      // twitter: {
+      //   card: 'summary_large_image',
+      //   title: 'TM Cargo',
+      //   description: 'Aziýa boýunça ýük we ulag hyzmatlary üçin platforma',
+      //   images: ['https://tm-cargo.com.tm/icon.png'],
+      // },
     },
   };
 
@@ -136,14 +139,10 @@ export async function generateMetadata({
       icon: '/favicon.ico',
       apple: '/icon.png',
     },
-    manifest: '/site.webmanifest',
-    alternates: {
-      canonical: 'https://tm-cargo.com.tm/',
-    },
-    verification: {
-      yandex: '5e9250af52b7db4a',
-      google: 'brX0_hHSyI_hVZs3Mk_MRcI51R3EK9QPo2XTcxc7htU',
-    },
+    // manifest: '/site.webmanifest',
+    // alternates: {
+    //   canonical: 'https://tm-cargo.com.tm/',
+    // },
   };
 }
 
@@ -155,73 +154,20 @@ export default async function RootLayout({
   children: ReactElement;
 }) {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   return (
     <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        {/* Yandex Metrika Script */}
-        <Script id='yandex-metrika' strategy='afterInteractive'>
-          {`
-            (function (m, e, t, r, i, k, a) {
-              m[i] =
-                m[i] ||
-                function () {
-                  (m[i].a = m[i].a || []).push(arguments);
-                };
-              m[i].l = 1 * new Date();
-              for (var j = 0; j < document.scripts.length; j++) {
-                if (document.scripts[j].src === r) {
-                  return;
-                }
-              }
-              (k = e.createElement(t)),
-                (k.async = 1),
-                (k.src = r),
-                a.parentNode.insertBefore(k, a);
-            })(
-              window,
-              document,
-              'script',
-              'https://mc.yandex.ru/metrika/tag.js',
-              'ym'
-            );
-
-            ym(103419917, 'init', {
-              webvisor: true,
-              clickmap: true,
-              accurateTrackBounce: true,
-              trackLinks: true,
-            });
-          `}
-        </Script>
-
-        <Script
-          strategy='afterInteractive'
-          src='https://www.googletagmanager.com/gtag/js?id=G-F2PJ29HX1B'
-        />
-
-        {/* Google Analytics: config */}
-        <Script id='gtag-init' strategy='afterInteractive'>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-F2PJ29HX1B');
-          `}
-        </Script>
-
-        {/* Yandex Metrika <noscript> fallback */}
-        <noscript>
-          <div>
-            <img
-              src='https://mc.yandex.ru/watch/103419917'
-              style={{ position: 'absolute', left: '-9999px' }}
-              alt=''
-            />
-          </div>
-        </noscript>
+        <NextIntlClientProvider>
+          {children}
+          <YandexMetrika />
+          <GoogleAnalytics ga_id={'G-F2PJ29HX1B'} />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

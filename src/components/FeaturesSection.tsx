@@ -1,7 +1,7 @@
-import { getI18n } from '@/locales/server';
+import { getTranslations } from 'next-intl/server';
 
 const FeaturesSection = async () => {
-  const t = await getI18n();
+  const t = await getTranslations();
 
   const features = [
     {

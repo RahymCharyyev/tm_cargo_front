@@ -1,9 +1,9 @@
-import { getI18n } from '@/locales/server';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const HeaderSection = async () => {
-  const t = await getI18n();
+  const t = await getTranslations();
 
   return (
     <header className='fixed top-0 w-full bg-white/95 backdrop-blur z-50 transition-all'>

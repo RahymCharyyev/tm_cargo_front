@@ -1,8 +1,8 @@
-import { getI18n } from '@/locales/server';
+import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 
 const DownloadSection = async () => {
-  const t = await getI18n();
+  const t = await getTranslations();
 
   return (
     <section

@@ -1,8 +1,8 @@
-import { getI18n } from '@/locales/server';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 const FooterSection = async () => {
-  const t = await getI18n();
+  const t = await getTranslations();
 
   return (
     <footer id='contact' className='bg-gray-900 text-white py-12'>

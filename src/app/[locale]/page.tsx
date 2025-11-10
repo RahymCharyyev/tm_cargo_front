@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <main>
@@ -71,6 +73,14 @@ export default function Home() {
       <footer className='bg-gray-800 text-white py-6 text-center'>
         <p>&copy; 2025 SanjarTransportCor. All rights reserved.</p>
         <p>Contact: sanjartranscorp@gmail.com</p>
+        <p className='mt-2'>
+          <Link
+            href='/privacy-policy'
+            className='underline hover:text-gray-400'
+          >
+            Privacy Policy
+          </Link>
+        </p>
       </footer>
     </main>
   );

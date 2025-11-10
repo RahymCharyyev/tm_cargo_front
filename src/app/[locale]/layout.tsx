@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { ReactElement } from 'react';
 import './globals.css';
+import Head from 'next/head';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,6 +30,13 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <Head>
+        <meta
+          name='google-site-verification'
+          content='k32SuOR9NaszrX3qPsT17u9BEtvY2a8ehW987Oy4R90'
+        />
+        <title>SanjarTransportCor</title>
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

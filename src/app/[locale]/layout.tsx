@@ -35,7 +35,7 @@ export default async function RootLayout({
           name='google-site-verification'
           content='k32SuOR9NaszrX3qPsT17u9BEtvY2a8ehW987Oy4R90'
         />
-        <title>SanjarTransportCor</title>
+        <title>SanjarTransportCorp</title>
       </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

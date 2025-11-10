@@ -5,16 +5,16 @@ export default function Home() {
     <main>
       <section className='bg-blue-600 text-white h-screen flex flex-col justify-center items-center text-center px-4'>
         <h1 className='text-4xl md:text-6xl font-bold mb-4'>
-          SanjarTransportCor – Logistics & Cargo Transport
+          SanjarTransportCorp – Logistics & Cargo Transport
         </h1>
         <p className='text-lg md:text-2xl mb-6'>
-          Cargo TM is a program owned by SanjarTransportCor that helps you find
+          Cargo TM is a program owned by SanjarTransportCorp that helps you find
           drivers or ship your cargo quickly and securely.
         </p>
       </section>
       <section className='py-20 px-4 max-w-6xl mx-auto'>
         <h2 className='text-3xl font-bold text-center mb-12'>
-          Why Choose SanjarTransportCor
+          Why Choose SanjarTransportCorp
         </h2>
         <div className='grid md:grid-cols-3 gap-8'>
           <div className='bg-white p-6 rounded-lg shadow hover:shadow-lg transition text-center'>
@@ -61,7 +61,7 @@ export default function Home() {
       </section>
       <section className='py-20 text-center bg-blue-600 text-white'>
         <h2 className='text-3xl font-bold mb-6'>
-          Join SanjarTransportCor Today
+          Join SanjarTransportCorp Today
         </h2>
         <a
           href='mailto:sanjartranscorp@gmail.com'
@@ -71,7 +71,7 @@ export default function Home() {
         </a>
       </section>
       <footer className='bg-gray-800 text-white py-6 text-center'>
-        <p>&copy; 2025 SanjarTransportCor. All rights reserved.</p>
+        <p>&copy; 2025 SanjarTransportCorp. All rights reserved.</p>
         <p>Contact: sanjartranscorp@gmail.com</p>
         <p className='mt-2'>
           <Link

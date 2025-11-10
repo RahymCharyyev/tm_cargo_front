@@ -7,7 +7,7 @@ const InstructionPage = () => {
       <h1 className='text-2xl font-bold mb-4'>Remove Your Account</h1>
 
       <Image
-        src='/instruction_1.jpeg'
+        src='/instruction_1.jpg'
         alt='instruction 1'
         width={300}
         height={500}
@@ -18,7 +18,7 @@ const InstructionPage = () => {
       </p>
 
       <Image
-        src='/instruction_2.jpeg'
+        src='/instruction_2.jpg'
         alt='instruction 2'
         width={300}
         height={500}

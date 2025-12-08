@@ -5,13 +5,13 @@
   "contact": "Habarlaşmak",
   "hero": {
     "title": "Täze nesil ýük daşamalary",
-    "description": "TmCargo — ýük iberijiler bilen ýük daşaýjylaruň arasynda aňsat we täsirli hyzmatdaşlygy üpjün edýän döwrebap platformadyr. Biz halkara, şäherara we ýerli ýük daşamalary üçin netijeli çözgütleri hödürleýäris. Bu hyzmatlar Türkmenistanyň, Gazagystanyň, Özbegistanyň, Eýranyň, Russiýanyň we beýleki ýurtlaryň çäklerini öz içine alýar. Maksadymyz — fiziki we hukuk şahslar üçin ulag tapmak we ýük daşamak prosesini mümkin boldugyça ýönekeýleşdirmek. TmCargo-yň amatly interfeýsi arkaly siz bary-ýogy birnäçe minutda ýüküňizi ýerleşdirip ýa-da ulag tapyp bilersiňiz.",
+    "description": "Cargo TM — ýük iberijiler bilen ýük daşaýjylaruň arasynda aňsat we täsirli hyzmatdaşlygy üpjün edýän döwrebap platformadyr. Biz halkara, şäherara we ýerli ýük daşamalary üçin netijeli çözgütleri hödürleýäris. Bu hyzmatlar Türkmenistanyň, Gazagystanyň, Özbegistanyň, Eýranyň, Russiýanyň we beýleki ýurtlaryň çäklerini öz içine alýar. Maksadymyz — fiziki we hukuk şahslar üçin ulag tapmak we ýük daşamak prosesini mümkin boldugyça ýönekeýleşdirmek. Cargo TM-yň amatly interfeýsi arkaly siz bary-ýogy birnäçe minutda ýüküňizi ýerleşdirip ýa-da ulag tapyp bilersiňiz.",
     "download": "Goşundyny ýükläp al",
     "learnMore": "Giňişleýin öwrenmek",
     "downloadAndroid": "Android üçin ýüklemek",
     "downloadIOS": "iOS üçin ýüklemek"
   },
-  "featuresTitle": "TmCargo mümkinçilikleri",
+  "featuresTitle": "Cargo TM mümkinçilikleri",
   "featuresText": [
     {
       "title": "Halkara ýük daşamalary",
@@ -31,7 +31,7 @@
     }
   ],
   "downloadText": {
-    "title": "TmCargo ykjam goşundyny şu gün ýükläň",
+    "title": "Cargo TM ykjam goşundyny şu gün ýükläň",
     "subtitle": "Müňlerçe ulanyjynyň ynam gazanan ýkjam goşundysy bilen tanyşyň"
   },
   "footer": {

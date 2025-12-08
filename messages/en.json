@@ -5,13 +5,13 @@
   "contact": "Contact",
   "hero": {
     "title": "Next-Generation Freight Transportation",
-    "description": "TmCargo is a modern platform designed for easy and efficient interaction between cargo senders and carriers. We offer effective solutions for international, intercity, and local transportation across the Asian region, including Turkmenistan, Kazakhstan, Uzbekistan, Iran, Russia, and other countries. Our goal is to simplify the process of finding transport and delivering cargo for both individuals and businesses. With TmCargo’s user-friendly interface, you can post your cargo or find a suitable vehicle in just a few minutes.",
+    "description": "Cargo TM is a modern platform designed for easy and efficient interaction between cargo senders and carriers. We offer effective solutions for international, intercity, and local transportation across the Asian region, including Turkmenistan, Kazakhstan, Uzbekistan, Iran, Russia, and other countries. Our goal is to simplify the process of finding transport and delivering cargo for both individuals and businesses. With Cargo TM’s user-friendly interface, you can post your cargo or find a suitable vehicle in just a few minutes.",
     "download": "Download the app",
     "learnMore": "Learn more",
     "downloadAndroid": "Download for Android",
     "downloadIOS": "Download for iOS"
   },
-  "featuresTitle": "TmCargo Features",
+  "featuresTitle": "Cargo TM Features",
   "featuresText": [
     {
       "title": "International Deliveries",
@@ -31,7 +31,7 @@
     }
   ],
   "downloadText": {
-    "title": "Download TmCargo Today",
+    "title": "Download Cargo TM Today",
     "subtitle": "Join thousands of users who trust our app"
   },
   "footer": {

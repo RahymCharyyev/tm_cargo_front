@@ -5,17 +5,17 @@ import type { Metadata } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import './globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
 });
 
 export async function generateMetadata({
@@ -27,106 +27,43 @@ export async function generateMetadata({
 
   const metadataByLocale: Record<string, Metadata> = {
     ru: {
-      title: 'TM Cargo — Грузоперевозки по всей Азии',
+      title: 'Cargo TM — Грузоперевозки по всей Азии',
       description:
-        'TM Cargo — платформа для быстрого поиска и размещения грузов и транспорта по всей Азии. Надежные перевозки и удобный сервис.',
+        'Cargo TM — платформа для быстрого поиска и размещения грузов и транспорта по всей Азии. Надежные перевозки и удобный сервис.',
       keywords: [
         'груз',
         'транспорт',
         'перевозка',
         'Туркменистан',
-        'tm cargo',
+        'cargo tm',
         'логистика',
       ],
-      // openGraph: {
-      //   locale: 'ru_RU',
-      //   title: 'TM Cargo — Грузоперевозки по всей Азии',
-      //   description: 'Разместите груз или найдите транспорт в пару кликов.',
-      //   url: 'https://tm-cargo.com.tm/',
-      //   type: 'website',
-      //   images: [
-      //     {
-      //       url: 'https://tm-cargo.com.tm/icon.png',
-      //       width: 1200,
-      //       height: 630,
-      //       alt: 'TM Cargo',
-      //     },
-      //   ],
-      // },
-      // twitter: {
-      //   card: 'summary_large_image',
-      //   title: 'TM Cargo',
-      //   description: 'Платформа для грузоперевозок по всей Азии',
-      //   images: ['https://tm-cargo.com.tm/icon.png'],
-      // },
     },
     en: {
-      title: 'TM Cargo — Cargo and Transport Services Across Asia',
+      title: 'Cargo TM — Cargo and Transport Services Across Asia',
       description:
-        'TM Cargo — a platform for quick cargo and transport search and posting across Asia. Reliable logistics and user-friendly service.',
+        'Cargo TM — a platform for quick cargo and transport search and posting across Asia. Reliable logistics and user-friendly service.',
       keywords: [
         'cargo',
         'transport',
         'logistics',
         'Turkmenistan',
-        'tm cargo',
+        'cargo tm',
         'shipping',
       ],
-      // openGraph: {
-      //   locale: 'en_US',
-      //   title: 'TM Cargo — Cargo and Transport Services Across Asia',
-      //   description: 'Post cargo or find transport in just a few clicks.',
-      //   url: 'https://tm-cargo.com.tm/',
-      //   type: 'website',
-      //   images: [
-      //     {
-      //       url: 'https://tm-cargo.com.tm/icon.png',
-      //       width: 1200,
-      //       height: 630,
-      //       alt: 'TM Cargo',
-      //     },
-      //   ],
-      // },
-      // twitter: {
-      //   card: 'summary_large_image',
-      //   title: 'TM Cargo',
-      //   description: 'Platform for cargo and transport services across Asia',
-      //   images: ['https://tm-cargo.com.tm/icon.png'],
-      // },
     },
     tk: {
-      title: 'TM Cargo — Aziýa boýunça ýük we ulag hyzmatlary',
+      title: 'Cargo TM — Aziýa boýunça ýük we ulag hyzmatlary',
       description:
-        'TM Cargo — Aziýa boýunça ýük we ulag tapmak we ýerleşdirmek üçin platforma. Ygtybarly logistika we ulanyjy üçin amatly hyzmat.',
+        'Cargo TM — Aziýa boýunça ýük we ulag tapmak we ýerleşdirmek üçin platforma. Ygtybarly logistika we ulanyjy üçin amatly hyzmat.',
       keywords: [
         'ýük',
         'ulag',
         'logistika',
         'Türkmenistan',
-        'tm cargo',
+        'cargo tm',
         'daşamak',
       ],
-      // openGraph: {
-      //   locale: 'tk_TM',
-      //   title: 'TM Cargo — Aziýa boýunça ýük we ulag hyzmatlary',
-      //   description: 'Ýük ýerleşdiriň ýa-da birnäçe basmak bilen ulag tapyň.',
-      //   url: 'https://tm-cargo.com.tm/',
-      //   type: 'website',
-      //   images: [
-      //     {
-      //       url: 'https://tm-cargo.com.tm/icon.png',
-      //       width: 1200,
-      //       height: 630,
-      //       alt: 'TM Cargo',
-      //     },
-      //   ],
-      // },
-      // twitter: {
-      //   card: 'summary_large_image',
-      //   title: 'TM Cargo',
-      //   description: 'Aziýa boýunça ýük we ulag hyzmatlary üçin platforma',
-      //   images: ['https://tm-cargo.com.tm/icon.png'],
-      // },
     },
   };
 
@@ -139,10 +76,6 @@ export async function generateMetadata({
       icon: '/favicon.ico',
       apple: '/icon.png',
     },
-    // manifest: '/site.webmanifest',
-    // alternates: {
-    //   canonical: 'https://tm-cargo.com.tm/',
-    // },
   };
 }
 
@@ -151,7 +84,7 @@ export default async function RootLayout({
   children,
 }: {
   params: Promise<{ locale: string }>;
-  children: ReactElement;
+  children: ReactNode;
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {

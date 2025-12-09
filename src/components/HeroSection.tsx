@@ -21,12 +21,12 @@ const HeroSection = async () => {
           <div className='inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-2 border border-white/20'>
             🚀 {t('hero.title')?.split(' ')[0] || 'Cargo TM'}
           </div>
-          <h1 className='text-5xl md:text-6xl lg:text-7xl font-bold leading-tight'>
+          <h1 className='text-5xl md:text-4xl lg:text-5xl font-bold leading-tight'>
             <span className='bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent'>
               {t('hero.title')}
             </span>
           </h1>
-          <p className='text-xl md:text-2xl text-blue-100 leading-relaxed max-w-xl'>
+          <p className='text-md md:text-lg text-blue-100 leading-relaxed max-w-xl'>
             {t('hero.description')}
           </p>
           <div className='flex flex-wrap gap-4 pt-4'>
@@ -34,37 +34,29 @@ const HeroSection = async () => {
               href='https://play.google.com/store/apps/details?id=tm.com.cargotm'
               target='_blank'
               rel='noopener noreferrer'
-              className='group flex gap-3 items-center bg-white text-[#3D7EF9] px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-blue-500/50 hover:scale-105 transition-all duration-300 hover:-translate-y-1'
+              className='group relative flex items-center justify-center hover:scale-105 transition-all duration-300 hover:-translate-y-1'
             >
               <Image
-                width={28}
-                height={28}
-                className='w-7 h-7'
-                src='/android.png'
-                alt='Android icon'
+                height={80}
+                width={240}
+                className='w-48 md:w-56 h-auto'
+                src='/google_play.png'
+                alt='Google Play Store'
               />
-              <span>{t('hero.downloadAndroid')}</span>
-              <span className='group-hover:translate-x-1 transition-transform'>
-                →
-              </span>
             </a>
             <a
               href='https://apps.apple.com/tm/app/Cargo TM/id6748551361'
               target='_blank'
               rel='noopener noreferrer'
-              className='group flex gap-3 items-center bg-white text-[#3D7EF9] px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-blue-500/50 hover:scale-105 transition-all duration-300 hover:-translate-y-1'
+              className='group relative flex items-center justify-center hover:scale-105 transition-all duration-300 hover:-translate-y-1'
             >
               <Image
-                width={28}
-                height={28}
-                className='w-7 h-7'
-                src='/apple.png'
-                alt='iOS icon'
+                height={80}
+                width={208}
+                className='w-44 md:w-52 h-auto'
+                src='/app_store.png'
+                alt='App Store'
               />
-              <span>{t('hero.downloadIOS')}</span>
-              <span className='group-hover:translate-x-1 transition-transform'>
-                →
-              </span>
             </a>
           </div>
         </div>

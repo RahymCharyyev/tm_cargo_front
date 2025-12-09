@@ -32,7 +32,12 @@
   ],
   "downloadText": {
     "title": "Cargo TM ykjam goşundyny şu gün ýükläň",
-    "subtitle": "Müňlerçe ulanyjynyň ynam gazanan ýkjam goşundysy bilen tanyşyň"
+    "subtitle": "Müňlerçe ulanyjynyň ynam gazanan ýkjam goşundysy bilen tanyşyň",
+    "stats": {
+      "1": "Çalt ýüklenme",
+      "2": "Howpsuz",
+      "3": "Tölegsiz"
+    }
   },
   "footer": {
     "description": "Ýük daşamak üçin döwrebap çözgüt. Ynamly, çalt we amatly.",

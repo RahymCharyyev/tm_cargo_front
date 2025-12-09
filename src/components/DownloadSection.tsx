@@ -27,7 +27,7 @@ const DownloadSection = async () => {
             {t('downloadText.subtitle')}
           </p>
         </div>
-        
+
         <div className='flex flex-wrap justify-center gap-6 mt-12'>
           <a
             href='https://play.google.com/store/apps/details?id=tm.com.cargotm'
@@ -65,15 +65,23 @@ const DownloadSection = async () => {
         <div className='mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto'>
           <div className='text-center'>
             <div className='text-3xl font-bold mb-2'>🚀</div>
-            <div className='text-sm text-blue-200'>Быстрая установка</div>
+            <div className='text-sm text-blue-200'>
+              {t('downloadText.stats.1')}
+            </div>
           </div>
           <div className='text-center'>
             <div className='text-3xl font-bold mb-2'>🔒</div>
-            <div className='text-sm text-blue-200'>Безопасно</div>
+            <div className='text-sm text-blue-200'>
+              {' '}
+              {t('downloadText.stats.2')}
+            </div>
           </div>
           <div className='text-center'>
             <div className='text-3xl font-bold mb-2'>⭐</div>
-            <div className='text-sm text-blue-200'>Бесплатно</div>
+            <div className='text-sm text-blue-200'>
+              {' '}
+              {t('downloadText.stats.3')}
+            </div>
           </div>
         </div>
       </div>

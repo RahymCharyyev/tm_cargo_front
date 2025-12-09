@@ -32,7 +32,12 @@
   ],
   "downloadText": {
     "title": "Download Cargo TM Today",
-    "subtitle": "Join thousands of users who trust our app"
+    "subtitle": "Join thousands of users who trust our app",
+    "stats": {
+      "1": "Fast installation",
+      "2": "Safe",
+      "3": "Free"
+    }
   },
   "footer": {
     "description": "A modern solution for cargo delivery. Reliable, fast, convenient.",

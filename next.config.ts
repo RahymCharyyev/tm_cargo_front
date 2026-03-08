@@ -3,7 +3,17 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL('https://mc.yandex.ru/**')],
+    remotePatterns: [
+      { protocol: 'https', hostname: 'tm-cargo.com.tm', pathname: '/**' },
+    ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://tm-cargo.com.tm/api/:path*',
+      },
+    ];
   },
 };
 

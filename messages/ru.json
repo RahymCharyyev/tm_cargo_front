@@ -1,6 +1,7 @@
 {
   "nav": {
     "listings": "Объявления",
+    "homeLink": "Главная",
     "allListings": "Все объявления",
     "downloadApp": "Скачать приложение",
     "cooperation": "Сотрудничество",
@@ -19,6 +20,7 @@
   },
   "home": {
     "adBanner": "Реклама 1",
+    "adBanner2": "Реклама 2",
     "viewByCategories": "Смотреть по категориям",
     "cargoTransport": "Грузоперевозки",
     "smallTransport": "Мелкие перевозки",
@@ -149,13 +151,27 @@
     "priceLowHigh": "Цена: по возрастанию",
     "priceHighLow": "Цена: по убыванию",
     "listings": "Объявления",
-    "filter": "Фильтр",
+    "filter": "Фильтры",
+    "clearFilters": "Очистить фильтры",
+    "category": "Категория",
     "categoryLabel": "Категория",
+    "carrier": "Доставщик",
+    "enterLocation": "Введите локацию",
+    "weightNotEntered": "Не введено",
+    "volumeNotEntered": "Не введено",
+    "weightTons": "Вес (тонн)",
+    "volumeM3": "Объем (м³)",
+    "bodyType": "Тип кузова",
+    "executionDate": "Дата исполнения",
+    "selectDate": "Выберите дату",
+    "selectSort": "Выбрать",
+    "apply": "Применить",
     "sender": "Отправитель",
     "weightShort": "Вес",
     "volumeShort": "Объём",
     "priceLabel": "Цена",
-    "date": "Дата"
+    "date": "Дата",
+    "postedLabel": "Выставлено"
   },
   "profile": {
     "title": "Профиль",

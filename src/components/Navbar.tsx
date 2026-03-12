@@ -21,8 +21,10 @@ export default function Navbar() {
     setIsUserMenuOpen(false);
   }, [pathname]);
 
+  const isHome = pathname === '/' || pathname.match(/^\/[a-z]{2}\/?$/);
+
   return (
-    <div className='w-full z-50 pt-3'>
+    <header className='w-full z-50 shadow-sm'>
       <div className='max-w-[1470px] mx-auto px-4'>
         <div className='h-14 px-2 md:px-0 flex items-center justify-between'>
           <div className='flex items-center gap-8 min-w-0'>
@@ -31,30 +33,39 @@ export default function Navbar() {
               <Image
                 width={96}
                 height={48}
-                className='w-[92px] h-[48px] object-contain'
-                src='/tm_cargo_icon.svg'
+                className='w-[92px] h-[48px] object-contain '
+                src='/icon.webp'
                 alt='TM Cargo'
               />
             </Link>
 
             {/* Desktop Nav - with icons */}
             <nav className='hidden lg:flex items-center gap-1 min-w-0'>
-              <Link
-                href='/listings'
-                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#1f3d6b] hover:bg-white/30 transition-colors whitespace-nowrap'
-              >
-                <Image
-                  src='/Apps List.svg'
-                  alt=''
-                  width={16}
-                  height={16}
-                  className='opacity-90'
-                />
-                {t('allListings')}
-              </Link>
+              {isHome ? (
+                <Link
+                  href='/listings'
+                  className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                >
+                  <Image
+                    src='/Apps List.svg'
+                    alt=''
+                    width={16}
+                    height={16}
+                    className='opacity-90'
+                  />
+                  {t('allListings')}
+                </Link>
+              ) : (
+                <Link
+                  href='/'
+                  className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                >
+                  {t('homeLink')}
+                </Link>
+              )}
               <a
                 href='#download'
-                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#1f3d6b] hover:bg-white/30 transition-colors whitespace-nowrap'
+                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -67,7 +78,7 @@ export default function Navbar() {
               </a>
               <a
                 href='#cooperation'
-                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#1f3d6b] hover:bg-white/30 transition-colors whitespace-nowrap'
+                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Handshake.svg'
@@ -86,7 +97,7 @@ export default function Navbar() {
               <div className='relative z-50'>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className='hidden md:flex items-center gap-2 bg-white border border-[#2d4f87] text-[#0f172a] px-5 py-2 rounded-[16px] text-[14px] leading-none font-semibold transition-colors hover:bg-slate-100 whitespace-nowrap'
+                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
                 >
                   <Image
                     src='/Person.svg'
@@ -131,7 +142,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href='/login'
-                className='hidden md:flex items-center gap-2 bg-white border border-[#2d4f87] text-[#0f172a] px-5 py-2 rounded-[16px] text-[14px] leading-none font-semibold transition-colors hover:bg-slate-100 whitespace-nowrap'
+                className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
               >
                 <Image
                   src='/Person.svg'
@@ -146,14 +157,14 @@ export default function Navbar() {
 
             <Link
               href={isAuthenticated ? '/listings/create' : '/login'}
-              className='hidden md:flex items-center gap-2 bg-white border border-[#2d4f87] text-[#0f172a] px-5 py-2 rounded-[16px] text-[14px] leading-none font-semibold transition-colors hover:bg-slate-100 whitespace-nowrap'
+              className='hidden md:flex items-center gap-2 bg-[#3D7EF9] border border-white/30 text-white px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-[#2B529B] whitespace-nowrap shadow-sm'
             >
               <Image
                 src='/Add Circle.svg'
                 alt=''
                 width={17}
                 height={17}
-                className='opacity-80'
+                className='invert'
               />
               {t('placeAd')}
             </Link>
@@ -221,7 +232,7 @@ export default function Navbar() {
               {!isAuthenticated && (
                 <Link
                   href='/login'
-                  className='flex items-center justify-center gap-2 bg-[#2f569d] text-white py-2.5 rounded-lg font-medium'
+                  className='flex items-center justify-center gap-2 text-white py-2.5 rounded-lg font-medium'
                 >
                   <Image src='/Person.svg' alt='' width={18} height={18} />
                   {t('loginAndRegister')}
@@ -229,7 +240,7 @@ export default function Navbar() {
               )}
               <Link
                 href={isAuthenticated ? '/listings/create' : '/login'}
-                className='flex items-center justify-center gap-2 bg-[#2f569d] text-white py-2.5 rounded-lg font-medium'
+                className='flex items-center justify-center gap-2  text-white py-2.5 rounded-lg font-medium'
               >
                 <Image src='/Add Circle.svg' alt='' width={18} height={18} />
                 {t('placeAd')}
@@ -251,6 +262,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-    </div>
+    </header>
   );
 }

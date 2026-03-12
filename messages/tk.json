@@ -1,6 +1,7 @@
 {
   "nav": {
     "listings": "Bildirişler",
+    "homeLink": "Baş sahypa",
     "allListings": "Ähli bildirişler",
     "downloadApp": "Ulgamy göçür",
     "cooperation": "Hyzmatdaşlyk",
@@ -19,6 +20,7 @@
   },
   "home": {
     "adBanner": "Reklama 1",
+    "adBanner2": "Reklama 2",
     "viewByCategories": "Kategoriýa boýunça seret",
     "cargoTransport": "Ýük daşamak",
     "smallTransport": "Kiçi daşamak",
@@ -149,12 +151,27 @@
     "priceLowHigh": "Baha: Arzan",
     "priceHighLow": "Baha: Gymmat",
     "listings": "Bildirişler",
-    "filter": "Süzgüç",
+    "filter": "Süzgüçler",
+    "clearFilters": "Süzgüçleri arassala",
+    "category": "Kategoriýa",
     "categoryLabel": "Kategoriýa",
+    "carrier": "Daşamak",
+    "enterLocation": "Ýeri giriziň",
+    "weightNotEntered": "Girizilmedi",
+    "volumeNotEntered": "Girizilmedi",
+    "weightTons": "Agramy (tonna)",
+    "volumeM3": "Göwrümi (m³)",
+    "bodyType": "Kuzow görnüşi",
+    "executionDate": "Ýerine ýetirilen sene",
+    "selectDate": "Sene saýlaň",
+    "selectSort": "Saýlaň",
+    "apply": "Ulgamlaşdyr",
     "sender": "Iberiji",
     "weightShort": "Agramy",
     "volumeShort": "Göwrümi",
-    "priceLabel": "Baha"
+    "priceLabel": "Baha",
+    "date": "Sene",
+    "postedLabel": "Goýlan"
   },
   "profile": {
     "title": "Profil",

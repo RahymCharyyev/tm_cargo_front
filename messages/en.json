@@ -1,6 +1,7 @@
 {
   "nav": {
     "listings": "Listings",
+    "homeLink": "Home",
     "allListings": "All listings",
     "downloadApp": "Download app",
     "cooperation": "Cooperation",
@@ -19,6 +20,7 @@
   },
   "home": {
     "adBanner": "Advertisement 1",
+    "adBanner2": "Advertisement 2",
     "viewByCategories": "View by categories",
     "cargoTransport": "Cargo transportation",
     "smallTransport": "Small transportation",
@@ -149,12 +151,27 @@
     "priceLowHigh": "Price: Low to High",
     "priceHighLow": "Price: High to Low",
     "listings": "Listings",
-    "filter": "Filter",
+    "filter": "Filters",
+    "clearFilters": "Clear filters",
+    "category": "Category",
     "categoryLabel": "Category",
+    "carrier": "Carrier",
+    "enterLocation": "Enter location",
+    "weightNotEntered": "Not entered",
+    "volumeNotEntered": "Not entered",
+    "weightTons": "Weight (tons)",
+    "volumeM3": "Volume (m³)",
+    "bodyType": "Body type",
+    "executionDate": "Execution date",
+    "selectDate": "Select date",
+    "selectSort": "Select",
+    "apply": "Apply",
     "sender": "Sender",
     "weightShort": "Weight",
     "volumeShort": "Volume",
-    "priceLabel": "Price"
+    "priceLabel": "Price",
+    "date": "Date",
+    "postedLabel": "Posted"
   },
   "profile": {
     "title": "Profile",

@@ -75,7 +75,7 @@ export async function generateMetadata({
     robots: 'index, follow',
     icons: {
       icon: '/favicon.ico',
-      apple: '/icon.png',
+      apple: '/icon.webp',
     },
   };
 }

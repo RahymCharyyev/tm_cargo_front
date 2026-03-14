@@ -77,7 +77,7 @@ export default function Navbar() {
                 </Link>
               )}
               <a
-                href='#download'
+                href='/download'
                 className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image

@@ -44,7 +44,7 @@ export default function Navbar() {
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 rounded-md leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,7 +58,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 rounded-md leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
                 >
                   <svg
                     className='w-4 h-4 opacity-90'
@@ -78,7 +78,7 @@ export default function Navbar() {
               )}
               <a
                 href='#download'
-                className='flex items-center gap-2  py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                className='flex items-center gap-2  py-1.5 rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'

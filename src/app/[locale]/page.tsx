@@ -48,7 +48,7 @@ export default function HomePage() {
   const secondBlock = listings?.data?.slice(8, 16) ?? [];
 
   return (
-    <div className='min-h-screen bg-[#d6e1ef]'>
+    <div className='min-h-screen bg-[#E8F2FF]'>
       <div className='max-w-[1400px] mx-auto py-4'>
         {/* Advertisement Banner */}
         <section className='mb-6 h-[140px]'>

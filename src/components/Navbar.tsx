@@ -27,13 +27,13 @@ export default function Navbar() {
     <header className='w-full z-50 my-4 sm:my-[25px]'>
       <div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
         <div className='h-14 flex items-center justify-between'>
-          <div className='flex items-center gap-8 min-w-0'>
+          <div className='flex items-center gap-8 min-w-0 rounded-md'>
             {/* Logo */}
-            <Link href='/' className='flex items-center gap-2.5 group shrink-0'>
+            <Link href='/' className='rounded-md'>
               <Image
                 width={96}
                 height={48}
-                className='w-[92px] h-[48px] object-contain'
+                className='w-[96px] h-[48px] object-contain'
                 src='/icon.webp'
                 alt='TM Cargo'
               />
@@ -44,7 +44,7 @@ export default function Navbar() {
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,7 +58,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <svg
                     className='w-4 h-4 opacity-90'
@@ -78,7 +78,7 @@ export default function Navbar() {
               )}
               <a
                 href='/download'
-                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -91,7 +91,7 @@ export default function Navbar() {
               </a>
               <a
                 href='#cooperation'
-                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Handshake.svg'
@@ -110,7 +110,7 @@ export default function Navbar() {
               <div className='relative z-50'>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full  leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
+                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2B5399] text-[#171717] px-5 py-2.5 rounded-full  leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
                 >
                   <Image
                     src='/Person.svg'
@@ -155,7 +155,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href='/login'
-                className='hidden md:flex items-center gap-2 border-2 border-[#2d4f87] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
+                className='hidden md:flex items-center gap-2 border-2 border-[#2B5399] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
               >
                 <Image
                   src='/Person.svg'
@@ -170,7 +170,7 @@ export default function Navbar() {
 
             <Link
               href={isAuthenticated ? '/listings/create' : '/login'}
-              className='hidden md:flex items-center gap-2  border-2 border-[#2d4f87] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap shadow-sm'
+              className='hidden md:flex items-center gap-2  border-2 border-[#2B5399] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap shadow-sm'
             >
               <Image src='/Add Circle.svg' alt='' width={17} height={17} />
               {t('placeAd')}

@@ -1,11 +1,10 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useListings, useVehicleTypes, useBanners } from '@/lib/hooks';
+import { useInfiniteListings, useVehicleTypes, useBanners } from '@/lib/hooks';
 import ListingCard from '@/components/ListingCard';
 import ListingFilterContent from '@/components/ListingFilterContent';
-import Pagination from '@/components/Pagination';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useRouter } from '@/i18n/navigation';
 import Image from 'next/image';
@@ -13,7 +12,6 @@ import Image from 'next/image';
 const listPath = '/listings';
 
 function buildListingsQuery(params: {
-  page?: number;
   type?: string;
   locationType?: string;
   from?: string;
@@ -22,7 +20,6 @@ function buildListingsQuery(params: {
   sort?: string;
 }) {
   const search = new URLSearchParams();
-  if (params.page && params.page > 1) search.set('page', String(params.page));
   if (params.type) search.set('type', params.type);
   if (params.locationType) search.set('locationType', params.locationType);
   if (params.from) search.set('from', params.from);
@@ -44,7 +41,6 @@ export default function ListingsPage({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const resolvedSearchParams = use(searchParams);
 
-  const page = Number(resolvedSearchParams.page) || 1;
   const type = (resolvedSearchParams.type as string) || undefined;
   const locationType =
     (resolvedSearchParams.locationType as string) || undefined;
@@ -53,9 +49,13 @@ export default function ListingsPage({
   const kind = (resolvedSearchParams.kind as string) || undefined;
   const sort = (resolvedSearchParams.sort as string) || 'newest';
 
-  const { data: listings, isLoading } = useListings({
-    page,
-    perPage: 12,
+  const {
+    data: infiniteData,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteListings({
     type,
     locationType,
     fromLocationId: from,
@@ -63,6 +63,27 @@ export default function ListingsPage({
     vehicleTypeId: kind,
     sort,
   });
+
+  const listings = infiniteData?.pages.flatMap((p) => p.data) ?? [];
+  const totalCount = infiniteData?.pages[0]?.count ?? 0;
+
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const onIntersect = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
+    [hasNextPage, isFetchingNextPage, fetchNextPage],
+  );
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(onIntersect, { rootMargin: '200px' });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [onIntersect]);
 
   const { data: vehicleTypes } = useVehicleTypes({ perPage: 100 });
   const { data: banners } = useBanners();
@@ -116,7 +137,6 @@ export default function ListingsPage({
   const applyFilters = () => {
     router.push(
       buildListingsQuery({
-        page: 1,
         type: effectiveType,
         locationType: filterLocType || undefined,
         from: filterFrom || undefined,
@@ -143,8 +163,6 @@ export default function ListingsPage({
       return next;
     });
   };
-
-  const totalPages = listings ? Math.ceil(listings.count / 12) : 0;
 
   const topBanner = banners?.data?.find((b) => b.location === 'top');
   const middleBanner = banners?.data?.find(
@@ -215,6 +233,11 @@ export default function ListingsPage({
             <div className='flex items-center justify-between mb-3'>
               <h1 className='text-[18px] font-bold text-[#171717]'>
                 {t('allListings')}
+                {totalCount > 0 && (
+                  <span className='ml-2 text-[14px] font-normal text-gray-400'>
+                    ({totalCount})
+                  </span>
+                )}
               </h1>
             </div>
 
@@ -243,17 +266,17 @@ export default function ListingsPage({
               <div className='flex justify-center py-20'>
                 <LoadingSpinner />
               </div>
-            ) : listings?.data && listings.data.length > 0 ? (
+            ) : listings.length > 0 ? (
               <>
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[10px]'>
-                  {listings.data.map((listing) => (
+                  {listings.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>
 
-                {/* Реклама 2 */}
-                <section className='my-6'>
-                  {middleBanner ? (
+                {/* Реклама 2 — показываем после первой страницы */}
+                {infiniteData && infiniteData.pages.length >= 1 && middleBanner && (
+                  <section className='my-6'>
                     <a
                       href={middleBanner.link || '#'}
                       target='_blank'
@@ -269,32 +292,23 @@ export default function ListingsPage({
                         crossOrigin='anonymous'
                       />
                     </a>
-                  ) : (
-                    <div className='w-full rounded-[20px] sm:rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[100px] sm:h-[140px] text-gray-400 text-base'>
-                      {th('adBanner2')}
-                    </div>
-                  )}
-                </section>
+                  </section>
+                )}
 
-                <div className='mt-8'>
-                  <Pagination
-                    page={page}
-                    totalPages={totalPages}
-                    onPageChange={(p) =>
-                      router.push(
-                        buildListingsQuery({
-                          page: p,
-                          type,
-                          locationType,
-                          from,
-                          to,
-                          kind,
-                          sort,
-                        }),
-                      )
-                    }
-                  />
-                </div>
+                {/* Sentinel для infinite scroll */}
+                <div ref={sentinelRef} className='h-1' />
+
+                {isFetchingNextPage && (
+                  <div className='flex justify-center py-6'>
+                    <LoadingSpinner />
+                  </div>
+                )}
+
+                {!hasNextPage && listings.length > 0 && (
+                  <p className='text-center text-gray-400 text-[13px] py-6'>
+                    {listings.length} / {totalCount}
+                  </p>
+                )}
               </>
             ) : (
               <div className='bg-white rounded-2xl p-12 text-center text-gray-500 shadow-sm'>
@@ -311,7 +325,7 @@ export default function ListingsPage({
               className='absolute inset-0 bg-black/50'
               onClick={() => setIsFilterOpen(false)}
             />
-            <div className='absolute inset-y-0 left-0 w-full sm:max-w-[380px] overflow-y-auto p-3'>
+            <div className='absolute inset-y-0 left-0 w-full sm:max-w-[400px] overflow-y-auto bg-[#EAF2FC]'>
               <ListingFilterContent
                 locationType={filterLocType}
                 onLocationTypeChange={setFilterLocType}
@@ -336,7 +350,8 @@ export default function ListingsPage({
                 vehicleTypes={vehicleTypes?.data}
                 onClear={clearFilters}
                 onApply={applyFilters}
-                className='min-h-full'
+                onClose={() => setIsFilterOpen(false)}
+                className='min-h-screen rounded-none'
               />
             </div>
           </div>

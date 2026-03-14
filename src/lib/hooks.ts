@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from './api-client';
 import { useAuthStore } from './auth-store';
 
@@ -337,6 +337,25 @@ export function useListings(query: ListingQuery) {
     queryKey: ['listings', query],
     queryFn: () =>
       api.get<ListingsResponse>('/listings', query as Record<string, string | number | boolean | undefined>),
+  });
+}
+
+const LISTINGS_PER_PAGE = 12;
+
+export function useInfiniteListings(query: Omit<ListingQuery, 'page' | 'perPage'>) {
+  return useInfiniteQuery({
+    queryKey: ['listings-infinite', query],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      api.get<ListingsResponse>('/listings', {
+        ...(query as Record<string, string | number | boolean | undefined>),
+        page: pageParam as number,
+        perPage: LISTINGS_PER_PAGE,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      const loaded = allPages.length * LISTINGS_PER_PAGE;
+      return loaded < lastPage.count ? allPages.length + 1 : undefined;
+    },
   });
 }
 

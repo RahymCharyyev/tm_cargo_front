@@ -77,34 +77,21 @@ export default function HomePage() {
 
         {/* Categories */}
         <section className='mb-8'>
-          <div className='flex items-center justify-between mb-3'>
-            <h2 className='text-[18px] sm:text-[20px] font-semibold text-gray-900'>
-              {t('viewByCategories')}
-            </h2>
-            <div className='hidden sm:flex items-center gap-4'>
-              <span className='flex items-center gap-1.5 text-[#6f7682] text-[14px] sm:text-[16px] font-medium'>
-                <Image
-                  src='/Vehicle Truck Profile.svg'
-                  alt=''
-                  width={24}
-                  height={24}
-                  className='w-[20px] h-[20px] sm:w-[24px] sm:h-[24px]'
-                />
-                {t('cargoTransport')}
-              </span>
-              <span className='flex items-center gap-1.5 text-[#6f7682] text-[14px] sm:text-[16px] font-medium'>
-                <Image
-                  src='/Vehicle Car Profile.svg'
-                  alt=''
-                  width={24}
-                  height={24}
-                  className='w-[20px] h-[20px] sm:w-[24px] sm:h-[24px]'
-                />
-                {t('smallTransport')}
-              </span>
-            </div>
-          </div>
+          <h2 className='text-[18px] sm:text-[20px] font-semibold text-gray-900 mb-2'>
+            {t('viewByCategories')}
+          </h2>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4'>
+            {/* Метки — видны только на md+, занимают первую строку сетки */}
+            <div className='hidden md:flex col-span-3 items-center gap-1.5 text-[#6f7682] text-[14px] font-medium'>
+              <Image src='/Vehicle Truck Profile.svg' alt='' width={20} height={20} />
+              {t('cargoTransport')}
+            </div>
+            <div className='hidden md:flex col-span-2 items-center gap-1.5 text-[#6f7682] text-[14px] font-medium'>
+              <Image src='/Vehicle Car Profile.svg' alt='' width={20} height={20} />
+              {t('smallTransport')}
+            </div>
+
+            {/* Все 5 карточек — один ряд на md+, сетка на мобильном */}
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat.key}
@@ -112,12 +99,7 @@ export default function HomePage() {
                 className='relative bg-gradient-to-b from-[#CCE5FF] to-[#ABD4FF] rounded-[20px] sm:rounded-[30px] h-[120px] sm:h-[140px] p-4 sm:p-5 overflow-hidden hover:brightness-95 transition-all'
               >
                 <div className='absolute right-3 top-3 sm:right-4 sm:top-4 w-[70px] h-[50px] sm:w-[100px] sm:h-[64px]'>
-                  <Image
-                    src={cat.image}
-                    alt=''
-                    fill
-                    className='object-contain'
-                  />
+                  <Image src={cat.image} alt='' fill className='object-contain' />
                 </div>
                 <span className='absolute left-4 bottom-4 sm:left-5 sm:bottom-5 text-[13px] sm:text-[16px] leading-[1.2] font-semibold text-black max-w-[65%]'>
                   {t(cat.key)}

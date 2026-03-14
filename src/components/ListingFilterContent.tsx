@@ -47,6 +47,7 @@ interface ListingFilterContentProps {
   vehicleTypes?: VehicleType[];
   onClear: () => void;
   onApply: () => void;
+  onClose?: () => void;
   className?: string;
 }
 
@@ -258,6 +259,7 @@ export default function ListingFilterContent({
   vehicleTypes,
   onClear,
   onApply,
+  onClose,
   className,
 }: ListingFilterContentProps) {
   const t = useTranslations('listing');
@@ -265,19 +267,35 @@ export default function ListingFilterContent({
   const locale = useLocale();
 
   return (
-    <section className={`w-full ${className ?? ''}`.trim()}>
+    <section
+      className={`w-full rounded-[24px] bg-[#EAF2FC] p-4 sm:p-5 ${className ?? ''}`.trim()}
+    >
       <div className='mb-5 flex items-center justify-between gap-4'>
         <h2 className='flex items-center gap-2 text-[18px] font-semibold text-[#264A84]'>
           <Image src='/Options.svg' alt='filter' width={24} height={24} />
           <span>{t('filter')}</span>
         </h2>
-        <button
-          type='button'
-          onClick={onClear}
-          className='text-[14px] font-medium text-[#C53939] transition-colors hover:text-[#A82F2F]'
-        >
-          {t('clearFilters')}
-        </button>
+        <div className='flex items-center gap-3'>
+          <button
+            type='button'
+            onClick={onClear}
+            className='text-[14px] font-medium text-[#C53939] transition-colors hover:text-[#A82F2F]'
+          >
+            {t('clearFilters')}
+          </button>
+          {onClose && (
+            <button
+              type='button'
+              onClick={onClose}
+              aria-label='Закрыть'
+              className='flex items-center justify-center w-8 h-8 rounded-full bg-white/70 text-[#364860] hover:bg-white transition-colors'
+            >
+              <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className='space-y-4'>

@@ -123,7 +123,7 @@ export default function ListingCard({ listing }: Props) {
           {/* Route with flags */}
           <div className='flex items-center gap-1.5 mb-2 text-black'>
             <Image
-              src={'/location.svg'}
+              src={'/Location.svg'}
               alt=''
               width={14}
               height={20}

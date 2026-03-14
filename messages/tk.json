@@ -172,7 +172,12 @@
     "priceLabel": "Baha",
     "date": "Sene",
     "postedLabel": "Goýlan",
-    "today": "Şu gün"
+    "today": "Şu gün",
+    "authorLabel": "Awtory",
+    "cargoListingType": "Ýük",
+    "vehicleListingType": "Ulag",
+    "travelerListingType": "Ýolagçy",
+    "loadListingType": "Poçta"
   },
   "profile": {
     "title": "Profil",

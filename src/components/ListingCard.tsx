@@ -116,7 +116,7 @@ export default function ListingCard({ listing }: Props) {
         </div>
 
         <div className='px-4 pt-3 pb-4 flex flex-col flex-1 text-[15px] leading-[1.6]'>
-          <h3 className='text-[18px] font-bold text-black line-clamp-2 mb-2'>
+          <h3 className='text-[18px] font-bold text-black mb-2 line-clamp-1'>
             {listing.title}
           </h3>
 
@@ -160,9 +160,13 @@ export default function ListingCard({ listing }: Props) {
           </div>
 
           {/* Категория: название и тип */}
-          <div className='mb-2'>
+          <div className='mb-2 flex gap-1'>
             <span className='text-[#4D4D4D]'>{t('categoryLabel')}:</span>
             <span className='text-black ml-1 font-medium'>{categoryName}</span>
+            <span className='text-[#B3B3B3]'>|</span>
+            <span className='text-black font-medium'>
+              {t(listing.type + 'ListingType')}
+            </span>
           </div>
 
           {/* Вес | Объём | Дата — названия и значения */}
@@ -188,6 +192,10 @@ export default function ListingCard({ listing }: Props) {
             <span className='text-black ml-1'>
               {isToday ? t('today') : dateDisplay}
             </span>
+          </div>
+          <div>
+            <span className='text-[#4D4D4D]'>{t('authorLabel')}:</span>
+            <span className='text-black ml-1'>{senderName}</span>
           </div>
         </div>
       </div>

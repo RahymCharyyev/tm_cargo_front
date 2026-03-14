@@ -172,7 +172,12 @@
     "priceLabel": "Price",
     "date": "Date",
     "postedLabel": "Posted",
-    "today": "Today"
+    "today": "Today",
+    "authorLabel": "Author",
+    "cargoListingType": "Cargo",
+    "vehicleListingType": "Vehicle",
+    "travelerListingType": "Traveler",
+    "loadListingType": "Load"
   },
   "profile": {
     "title": "Profile",

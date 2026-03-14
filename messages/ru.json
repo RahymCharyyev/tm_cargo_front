@@ -172,7 +172,12 @@
     "priceLabel": "Цена",
     "date": "Дата",
     "postedLabel": "Выставлено",
-    "today": "Сегодня"
+    "today": "Сегодня",
+    "authorLabel": "Автор",
+    "cargoListingType": "Груз",
+    "vehicleListingType": "Транспорт",
+    "travelerListingType": "Попутчик",
+    "loadListingType": "Посылка"
   },
   "profile": {
     "title": "Профиль",

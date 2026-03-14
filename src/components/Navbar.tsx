@@ -44,7 +44,7 @@ export default function Navbar() {
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,7 +58,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <svg
                     className='w-4 h-4 opacity-90'
@@ -78,7 +78,7 @@ export default function Navbar() {
               )}
               <a
                 href='#download'
-                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -91,7 +91,7 @@ export default function Navbar() {
               </a>
               <a
                 href='#cooperation'
-                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Handshake.svg'

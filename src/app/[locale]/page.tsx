@@ -49,55 +49,55 @@ export default function HomePage() {
 
   return (
     <div className='min-h-screen bg-[#d6e1ef]'>
-      <div className='max-w-[1470px] mx-auto px-4 py-4'>
+      <div className='max-w-[1400px] mx-auto py-4'>
         {/* Advertisement Banner */}
-        <section className='mb-8'>
+        <section className='mb-6 h-[140px]'>
           {topBanner ? (
             <a
               href={topBanner.link || '#'}
               target='_blank'
               rel='noreferrer'
-              className='block w-full rounded-xl overflow-hidden bg-gray-100'
+              className='block w-full rounded-[30px] overflow-hidden bg-gray-100'
             >
               <Image
                 src={`https://tm-cargo.com.tm/api/${topBanner.image}`}
                 alt={t('adBanner')}
                 width={1200}
                 height={280}
-                className='w-full h-48 sm:h-56 object-cover'
+                className='w-full h-[140px] object-cover'
                 crossOrigin='anonymous'
               />
             </a>
           ) : (
-            <div className='w-full rounded-2xl bg-[#dedede] flex items-center justify-center h-40 sm:h-48 text-gray-500 text-2xl sm:text-3xl shadow-sm'>
+            <div className='w-full rounded-[30px] bg-gradient-to-b from-white to-[#FAFAFA] flex items-center justify-center h-[140px] text-[#999] text-base'>
               {t('adBanner')}
             </div>
           )}
         </section>
 
         {/* Categories */}
-        <section className='mb-10'>
-          <h2 className='text-[35px] leading-none font-semibold text-gray-900 mb-3'>
+        <section className='mb-8'>
+          <h2 className='text-[20px] font-semibold text-gray-900 mb-[10px] ml-[20px]'>
             {t('viewByCategories')}
           </h2>
-          <div className='flex flex-wrap justify-between gap-3 mb-4'>
-            <span className='flex items-center gap-2 text-[#6f7682] text-[27px] font-medium'>
+          <div className='flex flex-wrap gap-[670px] mb-3 ml-[20px]'>
+            <span className='flex items-center gap-1.5 text-[#6f7682] text-[16px] font-medium'>
               <Image
                 src='/Vehicle Truck Profile.svg'
                 alt=''
-                width={20}
-                height={20}
-                className='w-5 h-5'
+                width={24}
+                height={24}
+                className='w-[24px] h-[24px]'
               />
               {t('cargoTransport')}
             </span>
-            <span className='flex items-center gap-2 text-[#6f7682] text-[27px] font-medium'>
+            <span className='flex items-center gap-1.5 text-[#6f7682] text-[16px] font-medium'>
               <Image
                 src='/Vehicle Car Profile.svg'
                 alt=''
-                width={20}
-                height={20}
-                className='w-5 h-5'
+                width={24}
+                height={24}
+                className='w-[24px] h-[24px]'
               />
               {t('smallTransport')}
             </span>
@@ -107,9 +107,9 @@ export default function HomePage() {
               <Link
                 key={cat.key}
                 href={cat.link}
-                className='relative bg-[#badbff] rounded-[28px] h-[142px] p-4 overflow-hidden hover:bg-[#a9d2ff] transition-colors shadow-sm'
+                className='relative bg-gradient-to-b from-[#CCE5FF] to-[#ABD4FF] rounded-[30px] h-[140px] p-5 overflow-hidden hover:brightness-95 transition-all'
               >
-                <div className='absolute right-3 top-2 w-[88px] h-[72px] md:w-[98px] md:h-[80px]'>
+                <div className='absolute right-4 top-4 w-[100px] h-[64px]'>
                   <Image
                     src={cat.image}
                     alt=''
@@ -117,7 +117,7 @@ export default function HomePage() {
                     className='object-contain'
                   />
                 </div>
-                <span className='absolute left-4 bottom-4 text-[18px] leading-[1.05] font-semibold text-[#171717] max-w-[65%]'>
+                <span className='absolute left-5 bottom-5 text-[16px] leading-[1.2] font-semibold text-black max-w-[60%]'>
                   {t(cat.key)}
                 </span>
               </Link>
@@ -128,14 +128,14 @@ export default function HomePage() {
         {/* Recently Added */}
         <section>
           <div className='mb-4 flex items-center justify-between gap-3'>
-            <h2 className='text-[35px] leading-none font-semibold text-gray-900'>
+            <h2 className='text-[20px] font-semibold text-gray-900'>
               {t('recentlyAdded')}
             </h2>
             <Link
               href='/listings'
-              className='hidden md:inline-flex items-center gap-2 text-[30px] font-semibold text-[#2f4666] hover:underline'
+              className='hidden md:inline-flex items-center gap-1.5 text-[18px] font-semibold text-[#2f4666] hover:underline'
             >
-              <Image src='/Apps List.svg' alt='' width={18} height={18} />
+              <Image src='/Apps List.svg' alt='' width={14} height={14} />
               {t('viewAll')}
             </Link>
           </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
             </div>
           ) : firstBlock.length > 0 ? (
             <>
-              <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5'>
+              <div className='flex flex-wrap gap-x-[10px] gap-y-[30px]'>
                 {firstBlock.map((listing) => (
                   <ListingCard key={listing.id} listing={listing} />
                 ))}
@@ -170,14 +170,14 @@ export default function HomePage() {
                     />
                   </a>
                 ) : (
-                  <div className='w-full rounded-2xl bg-[#dedede] flex items-center justify-center h-32 sm:h-40 text-gray-500 text-2xl'>
+                  <div className='w-full rounded-[30px] bg-gradient-to-b from-white to-[#FAFAFA] flex items-center justify-center h-[140px] text-[#999] text-base'>
                     {t('adBanner2')}
                   </div>
                 )}
               </section>
 
               {secondBlock.length > 0 && (
-                <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mt-6'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-[10px] mt-6'>
                   {secondBlock.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}

@@ -42,7 +42,7 @@ function buildListingsQuery(params: {
 }
 
 const inputClass =
-  'w-full h-12 px-4 bg-white border border-gray-200 rounded-xl text-sm text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] outline-none transition-all';
+  'w-full h-9 px-3 bg-white border border-gray-200 rounded-lg text-[13px] text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] outline-none transition-all';
 
 export default function ListingsPage({
   searchParams,
@@ -166,10 +166,10 @@ export default function ListingsPage({
 
   const FilterContent = () => (
     <>
-      <div className='flex items-center justify-between mb-4'>
-        <h2 className='text-lg font-semibold text-[#171717] flex items-center gap-2'>
+      <div className='flex items-center justify-between mb-3'>
+        <h2 className='text-[14px] font-semibold text-[#171717] flex items-center gap-1.5'>
           <svg
-            className='w-5 h-5 text-[#3D7EF9]'
+            className='w-4 h-4 text-[#364860]'
             fill='none'
             stroke='currentColor'
             viewBox='0 0 24 24'
@@ -186,15 +186,15 @@ export default function ListingsPage({
         <button
           type='button'
           onClick={clearFilters}
-          className='text-sm font-medium text-red-600 hover:text-red-700 hover:underline'
+          className='text-[12px] font-medium text-red-500 hover:text-red-600 hover:underline'
         >
           {t('clearFilters')}
         </button>
       </div>
 
-      <div className='space-y-4'>
+      <div className='space-y-3'>
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('category')}
           </label>
           <select
@@ -212,11 +212,8 @@ export default function ListingsPage({
         </div>
 
         <div>
-          <span className='block text-sm font-medium text-[#171717] mb-2'>
-            {t('type')}
-          </span>
           <div className='flex gap-4'>
-            <label className='flex items-center gap-2 cursor-pointer'>
+            <label className='flex items-center gap-1.5 cursor-pointer'>
               <input
                 type='checkbox'
                 checked={filterSender}
@@ -224,11 +221,11 @@ export default function ListingsPage({
                   setFilterSender(e.target.checked);
                   if (e.target.checked) setFilterCarrier(false);
                 }}
-                className='w-4 h-4 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
+                className='w-3.5 h-3.5 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
               />
-              <span className='text-sm text-[#171717]'>{t('sender')}</span>
+              <span className='text-[12px] text-[#171717]'>{t('sender')}</span>
             </label>
-            <label className='flex items-center gap-2 cursor-pointer'>
+            <label className='flex items-center gap-1.5 cursor-pointer'>
               <input
                 type='checkbox'
                 checked={filterCarrier}
@@ -236,15 +233,15 @@ export default function ListingsPage({
                   setFilterCarrier(e.target.checked);
                   if (e.target.checked) setFilterSender(false);
                 }}
-                className='w-4 h-4 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
+                className='w-3.5 h-3.5 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
               />
-              <span className='text-sm text-[#171717]'>{t('carrier')}</span>
+              <span className='text-[12px] text-[#171717]'>{t('carrier')}</span>
             </label>
           </div>
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {tc('from')}
           </label>
           <LocationSelect
@@ -254,7 +251,7 @@ export default function ListingsPage({
           />
         </div>
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('toLocation')}
           </label>
           <LocationSelect
@@ -265,7 +262,7 @@ export default function ListingsPage({
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('weightTons')}
           </label>
           <input
@@ -277,7 +274,7 @@ export default function ListingsPage({
           />
         </div>
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('volumeM3')}
           </label>
           <input
@@ -290,7 +287,7 @@ export default function ListingsPage({
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('bodyType')}
           </label>
           <select
@@ -308,7 +305,7 @@ export default function ListingsPage({
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {t('executionDate')}
           </label>
           <select className={inputClass}>
@@ -317,7 +314,7 @@ export default function ListingsPage({
         </div>
 
         <div>
-          <label className='block text-sm font-medium text-[#171717] mb-1.5'>
+          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
             {tc('sort')}
           </label>
           <select
@@ -335,7 +332,7 @@ export default function ListingsPage({
         <button
           type='button'
           onClick={applyFilters}
-          className='w-full h-12 bg-[#3D7EF9] hover:bg-[#2B529B] text-white font-semibold rounded-xl shadow-sm transition-colors mt-1'
+          className='w-full h-9 bg-[#3D7EF9] hover:bg-[#2B529B] text-white text-[13px] font-semibold rounded-lg shadow-sm transition-colors mt-1'
         >
           {t('apply')}
         </button>
@@ -345,7 +342,7 @@ export default function ListingsPage({
 
   return (
     <div className='min-h-screen bg-[#d6e1ef] pb-12'>
-      <div className='max-w-[1470px] mx-auto px-4 pt-6'>
+      <div className='max-w-[1400px] mx-auto px-4 pt-6'>
         {/* Реклама 1 */}
         <section className='mb-6'>
           {topBanner ? (
@@ -353,19 +350,19 @@ export default function ListingsPage({
               href={topBanner.link || '#'}
               target='_blank'
               rel='noreferrer'
-              className='block w-full rounded-2xl overflow-hidden bg-white shadow-sm'
+              className='block w-full rounded-2xl overflow-hidden bg-gray-100'
             >
               <Image
                 src={`https://tm-cargo.com.tm/api/${topBanner.image}`}
                 alt={th('adBanner')}
                 width={1200}
                 height={200}
-                className='w-full h-32 sm:h-40 object-cover'
+                className='w-full h-[60px] sm:h-[70px] object-cover'
                 crossOrigin='anonymous'
               />
             </a>
           ) : (
-            <div className='w-full rounded-2xl bg-[#dedede] flex items-center justify-center h-24 sm:h-32 text-gray-500 text-xl'>
+            <div className='w-full rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[60px] sm:h-[70px] text-gray-400 text-base'>
               {th('adBanner')}
             </div>
           )}
@@ -373,15 +370,15 @@ export default function ListingsPage({
 
         <div className='flex flex-col lg:flex-row gap-6'>
           {/* Sidebar - Фильтры */}
-          <aside className='hidden lg:block w-80 shrink-0'>
-            <div className='rounded-2xl p-5 sticky top-24'>
+          <aside className='hidden lg:block w-64 shrink-0'>
+            <div className='sticky top-20'>
               <FilterContent />
             </div>
           </aside>
 
           <main className='flex-1 min-w-0'>
-            <div className='flex items-center justify-between mb-4'>
-              <h1 className='text-2xl font-bold text-[#171717]'>
+            <div className='flex items-center justify-between mb-3'>
+              <h1 className='text-[18px] font-bold text-[#171717]'>
                 {t('allListings')}
               </h1>
             </div>
@@ -389,7 +386,7 @@ export default function ListingsPage({
             <button
               type='button'
               onClick={() => setIsFilterOpen(true)}
-              className='lg:hidden w-full bg-[#2B5399] mb-4 py-3 rounded-xl text-[#171717] font-medium border border-white/50 flex items-center justify-center gap-2'
+              className='lg:hidden w-full bg-white mb-3 py-2.5 rounded-lg text-[#171717] text-[13px] font-medium border border-gray-200 flex items-center justify-center gap-2'
             >
               <svg
                 className='w-5 h-5'
@@ -413,39 +410,36 @@ export default function ListingsPage({
               </div>
             ) : listings?.data && listings.data.length > 0 ? (
               <>
-                <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[10px]'>
                   {listings.data.map((listing) => (
                     <ListingCard key={listing.id} listing={listing} />
                   ))}
                 </div>
 
                 {/* Реклама 2 */}
-                {middleBanner && (
-                  <section className='my-8'>
+                <section className='my-6'>
+                  {middleBanner ? (
                     <a
                       href={middleBanner.link || '#'}
                       target='_blank'
                       rel='noreferrer'
-                      className='block w-full rounded-2xl overflow-hidden bg-white shadow-sm'
+                      className='block w-full rounded-2xl overflow-hidden bg-gray-100'
                     >
                       <Image
                         src={`https://tm-cargo.com.tm/api/${middleBanner.image}`}
                         alt={th('adBanner2')}
                         width={900}
                         height={180}
-                        className='w-full h-28 sm:h-36 object-cover'
+                        className='w-full h-[60px] sm:h-[70px] object-cover'
                         crossOrigin='anonymous'
                       />
                     </a>
-                  </section>
-                )}
-                {!middleBanner && (
-                  <section className='my-8'>
-                    <div className='w-full rounded-2xl bg-[#dedede] flex items-center justify-center h-24 text-gray-500 text-lg'>
+                  ) : (
+                    <div className='w-full rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[60px] sm:h-[70px] text-gray-400 text-base'>
                       {th('adBanner2')}
                     </div>
-                  </section>
-                )}
+                  )}
+                </section>
 
                 <div className='mt-8'>
                   <Pagination
@@ -482,9 +476,9 @@ export default function ListingsPage({
               className='absolute inset-0 bg-black/50'
               onClick={() => setIsFilterOpen(false)}
             />
-            <div className='absolute inset-y-0 left-0 w-full max-w-sm bg-[#2B5399] p-6 shadow-2xl overflow-y-auto'>
-              <div className='flex items-center justify-between mb-4'>
-                <h2 className='text-lg font-bold text-[#171717]'>
+            <div className='absolute inset-y-0 left-0 w-full max-w-xs bg-[#d6e1ef] p-5 shadow-2xl overflow-y-auto'>
+              <div className='flex items-center justify-between mb-3'>
+                <h2 className='text-[14px] font-bold text-[#171717]'>
                   {t('filter')}
                 </h2>
                 <button

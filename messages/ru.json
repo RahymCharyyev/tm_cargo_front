@@ -171,7 +171,8 @@
     "volumeShort": "Объём",
     "priceLabel": "Цена",
     "date": "Дата",
-    "postedLabel": "Выставлено"
+    "postedLabel": "Выставлено",
+    "today": "Сегодня"
   },
   "profile": {
     "title": "Профиль",

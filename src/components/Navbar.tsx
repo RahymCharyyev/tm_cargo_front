@@ -24,8 +24,8 @@ export default function Navbar() {
   const isHome = pathname === '/' || pathname.match(/^\/[a-z]{2}\/?$/);
 
   return (
-    <header className='w-full z-50 shadow-sm'>
-      <div className='max-w-[1470px] mx-auto px-4'>
+    <header className='w-full z-50 my-[25px]'>
+      <div className='max-w-[1400px] mx-auto px-4'>
         <div className='h-14 px-2 md:px-0 flex items-center justify-between'>
           <div className='flex items-center gap-8 min-w-0'>
             {/* Logo */}
@@ -40,11 +40,11 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav - with icons */}
-            <nav className='hidden lg:flex items-center gap-1 min-w-0'>
+            <nav className='hidden lg:flex items-center gap-[20px] min-w-0'>
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,14 +58,27 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                  className='flex items-center gap-2 rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
                 >
+                  <svg
+                    className='w-4 h-4 opacity-90'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'
+                    />
+                  </svg>
                   {t('homeLink')}
                 </Link>
               )}
               <a
                 href='#download'
-                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                className='flex items-center gap-2  py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -78,7 +91,7 @@ export default function Navbar() {
               </a>
               <a
                 href='#cooperation'
-                className='flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[14px] leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
+                className='flex items-center gap- rounded-md  leading-none font-medium text-[#364860] hover:bg-white/40 transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Handshake.svg'
@@ -97,7 +110,7 @@ export default function Navbar() {
               <div className='relative z-50'>
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
+                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full  leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
                 >
                   <Image
                     src='/Person.svg'
@@ -116,22 +129,22 @@ export default function Navbar() {
                       className='fixed inset-0'
                       onClick={() => setIsUserMenuOpen(false)}
                     />
-                    <div className='absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 py-1 z-50'>
+                    <div className='absolute right-0 mt-2 w-48 rounded-lg shadow-xl border border-gray-100 py-1 z-50'>
                       <Link
                         href='/profile'
-                        className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                        className='block px-4 py-2  text-gray-700 hover:bg-gray-50'
                       >
                         {t('myListings')}
                       </Link>
                       <Link
                         href='/favorites'
-                        className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50'
+                        className='block px-4 py-2  text-gray-700 hover:bg-gray-50'
                       >
                         {t('favorites')}
                       </Link>
                       <button
                         onClick={() => logoutMutation.mutate()}
-                        className='w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50'
+                        className='w-full text-left px-4 py-2  text-red-600 hover:bg-red-50'
                       >
                         {t('logout')}
                       </button>
@@ -142,7 +155,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href='/login'
-                className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2d4f87] text-[#171717] px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
+                className='hidden md:flex items-center gap-2 border-2 border-[#2d4f87] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
               >
                 <Image
                   src='/Person.svg'
@@ -157,15 +170,9 @@ export default function Navbar() {
 
             <Link
               href={isAuthenticated ? '/listings/create' : '/login'}
-              className='hidden md:flex items-center gap-2 bg-[#3D7EF9] border border-white/30 text-white px-5 py-2.5 rounded-full text-[14px] leading-none font-semibold transition-colors hover:bg-[#2B529B] whitespace-nowrap shadow-sm'
+              className='hidden md:flex items-center gap-2  border-2 border-[#2d4f87] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap shadow-sm'
             >
-              <Image
-                src='/Add Circle.svg'
-                alt=''
-                width={17}
-                height={17}
-                className='invert'
-              />
+              <Image src='/Add Circle.svg' alt='' width={17} height={17} />
               {t('placeAd')}
             </Link>
 
@@ -204,7 +211,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className='lg:hidden max-w-[1470px] mx-auto px-4 mt-2'>
+        <div className='lg:hidden max-w-[1400px] mx-auto px-4 mt-2'>
           <div className='bg-white rounded-xl border border-gray-100 p-4 shadow-lg space-y-1'>
             <Link
               href='/listings'

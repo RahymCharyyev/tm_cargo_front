@@ -171,7 +171,8 @@
     "volumeShort": "Volume",
     "priceLabel": "Price",
     "date": "Date",
-    "postedLabel": "Posted"
+    "postedLabel": "Posted",
+    "today": "Today"
   },
   "profile": {
     "title": "Profile",

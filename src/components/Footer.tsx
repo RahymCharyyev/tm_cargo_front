@@ -9,7 +9,7 @@ export default function Footer() {
 
   return (
     <footer className='bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white'>
-      <div className='max-w-[1470px] mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+      <div className='max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <div className='grid md:grid-cols-3 gap-8 mb-8'>
           {/* Brand */}
           <div className='space-y-3'>

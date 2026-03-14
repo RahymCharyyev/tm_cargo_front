@@ -44,28 +44,28 @@ export default function LocationSelect({ value, onChange, placeholder }: Props) 
     <div ref={wrapperRef} className="relative">
       <div
         onClick={() => setIsOpen(true)}
-        className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white cursor-pointer text-sm hover:border-[#3D7EF9]/50 transition-colors"
+        className="w-full h-9 px-3 flex items-center border border-gray-200 rounded-lg bg-white cursor-pointer text-[13px] hover:border-[#3D7EF9]/50 transition-colors"
       >
         {selectedLocation ? (
-          <span className="text-gray-900">{getLocationName(selectedLocation, locale)}</span>
+          <span className="text-gray-900 truncate">{getLocationName(selectedLocation, locale)}</span>
         ) : (
-          <span className="text-gray-400">{placeholder || t('selectLocation')}</span>
+          <span className="text-gray-400 truncate">{placeholder || t('selectLocation')}</span>
         )}
       </div>
 
       {isOpen && (
-        <div className="absolute z-50 top-full mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="p-2">
+        <div className="absolute z-50 top-full mt-1 w-full bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+          <div className="p-1.5">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('selectLocation')}
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]"
+              className="w-full px-2.5 py-1.5 border border-gray-200 rounded-md text-[13px] focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]"
               autoFocus
             />
           </div>
-          <div className="max-h-48 overflow-y-auto">
+          <div className="max-h-44 overflow-y-auto">
             {data?.data?.map((loc) => (
               <button
                 key={loc.id}
@@ -74,7 +74,7 @@ export default function LocationSelect({ value, onChange, placeholder }: Props) 
                   setIsOpen(false);
                   setSearch('');
                 }}
-                className={`w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 transition-colors ${
+                className={`w-full text-left px-3 py-2 text-[13px] hover:bg-blue-50 transition-colors ${
                   loc.id === value ? 'bg-blue-50 text-[#3D7EF9] font-medium' : 'text-gray-700'
                 }`}
               >
@@ -82,7 +82,7 @@ export default function LocationSelect({ value, onChange, placeholder }: Props) 
               </button>
             ))}
             {data?.data?.length === 0 && (
-              <div className="px-4 py-3 text-sm text-gray-400 text-center">
+              <div className="px-3 py-2 text-[13px] text-gray-400 text-center">
                 {t('selectLocation')}
               </div>
             )}

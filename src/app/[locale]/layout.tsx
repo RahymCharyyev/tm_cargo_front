@@ -1,23 +1,12 @@
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 import { routing } from '@/i18n/routing';
+import { Providers } from '@/lib/providers';
 import type { Metadata } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
-import { Geist, Geist_Mono } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
-import { Providers } from '@/lib/providers';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin', 'cyrillic'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin', 'cyrillic'],
-});
 
 export async function generateMetadata({
   params,
@@ -94,9 +83,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#d6e1ef]`}
-      >
+      <body className={`font-sans antialiased bg-[#E8F2FF]`}>
         <NextIntlClientProvider>
           <Providers>
             <Navbar />

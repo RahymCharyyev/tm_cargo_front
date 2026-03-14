@@ -24,16 +24,16 @@ export default function Navbar() {
   const isHome = pathname === '/' || pathname.match(/^\/[a-z]{2}\/?$/);
 
   return (
-    <header className='w-full z-50 my-[25px]'>
-      <div className='max-w-[1400px] mx-auto px-4'>
-        <div className='h-14 px-2 md:px-0 flex items-center justify-between'>
+    <header className='w-full z-50 my-4 sm:my-[25px]'>
+      <div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
+        <div className='h-14 flex items-center justify-between'>
           <div className='flex items-center gap-8 min-w-0'>
             {/* Logo */}
             <Link href='/' className='flex items-center gap-2.5 group shrink-0'>
               <Image
                 width={96}
                 height={48}
-                className='w-[92px] h-[48px] object-contain '
+                className='w-[92px] h-[48px] object-contain'
                 src='/icon.webp'
                 alt='TM Cargo'
               />
@@ -44,7 +44,7 @@ export default function Navbar() {
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,7 +58,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
                 >
                   <svg
                     className='w-4 h-4 opacity-90'
@@ -78,7 +78,7 @@ export default function Navbar() {
               )}
               <a
                 href='/download'
-                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -91,7 +91,7 @@ export default function Navbar() {
               </a>
               <a
                 href='#cooperation'
-                className='flex items-center gap-2 py-2 px-2 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#364860] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
               >
                 <Image
                   src='/Handshake.svg'
@@ -221,7 +221,7 @@ export default function Navbar() {
               {t('allListings')}
             </Link>
             <a
-              href='#download'
+              href='/download'
               className='flex items-center gap-2 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50'
             >
               <Image src='/Arrow Download.svg' alt='' width={18} height={18} />
@@ -239,7 +239,7 @@ export default function Navbar() {
               {!isAuthenticated && (
                 <Link
                   href='/login'
-                  className='flex items-center justify-center gap-2 text-white py-2.5 rounded-lg font-medium'
+                  className='flex items-center justify-center gap-2 bg-[#2d4f87] text-white py-2.5 rounded-lg font-medium hover:bg-[#1e3a6b] transition-colors'
                 >
                   <Image src='/Person.svg' alt='' width={18} height={18} />
                   {t('loginAndRegister')}
@@ -247,19 +247,28 @@ export default function Navbar() {
               )}
               <Link
                 href={isAuthenticated ? '/listings/create' : '/login'}
-                className='flex items-center justify-center gap-2  text-white py-2.5 rounded-lg font-medium'
+                className='flex items-center justify-center gap-2 bg-[#2d4f87] text-white py-2.5 rounded-lg font-medium hover:bg-[#1e3a6b] transition-colors'
               >
                 <Image src='/Add Circle.svg' alt='' width={18} height={18} />
                 {t('placeAd')}
               </Link>
               {isAuthenticated && (
                 <>
-                  <Link href='/profile' className='block py-2 text-gray-700'>
+                  <Link
+                    href='/profile'
+                    className='flex items-center gap-2 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50'
+                  >
                     {t('profile')}
+                  </Link>
+                  <Link
+                    href='/favorites'
+                    className='flex items-center gap-2 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50'
+                  >
+                    {t('favorites')}
                   </Link>
                   <button
                     onClick={() => logoutMutation.mutate()}
-                    className='block py-2 text-red-600 text-left'
+                    className='flex items-center px-4 py-3 rounded-lg text-red-600 text-left hover:bg-red-50 transition-colors'
                   >
                     {t('logout')}
                   </button>

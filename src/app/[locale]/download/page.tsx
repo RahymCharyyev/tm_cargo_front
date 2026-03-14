@@ -59,7 +59,7 @@ export default function TaplinkPage() {
   }, [targetUrl]);
 
   return (
-    <div className='min-h-[70vh] bg-[#d6e1ef]'>
+    <div className='min-h-[70vh]'>
       <div className='max-w-[1470px] mx-auto px-4 py-10'>
         <div className='mx-auto max-w-xl rounded-2xl bg-white p-8 shadow-sm border border-gray-200 text-center'>
           <h1 className='text-3xl font-semibold text-[#1f3d6b]'>

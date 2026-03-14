@@ -94,7 +94,7 @@ export default function ListingCard({ listing }: Props) {
   return (
     <Link
       href={`/listings/${listing.id}`}
-      className='block group h-full w-[342px]'
+      className='block group h-full w-full'
     >
       <div className='bg-white rounded-[30px] overflow-hidden hover:shadow-md hover:shadow-gray-200 transition-all duration-200 h-full flex flex-col'>
         {/* Photo — 250px */}

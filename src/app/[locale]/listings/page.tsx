@@ -1,22 +1,14 @@
 'use client';
 
-import { useState, use, useEffect } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
-import {
-  useListings,
-  useVehicleTypes,
-  useLocations,
-  useBanners,
-} from '@/lib/hooks';
+import { use, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useListings, useVehicleTypes, useBanners } from '@/lib/hooks';
 import ListingCard from '@/components/ListingCard';
+import ListingFilterContent from '@/components/ListingFilterContent';
 import Pagination from '@/components/Pagination';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useRouter } from '@/i18n/navigation';
 import Image from 'next/image';
-import LocationSelect from '@/components/LocationSelect';
-
-const LOCATION_TYPES = ['international', 'intercity', 'local'] as const;
-const TYPES = ['cargo', 'vehicle', 'traveler', 'load'] as const;
 
 const listPath = '/listings';
 
@@ -41,18 +33,13 @@ function buildListingsQuery(params: {
   return q ? `${listPath}?${q}` : listPath;
 }
 
-const inputClass =
-  'w-full h-9 px-3 bg-white border border-gray-200 rounded-lg text-[13px] text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] outline-none transition-all';
-
 export default function ListingsPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const t = useTranslations('listing');
-  const tc = useTranslations('common');
   const th = useTranslations('home');
-  const locale = useLocale();
   const router = useRouter();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const resolvedSearchParams = use(searchParams);
@@ -77,7 +64,6 @@ export default function ListingsPage({
     sort,
   });
 
-  const { data: locations } = useLocations({ perPage: 100 });
   const { data: vehicleTypes } = useVehicleTypes({ perPage: 100 });
   const { data: banners } = useBanners();
 
@@ -86,8 +72,12 @@ export default function ListingsPage({
   const [filterFrom, setFilterFrom] = useState(from || '');
   const [filterTo, setFilterTo] = useState(to || '');
   const [filterKind, setFilterKind] = useState(kind || '');
+  const [filterSort, setFilterSort] = useState(sort === 'newest' ? '' : sort);
   const [filterSender, setFilterSender] = useState(type === 'cargo');
   const [filterCarrier, setFilterCarrier] = useState(type === 'vehicle');
+  const [filterWeight, setFilterWeight] = useState('');
+  const [filterVolume, setFilterVolume] = useState('');
+  const [filterDate, setFilterDate] = useState('');
 
   useEffect(() => {
     setFilterType(type || '');
@@ -95,9 +85,10 @@ export default function ListingsPage({
     setFilterFrom(from || '');
     setFilterTo(to || '');
     setFilterKind(kind || '');
+    setFilterSort(sort === 'newest' ? '' : sort);
     setFilterSender(type === 'cargo');
     setFilterCarrier(type === 'vehicle');
-  }, [type, locationType, from, to, kind]);
+  }, [type, locationType, from, to, kind, sort]);
 
   const clearFilters = () => {
     setFilterType('');
@@ -105,8 +96,12 @@ export default function ListingsPage({
     setFilterFrom('');
     setFilterTo('');
     setFilterKind('');
+    setFilterSort('');
     setFilterSender(false);
     setFilterCarrier(false);
+    setFilterWeight('');
+    setFilterVolume('');
+    setFilterDate('');
     router.push(listPath);
     setIsFilterOpen(false);
   };
@@ -127,222 +122,38 @@ export default function ListingsPage({
         from: filterFrom || undefined,
         to: filterTo || undefined,
         kind: filterKind || undefined,
-        sort,
+        sort: filterSort || 'newest',
       }),
     );
     setIsFilterOpen(false);
   };
 
-  const handleSortChange = (newSort: string) => {
-    router.push(
-      buildListingsQuery({
-        page: 1,
-        type: effectiveType,
-        locationType: filterLocType || undefined,
-        from: filterFrom || undefined,
-        to: filterTo || undefined,
-        kind: filterKind || undefined,
-        sort: newSort,
-      }),
-    );
+  const toggleSender = () => {
+    setFilterSender((prev) => {
+      const next = !prev;
+      if (next) setFilterCarrier(false);
+      return next;
+    });
+  };
+
+  const toggleCarrier = () => {
+    setFilterCarrier((prev) => {
+      const next = !prev;
+      if (next) setFilterSender(false);
+      return next;
+    });
   };
 
   const totalPages = listings ? Math.ceil(listings.count / 12) : 0;
-
-  const getLocationName = (loc: {
-    names: { en: string; ru: string; tk: string };
-  }) =>
-    (loc.names as Record<string, string>)[locale] ||
-    loc.names.en ||
-    loc.names.tk;
-
-  const getTypeName = (vt: { names: { en: string; ru: string; tk: string } }) =>
-    (vt.names as Record<string, string>)[locale] || vt.names.en || vt.names.tk;
 
   const topBanner = banners?.data?.find((b) => b.location === 'top');
   const middleBanner = banners?.data?.find(
     (b) => b.location === 'list' || b.location === 'inside',
   );
 
-  const FilterContent = () => (
-    <>
-      <div className='flex items-center justify-between mb-3'>
-        <h2 className='text-[14px] font-semibold text-[#171717] flex items-center gap-1.5'>
-          <svg
-            className='w-4 h-4 text-[#364860]'
-            fill='none'
-            stroke='currentColor'
-            viewBox='0 0 24 24'
-          >
-            <path
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              strokeWidth={2}
-              d='M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
-            />
-          </svg>
-          {t('filter')}
-        </h2>
-        <button
-          type='button'
-          onClick={clearFilters}
-          className='text-[12px] font-medium text-red-500 hover:text-red-600 hover:underline'
-        >
-          {t('clearFilters')}
-        </button>
-      </div>
-
-      <div className='space-y-3'>
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('category')}
-          </label>
-          <select
-            value={filterLocType}
-            onChange={(e) => setFilterLocType(e.target.value)}
-            className={inputClass}
-          >
-            <option value=''>{tc('all')}</option>
-            {LOCATION_TYPES.map((lt) => (
-              <option key={lt} value={lt}>
-                {t(lt)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <div className='flex gap-4'>
-            <label className='flex items-center gap-1.5 cursor-pointer'>
-              <input
-                type='checkbox'
-                checked={filterSender}
-                onChange={(e) => {
-                  setFilterSender(e.target.checked);
-                  if (e.target.checked) setFilterCarrier(false);
-                }}
-                className='w-3.5 h-3.5 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
-              />
-              <span className='text-[12px] text-[#171717]'>{t('sender')}</span>
-            </label>
-            <label className='flex items-center gap-1.5 cursor-pointer'>
-              <input
-                type='checkbox'
-                checked={filterCarrier}
-                onChange={(e) => {
-                  setFilterCarrier(e.target.checked);
-                  if (e.target.checked) setFilterSender(false);
-                }}
-                className='w-3.5 h-3.5 rounded border-gray-300 text-[#3D7EF9] focus:ring-[#3D7EF9]'
-              />
-              <span className='text-[12px] text-[#171717]'>{t('carrier')}</span>
-            </label>
-          </div>
-        </div>
-
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {tc('from')}
-          </label>
-          <LocationSelect
-            value={filterFrom}
-            onChange={setFilterFrom}
-            placeholder={t('enterLocation')}
-          />
-        </div>
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('toLocation')}
-          </label>
-          <LocationSelect
-            value={filterTo}
-            onChange={setFilterTo}
-            placeholder={t('enterLocation')}
-          />
-        </div>
-
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('weightTons')}
-          </label>
-          <input
-            type='number'
-            placeholder={t('weightNotEntered')}
-            className={inputClass}
-            disabled
-            aria-label={t('weightNotEntered')}
-          />
-        </div>
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('volumeM3')}
-          </label>
-          <input
-            type='number'
-            placeholder={t('volumeNotEntered')}
-            className={inputClass}
-            disabled
-            aria-label={t('volumeNotEntered')}
-          />
-        </div>
-
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('bodyType')}
-          </label>
-          <select
-            value={filterKind}
-            onChange={(e) => setFilterKind(e.target.value)}
-            className={inputClass}
-          >
-            <option value=''>{tc('all')}</option>
-            {vehicleTypes?.data?.map((vt) => (
-              <option key={vt.id} value={vt.id}>
-                {getTypeName(vt)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {t('executionDate')}
-          </label>
-          <select className={inputClass}>
-            <option value=''>{t('selectDate')}</option>
-          </select>
-        </div>
-
-        <div>
-          <label className='block text-[12px] font-medium text-[#171717] mb-1'>
-            {tc('sort')}
-          </label>
-          <select
-            value={sort}
-            onChange={(e) => handleSortChange(e.target.value)}
-            className={inputClass}
-          >
-            <option value='newest'>{t('newest')}</option>
-            <option value='oldest'>{t('oldest')}</option>
-            <option value='price_asc'>{t('priceLowHigh')}</option>
-            <option value='price_desc'>{t('priceHighLow')}</option>
-          </select>
-        </div>
-
-        <button
-          type='button'
-          onClick={applyFilters}
-          className='w-full h-9 bg-[#3D7EF9] hover:bg-[#2B529B] text-white text-[13px] font-semibold rounded-lg shadow-sm transition-colors mt-1'
-        >
-          {t('apply')}
-        </button>
-      </div>
-    </>
-  );
-
   return (
-    <div className='min-h-screen bg-[#d6e1ef] pb-12'>
-      <div className='max-w-[1400px] mx-auto px-4 pt-6'>
+    <div className='min-h-screen pb-12'>
+      <div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
         {/* Реклама 1 */}
         <section className='mb-6'>
           {topBanner ? (
@@ -350,29 +161,53 @@ export default function ListingsPage({
               href={topBanner.link || '#'}
               target='_blank'
               rel='noreferrer'
-              className='block w-full rounded-2xl overflow-hidden bg-gray-100'
+              className='block w-full rounded-[20px] sm:rounded-2xl overflow-hidden bg-gray-100'
             >
               <Image
                 src={`https://tm-cargo.com.tm/api/${topBanner.image}`}
                 alt={th('adBanner')}
                 width={1200}
                 height={200}
-                className='w-full h-[60px] sm:h-[70px] object-cover'
+                className='w-full h-[100px] sm:h-[140px] object-cover'
                 crossOrigin='anonymous'
               />
             </a>
           ) : (
-            <div className='w-full rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[60px] sm:h-[70px] text-gray-400 text-base'>
+            <div className='w-full rounded-[20px] sm:rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[100px] sm:h-[140px] text-gray-400 text-base'>
               {th('adBanner')}
             </div>
           )}
         </section>
 
-        <div className='flex flex-col lg:flex-row gap-6'>
+        <div className='flex flex-col lg:flex-row gap-[20px]'>
           {/* Sidebar - Фильтры */}
-          <aside className='hidden lg:block w-64 shrink-0'>
+          <aside className='hidden lg:block w-[330px] shrink-0'>
             <div className='sticky top-20'>
-              <FilterContent />
+              <ListingFilterContent
+                locationType={filterLocType}
+                onLocationTypeChange={setFilterLocType}
+                from={filterFrom}
+                onFromChange={setFilterFrom}
+                to={filterTo}
+                onToChange={setFilterTo}
+                weight={filterWeight}
+                onWeightChange={setFilterWeight}
+                volume={filterVolume}
+                onVolumeChange={setFilterVolume}
+                executionDate={filterDate}
+                onExecutionDateChange={setFilterDate}
+                kind={filterKind}
+                onKindChange={setFilterKind}
+                sort={filterSort}
+                onSortChange={setFilterSort}
+                senderSelected={filterSender}
+                onSenderToggle={toggleSender}
+                carrierSelected={filterCarrier}
+                onCarrierToggle={toggleCarrier}
+                vehicleTypes={vehicleTypes?.data}
+                onClear={clearFilters}
+                onApply={applyFilters}
+              />
             </div>
           </aside>
 
@@ -423,19 +258,19 @@ export default function ListingsPage({
                       href={middleBanner.link || '#'}
                       target='_blank'
                       rel='noreferrer'
-                      className='block w-full rounded-2xl overflow-hidden bg-gray-100'
+                      className='block w-full rounded-[20px] sm:rounded-2xl overflow-hidden bg-gray-100'
                     >
                       <Image
                         src={`https://tm-cargo.com.tm/api/${middleBanner.image}`}
                         alt={th('adBanner2')}
                         width={900}
-                        height={180}
-                        className='w-full h-[60px] sm:h-[70px] object-cover'
+                        height={140}
+                        className='w-full h-[100px] sm:h-[140px] object-cover'
                         crossOrigin='anonymous'
                       />
                     </a>
                   ) : (
-                    <div className='w-full rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[60px] sm:h-[70px] text-gray-400 text-base'>
+                    <div className='w-full rounded-[20px] sm:rounded-2xl bg-[#e8e8e8] flex items-center justify-center h-[100px] sm:h-[140px] text-gray-400 text-base'>
                       {th('adBanner2')}
                     </div>
                   )}
@@ -449,11 +284,11 @@ export default function ListingsPage({
                       router.push(
                         buildListingsQuery({
                           page: p,
-                          type: effectiveType,
-                          locationType: filterLocType || undefined,
-                          from: filterFrom || undefined,
-                          to: filterTo || undefined,
-                          kind: filterKind || undefined,
+                          type,
+                          locationType,
+                          from,
+                          to,
+                          kind,
                           sort,
                         }),
                       )
@@ -476,20 +311,33 @@ export default function ListingsPage({
               className='absolute inset-0 bg-black/50'
               onClick={() => setIsFilterOpen(false)}
             />
-            <div className='absolute inset-y-0 left-0 w-full max-w-xs bg-[#d6e1ef] p-5 shadow-2xl overflow-y-auto'>
-              <div className='flex items-center justify-between mb-3'>
-                <h2 className='text-[14px] font-bold text-[#171717]'>
-                  {t('filter')}
-                </h2>
-                <button
-                  type='button'
-                  onClick={() => setIsFilterOpen(false)}
-                  className='p-2 text-gray-600 hover:text-gray-900'
-                >
-                  ✕
-                </button>
-              </div>
-              <FilterContent />
+            <div className='absolute inset-y-0 left-0 w-full sm:max-w-[380px] overflow-y-auto p-3'>
+              <ListingFilterContent
+                locationType={filterLocType}
+                onLocationTypeChange={setFilterLocType}
+                from={filterFrom}
+                onFromChange={setFilterFrom}
+                to={filterTo}
+                onToChange={setFilterTo}
+                weight={filterWeight}
+                onWeightChange={setFilterWeight}
+                volume={filterVolume}
+                onVolumeChange={setFilterVolume}
+                executionDate={filterDate}
+                onExecutionDateChange={setFilterDate}
+                kind={filterKind}
+                onKindChange={setFilterKind}
+                sort={filterSort}
+                onSortChange={setFilterSort}
+                senderSelected={filterSender}
+                onSenderToggle={toggleSender}
+                carrierSelected={filterCarrier}
+                onCarrierToggle={toggleCarrier}
+                vehicleTypes={vehicleTypes?.data}
+                onClear={clearFilters}
+                onApply={applyFilters}
+                className='min-h-full'
+              />
             </div>
           </div>
         )}

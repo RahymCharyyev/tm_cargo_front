@@ -131,7 +131,7 @@ export default function HomePage() {
             <>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px]'>
                 {firstBlock.map((listing) => (
-                  <ListingCard key={listing.id} listing={listing} />
+                  <ListingCard key={listing.id} listing={listing} from="home" />
                 ))}
               </div>
 
@@ -163,7 +163,7 @@ export default function HomePage() {
               {secondBlock.length > 0 && (
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px] mt-6'>
                   {secondBlock.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} />
+                    <ListingCard key={listing.id} listing={listing} from="home" />
                   ))}
                 </div>
               )}

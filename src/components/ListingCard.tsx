@@ -7,6 +7,7 @@ import type { Listing } from '@/lib/hooks';
 
 interface Props {
   listing: Listing;
+  from?: string;
 }
 
 const currencySymbols: Record<string, string> = {
@@ -53,7 +54,7 @@ function getFlagUrl(
   return `https://tm-cargo.com.tm/api/${icon}`;
 }
 
-export default function ListingCard({ listing }: Props) {
+export default function ListingCard({ listing, from }: Props) {
   const t = useTranslations('listing');
   const locale = useLocale();
 
@@ -93,7 +94,7 @@ export default function ListingCard({ listing }: Props) {
 
   return (
     <Link
-      href={`/listings/${listing.id}`}
+      href={`/listings/${listing.id}${from ? `?ref=${from}` : ''}`}
       className='block group h-full w-full'
     >
       <div className='bg-white rounded-[30px] overflow-hidden hover:shadow-md hover:shadow-gray-200 transition-all duration-200 h-full flex flex-col'>

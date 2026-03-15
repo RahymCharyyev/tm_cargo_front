@@ -270,7 +270,7 @@ export default function ListingsPage({
               <>
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[10px]'>
                   {listings.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} />
+                    <ListingCard key={listing.id} listing={listing} from="listings" />
                   ))}
                 </div>
 

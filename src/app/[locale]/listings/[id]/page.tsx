@@ -10,6 +10,7 @@ import {
   useRemoveFavorite,
   useBanners,
 } from '@/lib/hooks';
+import { useBannerType } from '@/lib/useBannerType';
 import { useAuthStore } from '@/lib/auth-store';
 import { useRouter } from '@/i18n/navigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -57,8 +58,9 @@ export default function ListingDetailPage({
   const { isAuthenticated, user } = useAuthStore();
   const searchParams = useSearchParams();
   const refParam = searchParams.get('ref');
+  const bannerType = useBannerType();
   const { data: listing, isLoading } = useListing(id);
-  const { data: banners } = useBanners();
+  const { data: banners } = useBanners({ type: bannerType });
   const deleteMutation = useDeleteListing();
   const addFav = useAddFavorite();
   const removeFav = useRemoveFavorite();

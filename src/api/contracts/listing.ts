@@ -77,6 +77,13 @@ export const adminListingContract = c.router(
       pathParams: z.object({id: z.string().uuid()}),
       responses: {201: result},
     },
+    updatedAt: {
+      method: 'PATCH',
+      path: '/:id',
+      pathParams: z.object({id: z.string().uuid()}),
+      body: null,
+      responses: {200: result},
+    },
   },
   {
     pathPrefix: '/listings',

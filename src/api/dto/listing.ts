@@ -29,8 +29,15 @@ export const listingDto = z.object({
 
   dueDate: z.coerce.date().nullish(),
   createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
   deletedAt: z.coerce.date().nullish(),
 });
+
+const types = z.string().transform((v) => {
+  const types = v.split(',');
+  return listingDto.shape.type.array().parse(types);
+});
+
 
 export const listingExtra = z.object({
   from: locationDto
@@ -66,7 +73,7 @@ export type ListingDto = z.infer<typeof listingDto>;
 export const listingFields = listingDto.keyof().options;
 
 export const sortListingBy = listingDto
-  .pick({price: true, viewCount: true, createdAt: true, dueDate: true})
+  .pick({price: true, viewCount: true, createdAt: true, updatedAt: true, dueDate: true})
   .extend({volume: z.coerce.number(), weight: z.coerce.number(), bodyCount: z.coerce.number()})
   .keyof();
 
@@ -85,6 +92,7 @@ export const getListings = listingDto
     toWeight: z.coerce.number(),
     toVolume: z.coerce.number(),
     isRemoved: strBool,
+    types: types,
   })
   .partial()
   .merge(commonQuery);

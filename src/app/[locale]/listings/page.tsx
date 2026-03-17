@@ -3,6 +3,7 @@
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useInfiniteListings, useVehicleTypes, useBanners } from '@/lib/hooks';
+import { useBannerType } from '@/lib/useBannerType';
 import ListingCard from '@/components/ListingCard';
 import ListingFilterContent from '@/components/ListingFilterContent';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -85,8 +86,9 @@ export default function ListingsPage({
     return () => observer.disconnect();
   }, [onIntersect]);
 
+  const bannerType = useBannerType();
   const { data: vehicleTypes } = useVehicleTypes({ perPage: 100 });
-  const { data: banners } = useBanners();
+  const { data: banners } = useBanners({ type: bannerType });
 
   const [filterType, setFilterType] = useState(type || '');
   const [filterLocType, setFilterLocType] = useState(locationType || '');

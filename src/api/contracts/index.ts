@@ -9,6 +9,7 @@ import {adminLocationContract, locationContract} from './location';
 import {adminSettingContract, settingContract} from './setting';
 import {accountContract, adminUserContract} from './user';
 import {adminVehicleTypeContract, vehicleTypeContract} from './vehicle-type';
+import { adminContactContract, contactContract } from './contact';
 
 const contract = initContract();
 
@@ -23,6 +24,7 @@ export const c = contract.router({
       listingImage: listingImageAdminContract,
       user: adminUserContract,
       setting: adminSettingContract,
+      contact: adminContactContract,
     },
     {pathPrefix: '/admin'},
   ),
@@ -35,4 +37,5 @@ export const c = contract.router({
   listingOtp: listingOtpContract,
   account: accountContract,
   setting: settingContract,
+  contact: contactContract,
 });

@@ -470,7 +470,13 @@ export function useVehicleTypes(query?: { name?: string; page?: number; perPage?
 
 // ─── Banners Hooks ──────────────────────────────────────
 
-export function useBanners(query?: { location?: string; isActive?: string; page?: number; perPage?: number }) {
+export function useBanners(query?: {
+  location?: string;
+  type?: 'desktop' | 'mobile';
+  isActive?: string;
+  page?: number;
+  perPage?: number;
+}) {
   return useQuery({
     queryKey: ['banners', query],
     queryFn: () =>

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useListings, useBanners } from '@/lib/hooks';
+import { useBannerType } from '@/lib/useBannerType';
 import ListingCard from '@/components/ListingCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Link } from '@/i18n/navigation';
@@ -33,7 +34,8 @@ const CATEGORIES = [
 
 export default function HomePage() {
   const t = useTranslations('home');
-  const { data: banners } = useBanners();
+  const bannerType = useBannerType();
+  const { data: banners } = useBanners({ type: bannerType });
   const { data: listings, isLoading } = useListings({
     page: 1,
     perPage: 16,

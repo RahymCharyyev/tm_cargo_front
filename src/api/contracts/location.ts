@@ -63,7 +63,6 @@ export const adminLocationContract = c.router(
     addKeyword: {
       method: 'POST',
       path: '/add/keyword/:id',
-      pathParams: z.object({id: z.string().uuid()}),
       body: z.object({ keyword: z.string()}),
       responses: {201: result},
     },

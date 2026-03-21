@@ -13,6 +13,7 @@ import {
 import { useBannerType } from '@/lib/useBannerType';
 import { useAuthStore } from '@/lib/auth-store';
 import { useRouter } from '@/i18n/navigation';
+import { Button, Modal as AntModal } from 'antd';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
@@ -126,11 +127,16 @@ export default function ListingDetailPage({
           : t('load');
 
   const handleDelete = () => {
-    if (confirm(t('deleteConfirm'))) {
-      deleteMutation.mutate(id, {
-        onSuccess: () => router.push('/'),
-      });
-    }
+    AntModal.confirm({
+      title: t('deleteConfirm'),
+      okText: 'OK',
+      cancelText: 'Cancel',
+      okButtonProps: { danger: true },
+      onOk: () =>
+        deleteMutation.mutate(id, {
+          onSuccess: () => router.push('/'),
+        }),
+    });
   };
 
   const handleFavorite = () => {
@@ -307,20 +313,31 @@ export default function ListingDetailPage({
             {/* Owner actions */}
             {isOwner && (
               <div className='flex gap-3'>
-                <Link
-                  href={`/listings/${id}/edit`}
-                  className='flex-1 text-center px-6 py-3.5 rounded-[20px] font-semibold text-white transition-colors'
-                  style={{ backgroundColor: '#2B529B' }}
-                >
-                  {tc('edit')}
+                <Link href={`/listings/${id}/edit`} className='flex-1'>
+                  <Button
+                    type='primary'
+                    block
+                    size='large'
+                    style={{
+                      backgroundColor: '#2B529B',
+                      borderColor: '#2B529B',
+                      borderRadius: 20,
+                      height: 52,
+                      fontWeight: 600,
+                    }}
+                  >
+                    {tc('edit')}
+                  </Button>
                 </Link>
-                <button
+                <Button
+                  danger
+                  size='large'
                   onClick={handleDelete}
-                  disabled={deleteMutation.isPending}
-                  className='px-6 py-3.5 rounded-[20px] font-semibold border-2 border-red-300 text-red-600 hover:bg-red-50 transition-colors'
+                  loading={deleteMutation.isPending}
+                  style={{ borderRadius: 20, height: 52, fontWeight: 600 }}
                 >
                   {tc('delete')}
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -333,31 +350,24 @@ export default function ListingDetailPage({
                 {t('detailInfo')}
               </h2>
               {isAuthenticated && (
-                <button
+                <Button
+                  type='text'
+                  shape='circle'
                   onClick={handleFavorite}
-                  title={
-                    listing.isFavorite ? t('removeFavorite') : t('addFavorite')
+                  title={listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
+                  icon={
+                    <svg
+                      className='w-6 h-6'
+                      fill={listing.isFavorite ? 'currentColor' : 'none'}
+                      stroke='currentColor'
+                      style={{ color: listing.isFavorite ? '#ef4444' : '#9ca3af' }}
+                      viewBox='0 0 24 24'
+                    >
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                        d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
+                    </svg>
                   }
-                  className={`p-2 rounded-full transition-all ${
-                    listing.isFavorite
-                      ? 'text-red-500'
-                      : 'text-gray-400 hover:text-red-400'
-                  }`}
-                >
-                  <svg
-                    className='w-6 h-6'
-                    fill={listing.isFavorite ? 'currentColor' : 'none'}
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-                    />
-                  </svg>
-                </button>
+                />
               )}
             </div>
 
@@ -617,68 +627,70 @@ export default function ListingDetailPage({
             </div>
 
             {/* Action buttons */}
-            <div className='flex flex-col gap-5'>
+            <div className='flex flex-col gap-3'>
               {phone && (
-                <a
-                  href={`tel:${phone}`}
-                  className='w-full flex items-center justify-center gap-3 py-[18px] rounded-[20px] font-semibold text-white text-base transition-opacity hover:opacity-90'
-                  style={{ backgroundColor: '#3D991A' }}
-                >
-                  <svg
-                    className='w-6 h-6'
-                    fill='currentColor'
-                    viewBox='0 0 24 24'
+                <a href={`tel:${phone}`}>
+                  <Button
+                    block
+                    size='large'
+                    icon={
+                      <svg className='w-5 h-5' fill='currentColor' viewBox='0 0 24 24'>
+                        <path d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' />
+                      </svg>
+                    }
+                    style={{
+                      backgroundColor: '#3D991A',
+                      borderColor: '#3D991A',
+                      color: 'white',
+                      borderRadius: 20,
+                      height: 54,
+                      fontWeight: 600,
+                      fontSize: 16,
+                    }}
                   >
-                    <path d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' />
-                  </svg>
-                  {t('callNow')}
+                    {t('callNow')}
+                  </Button>
                 </a>
               )}
 
               {email && (
-                <a
-                  href={`mailto:${email}`}
-                  className='w-full flex items-center justify-center gap-3 py-[18px] rounded-[20px] font-semibold text-black text-base bg-white transition-opacity hover:opacity-90'
-                >
-                  <svg
-                    className='w-6 h-6'
-                    style={{ color: '#2B529B' }}
-                    fill='none'
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
+                <a href={`mailto:${email}`}>
+                  <Button
+                    block
+                    size='large'
+                    icon={
+                      <svg className='w-5 h-5 text-[#2B529B]' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                          d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' />
+                      </svg>
+                    }
+                    style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
                   >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
-                    />
-                  </svg>
-                  {t('writeEmail')}
+                    {t('writeEmail')}
+                  </Button>
                 </a>
               )}
 
               {isAuthenticated && (
-                <button
+                <Button
+                  block
+                  size='large'
                   onClick={handleFavorite}
-                  className='w-full flex items-center justify-center gap-3 py-[18px] rounded-[20px] font-semibold text-black text-base bg-white transition-opacity hover:opacity-90'
+                  icon={
+                    <svg
+                      className='w-5 h-5 text-[#2B529B]'
+                      fill={listing.isFavorite ? 'currentColor' : 'none'}
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                        d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
+                    </svg>
+                  }
+                  style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
                 >
-                  <svg
-                    className='w-6 h-6'
-                    style={{ color: '#2B529B' }}
-                    fill={listing.isFavorite ? 'currentColor' : 'none'}
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
-                    />
-                  </svg>
                   {listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
-                </button>
+                </Button>
               )}
             </div>
           </div>

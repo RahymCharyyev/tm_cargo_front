@@ -2,6 +2,8 @@
 
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { Button, Drawer, Grid } from 'antd';
+import { FilterOutlined } from '@ant-design/icons';
 import { useInfiniteListings, useVehicleTypes, useBanners } from '@/lib/hooks';
 import { useBannerType } from '@/lib/useBannerType';
 import ListingCard from '@/components/ListingCard';
@@ -39,6 +41,8 @@ export default function ListingsPage({
   const t = useTranslations('listing');
   const th = useTranslations('home');
   const router = useRouter();
+  const screens = Grid.useBreakpoint();
+  const isMobile = !screens.lg;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const resolvedSearchParams = use(searchParams);
 
@@ -81,7 +85,9 @@ export default function ListingsPage({
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(onIntersect, { rootMargin: '200px' });
+    const observer = new IntersectionObserver(onIntersect, {
+      rootMargin: '200px',
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, [onIntersect]);
@@ -243,26 +249,15 @@ export default function ListingsPage({
               </h1>
             </div>
 
-            <button
-              type='button'
-              onClick={() => setIsFilterOpen(true)}
-              className='lg:hidden w-full bg-white mb-3 py-2.5 rounded-lg text-[#171717] text-[13px] font-medium border border-gray-200 flex items-center justify-center gap-2'
-            >
-              <svg
-                className='w-5 h-5'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
+            {isMobile && (
+              <Button
+                className='w-full mb-3'
+                icon={<FilterOutlined />}
+                onClick={() => setIsFilterOpen(true)}
               >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z'
-                />
-              </svg>
-              {t('filter')}
-            </button>
+                {t('filter')}
+              </Button>
+            )}
 
             {isLoading ? (
               <div className='flex justify-center py-20'>
@@ -272,30 +267,36 @@ export default function ListingsPage({
               <>
                 <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-[10px]'>
                   {listings.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} from="listings" />
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      from='listings'
+                    />
                   ))}
                 </div>
 
                 {/* Реклама 2 — показываем после первой страницы */}
-                {infiniteData && infiniteData.pages.length >= 1 && middleBanner && (
-                  <section className='my-6'>
-                    <a
-                      href={middleBanner.link || '#'}
-                      target='_blank'
-                      rel='noreferrer'
-                      className='block w-full rounded-[20px] sm:rounded-2xl overflow-hidden bg-gray-100'
-                    >
-                      <Image
-                        src={`https://tm-cargo.com.tm/api/${middleBanner.image}`}
-                        alt={th('adBanner2')}
-                        width={900}
-                        height={140}
-                        className='w-full h-[100px] sm:h-[140px] object-cover'
-                        crossOrigin='anonymous'
-                      />
-                    </a>
-                  </section>
-                )}
+                {infiniteData &&
+                  infiniteData.pages.length >= 1 &&
+                  middleBanner && (
+                    <section className='my-6'>
+                      <a
+                        href={middleBanner.link || '#'}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='block w-full rounded-[20px] sm:rounded-2xl overflow-hidden bg-gray-100'
+                      >
+                        <Image
+                          src={`https://tm-cargo.com.tm/api/${middleBanner.image}`}
+                          alt={th('adBanner2')}
+                          width={900}
+                          height={140}
+                          className='w-full h-[100px] sm:h-[140px] object-cover'
+                          crossOrigin='anonymous'
+                        />
+                      </a>
+                    </section>
+                  )}
 
                 {/* Sentinel для infinite scroll */}
                 <div ref={sentinelRef} className='h-1' />
@@ -320,43 +321,46 @@ export default function ListingsPage({
           </main>
         </div>
 
-        {/* Mobile filter drawer */}
-        {isFilterOpen && (
-          <div className='fixed inset-0 z-[60] lg:hidden'>
-            <div
-              className='absolute inset-0 bg-black/50'
-              onClick={() => setIsFilterOpen(false)}
+        {/* Mobile filter drawer — triggered only by the lg:hidden button above */}
+        {isMobile && (
+          <Drawer
+            open={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            placement='left'
+            width='min(100vw, 400px)'
+            styles={{
+              body: { padding: 0, background: '#EAF2FC' },
+              header: { display: 'none' },
+            }}
+          >
+            <ListingFilterContent
+              locationType={filterLocType}
+              onLocationTypeChange={setFilterLocType}
+              from={filterFrom}
+              onFromChange={setFilterFrom}
+              to={filterTo}
+              onToChange={setFilterTo}
+              weight={filterWeight}
+              onWeightChange={setFilterWeight}
+              volume={filterVolume}
+              onVolumeChange={setFilterVolume}
+              executionDate={filterDate}
+              onExecutionDateChange={setFilterDate}
+              kind={filterKind}
+              onKindChange={setFilterKind}
+              sort={filterSort}
+              onSortChange={setFilterSort}
+              senderSelected={filterSender}
+              onSenderToggle={toggleSender}
+              carrierSelected={filterCarrier}
+              onCarrierToggle={toggleCarrier}
+              vehicleTypes={vehicleTypes?.data}
+              onClear={clearFilters}
+              onApply={applyFilters}
+              onClose={() => setIsFilterOpen(false)}
+              className='min-h-screen rounded-none'
             />
-            <div className='absolute inset-y-0 left-0 w-full sm:max-w-[400px] overflow-y-auto bg-[#EAF2FC]'>
-              <ListingFilterContent
-                locationType={filterLocType}
-                onLocationTypeChange={setFilterLocType}
-                from={filterFrom}
-                onFromChange={setFilterFrom}
-                to={filterTo}
-                onToChange={setFilterTo}
-                weight={filterWeight}
-                onWeightChange={setFilterWeight}
-                volume={filterVolume}
-                onVolumeChange={setFilterVolume}
-                executionDate={filterDate}
-                onExecutionDateChange={setFilterDate}
-                kind={filterKind}
-                onKindChange={setFilterKind}
-                sort={filterSort}
-                onSortChange={setFilterSort}
-                senderSelected={filterSender}
-                onSenderToggle={toggleSender}
-                carrierSelected={filterCarrier}
-                onCarrierToggle={toggleCarrier}
-                vehicleTypes={vehicleTypes?.data}
-                onClear={clearFilters}
-                onApply={applyFilters}
-                onClose={() => setIsFilterOpen(false)}
-                className='min-h-screen rounded-none'
-              />
-            </div>
-          </div>
+          </Drawer>
         )}
       </div>
     </div>

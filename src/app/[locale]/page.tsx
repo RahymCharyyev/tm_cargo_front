@@ -11,25 +11,37 @@ import Image from 'next/image';
 const CATEGORIES = [
   {
     key: 'international',
-    image: '/international.png',
+    image: '/cargo_tm.svg',
+    secondaryImage: '/ball.svg',
+    bgClass: 'bg-gradient-to-br from-[#67B2FF] to-[#2990FF]',
     link: '/listings?locationType=international',
   },
   {
     key: 'withinTurkmenistan',
-    image: '/inside_tm.png',
+    image: '/inside_tm.svg',
+    bgClass: 'bg-gradient-to-br from-[#63E856] to-[#2EC73A]',
     link: '/listings?locationType=intercity',
   },
   {
     key: 'withinCityRegion',
-    image: '/inside_city.png',
+    image: '/local.svg',
+    bgClass: 'bg-gradient-to-br from-[#6A70FF] to-[#4B43FF]',
     link: '/listings?locationType=local',
   },
   {
     key: 'hitchhiking',
-    image: '/hitchhiking.png',
+    image: '/hitchiking.svg',
+    secondaryImage: '/people.svg',
+    bgClass: 'bg-gradient-to-br from-[#FFC34B] to-[#F7B218]',
     link: '/listings?type=traveler',
   },
-  { key: 'parcels', image: '/package.png', link: '/listings?type=load' },
+  {
+    key: 'parcels',
+    image: '/package.svg',
+    secondaryImage: '/package_1.svg',
+    bgClass: 'bg-gradient-to-br from-[#FF7A66] to-[#FF5A51]',
+    link: '/listings?type=load',
+  },
 ] as const;
 
 export default function HomePage() {
@@ -85,29 +97,123 @@ export default function HomePage() {
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4'>
             {/* Метки — видны только на md+, занимают первую строку сетки */}
             <div className='hidden md:flex col-span-3 items-center gap-1.5 text-[#6f7682] text-[14px] font-medium'>
-              <Image src='/Vehicle Truck Profile.svg' alt='' width={20} height={20} />
+              <Image
+                src='/Vehicle Truck Profile.svg'
+                alt=''
+                width={20}
+                height={20}
+              />
               {t('cargoTransport')}
             </div>
             <div className='hidden md:flex col-span-2 items-center gap-1.5 text-[#6f7682] text-[14px] font-medium'>
-              <Image src='/Vehicle Car Profile.svg' alt='' width={20} height={20} />
+              <Image
+                src='/Vehicle Car Profile.svg'
+                alt=''
+                width={20}
+                height={20}
+              />
               {t('smallTransport')}
             </div>
 
-            {/* Все 5 карточек — один ряд на md+, сетка на мобильном */}
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.key}
-                href={cat.link}
-                className='relative bg-gradient-to-b from-[#CCE5FF] to-[#ABD4FF] rounded-[20px] sm:rounded-[30px] h-[120px] sm:h-[140px] p-4 sm:p-5 overflow-hidden hover:brightness-95 transition-all'
-              >
-                <div className='absolute right-3 top-3 sm:right-4 sm:top-4 w-[70px] h-[50px] sm:w-[100px] sm:h-[64px]'>
-                  <Image src={cat.image} alt='' fill className='object-contain' />
-                </div>
-                <span className='absolute left-4 bottom-4 sm:left-5 sm:bottom-5 text-[13px] sm:text-[16px] leading-[1.2] font-semibold text-black max-w-[65%]'>
-                  {t(cat.key)}
-                </span>
-              </Link>
-            ))}
+            {/* Все 5 карточек — в ряд на md+, сетка на мобильном */}
+            {CATEGORIES.map((cat) => {
+              return (
+                <Link
+                  key={cat.key}
+                  href={cat.link}
+                  className={`relative ${cat.bgClass} rounded-[20px] sm:rounded-[30px] h-[120px] sm:h-[140px] p-4 sm:p-5 overflow-hidden hover:brightness-95 transition-all`}
+                >
+                  <span className='absolute z-10 left-4 top-4 sm:left-5 sm:top-5 text-[13px] sm:text-[16px] leading-[1.2] font-semibold text-white max-w-[66%] whitespace-nowrap'>
+                    {t(cat.key)}
+                  </span>
+
+                  {cat.key === 'international' && (
+                    <>
+                      <div className='absolute left-3 bottom-2 sm:left-4 sm:bottom-3 w-[54%] h-[48%]'>
+                        <Image
+                          src={cat.image}
+                          alt=''
+                          fill
+                          className='object-contain object-left-bottom'
+                        />
+                      </div>
+                      <div className='absolute right-3 top-1/2 -translate-y-1/2 sm:right-4 w-[25%] h-[60%]'>
+                        <Image
+                          src={cat.secondaryImage}
+                          alt=''
+                          fill
+                          className='object-contain object-center'
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {cat.key === 'withinTurkmenistan' && (
+                    <div className='absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-[78%] h-[65%]'>
+                      <Image
+                        src={cat.image}
+                        alt=''
+                        fill
+                        className='object-contain object-center'
+                      />
+                    </div>
+                  )}
+
+                  {cat.key === 'withinCityRegion' && (
+                    <div className='absolute left-1/2 top-[55%] -translate-x-1/2 -translate-y-1/2 w-[84%] h-[72%]'>
+                      <Image
+                        src={cat.image}
+                        alt=''
+                        fill
+                        className='object-contain object-center'
+                      />
+                    </div>
+                  )}
+
+                  {cat.key === 'hitchhiking' && (
+                    <>
+                      <div className='absolute left-1/2 top-[60%] -translate-x-1/2 -translate-y-1/2 w-[54%] h-[42%]'>
+                        <Image
+                          src={cat.image}
+                          alt=''
+                          fill
+                          className='object-contain object-center'
+                        />
+                      </div>
+                      <div className='absolute right-3 bottom-2 sm:right-4 sm:bottom-3 w-[24%] h-[26%]'>
+                        <Image
+                          src={cat.secondaryImage}
+                          alt=''
+                          fill
+                          className='object-contain object-right-bottom'
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {cat.key === 'parcels' && (
+                    <>
+                      <div className='absolute left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 w-[45%] h-[46%]'>
+                        <Image
+                          src={cat.image}
+                          alt=''
+                          fill
+                          className='object-contain object-center'
+                        />
+                      </div>
+                      <div className='absolute right-3 bottom-2 sm:right-4 sm:bottom-3 w-[28%] h-[24%]'>
+                        <Image
+                          src={cat.secondaryImage}
+                          alt=''
+                          fill
+                          className='object-contain object-right-bottom'
+                        />
+                      </div>
+                    </>
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </section>
 
@@ -133,7 +239,7 @@ export default function HomePage() {
             <>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px]'>
                 {firstBlock.map((listing) => (
-                  <ListingCard key={listing.id} listing={listing} from="home" />
+                  <ListingCard key={listing.id} listing={listing} from='home' />
                 ))}
               </div>
 
@@ -165,7 +271,11 @@ export default function HomePage() {
               {secondBlock.length > 0 && (
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px] mt-6'>
                   {secondBlock.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} from="home" />
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      from='home'
+                    />
                   ))}
                 </div>
               )}

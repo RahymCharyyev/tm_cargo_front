@@ -1,6 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Button, Drawer, Dropdown, Grid } from 'antd';
+import type { MenuProps } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useAuthStore } from '@/lib/auth-store';
@@ -10,26 +13,47 @@ import { Link, usePathname } from '@/i18n/navigation';
 
 export default function Navbar() {
   const t = useTranslations('nav');
+  const screens = Grid.useBreakpoint();
+  const isMobile = !screens.lg;
   const { isAuthenticated, user } = useAuthStore();
   const logoutMutation = useLogout();
   const pathname = usePathname();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-    setIsUserMenuOpen(false);
+    setMobileOpen(false);
   }, [pathname]);
 
   const isHome = pathname === '/' || pathname.match(/^\/[a-z]{2}\/?$/);
+
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'profile',
+      label: <Link href='/profile'>{t('myListings')}</Link>,
+    },
+    {
+      key: 'favorites',
+      label: <Link href='/favorites'>{t('favorites')}</Link>,
+    },
+    { type: 'divider' },
+    {
+      key: 'logout',
+      label: (
+        <span className='text-red-500' onClick={() => logoutMutation.mutate()}>
+          {t('logout')}
+        </span>
+      ),
+      danger: true,
+    },
+  ];
 
   return (
     <header className='w-full z-50 my-4 sm:my-[25px]'>
       <div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
         <div className='h-14 flex items-center justify-between'>
-          <div className='flex items-center gap-8 min-w-0 rounded-md'>
-            {/* Logo */}
-            <Link href='/' className='rounded-md'>
+          {/* Left: logo + desktop nav */}
+          <div className='flex items-center gap-8 min-w-0'>
+            <Link href='/'>
               <Image
                 width={96}
                 height={48}
@@ -39,12 +63,11 @@ export default function Navbar() {
               />
             </Link>
 
-            {/* Desktop Nav - with icons */}
-            <nav className='hidden lg:flex items-center gap-[20px] min-w-0'>
+            <nav className='hidden lg:flex items-center gap-[20px]'>
               {isHome ? (
                 <Link
                   href='/listings'
-                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full font-medium text-[#214076] hover:bg-white transition-colors whitespace-nowrap'
                 >
                   <Image
                     src='/Apps List.svg'
@@ -58,7 +81,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href='/'
-                  className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                  className='flex items-center gap-2 py-2 px-4 rounded-full font-medium text-[#214076] hover:bg-white transition-colors whitespace-nowrap'
                 >
                   <svg
                     className='w-4 h-4 opacity-90'
@@ -78,7 +101,7 @@ export default function Navbar() {
               )}
               <a
                 href='/download'
-                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
+                className='flex items-center gap-2 py-2 px-4 rounded-full font-medium text-[#214076] hover:bg-white transition-colors whitespace-nowrap'
               >
                 <Image
                   src='/Arrow Download.svg'
@@ -89,28 +112,21 @@ export default function Navbar() {
                 />
                 {t('downloadApp')}
               </a>
-              <a
-                href='#cooperation'
-                className='flex items-center gap-2 py-2 px-4 rounded-full leading-none font-medium text-[#214076] hover:bg-white transition-colors duration-200 ease-in-out whitespace-nowrap'
-              >
-                <Image
-                  src='/Handshake.svg'
-                  alt=''
-                  width={16}
-                  height={16}
-                  className='opacity-90'
-                />
-                {t('cooperation')}
-              </a>
             </nav>
           </div>
 
+          {/* Right: auth + language + mobile toggle */}
           <div className='flex items-center gap-3'>
+            {/* Desktop auth */}
             {isAuthenticated ? (
-              <div className='relative z-50'>
-                <button
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className='hidden md:flex items-center gap-2 bg-white/90 border border-[#2B5399] text-[#171717] px-5 py-2.5 rounded-full  leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
+              <Dropdown
+                menu={{ items: userMenuItems }}
+                trigger={['click']}
+                placement='bottomRight'
+              >
+                <Button
+                  className='hidden md:flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
+                  style={{ height: 40, paddingInline: 20 }}
                 >
                   <Image
                     src='/Person.svg'
@@ -122,97 +138,68 @@ export default function Navbar() {
                   <span className='max-w-[120px] truncate'>
                     {user?.phone || user?.email || user?.fullName || 'User'}
                   </span>
-                </button>
-                {isUserMenuOpen && (
-                  <>
-                    <div
-                      className='fixed inset-0'
-                      onClick={() => setIsUserMenuOpen(false)}
-                    />
-                    <div className='absolute right-0 mt-2 w-48 rounded-lg shadow-xl border border-gray-100 py-1 z-50'>
-                      <Link
-                        href='/profile'
-                        className='block px-4 py-2  text-gray-700 hover:bg-gray-50'
-                      >
-                        {t('myListings')}
-                      </Link>
-                      <Link
-                        href='/favorites'
-                        className='block px-4 py-2  text-gray-700 hover:bg-gray-50'
-                      >
-                        {t('favorites')}
-                      </Link>
-                      <button
-                        onClick={() => logoutMutation.mutate()}
-                        className='w-full text-left px-4 py-2  text-red-600 hover:bg-red-50'
-                      >
-                        {t('logout')}
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+                </Button>
+              </Dropdown>
             ) : (
-              <Link
-                href='/login'
-                className='hidden md:flex items-center gap-2 border-2 border-[#2B5399] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap'
-              >
-                <Image
-                  src='/Person.svg'
-                  alt=''
-                  width={17}
-                  height={17}
-                  className='opacity-80'
-                />
-                {t('loginAndRegister')}
+              <Link href='/login'>
+                <Button
+                  className='hidden md:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
+                  style={{ height: 40, paddingInline: 20 }}
+                >
+                  <Image
+                    src='/Person.svg'
+                    alt=''
+                    width={17}
+                    height={17}
+                    className='opacity-80'
+                  />
+                  {t('loginAndRegister')}
+                </Button>
               </Link>
             )}
 
-            <Link
-              href={isAuthenticated ? '/listings/create' : '/login'}
-              className='hidden md:flex items-center gap-2  border-2 border-[#2B5399] px-5 py-2.5 rounded-[15px] text-[15px] leading-none font-semibold transition-colors hover:bg-white whitespace-nowrap shadow-sm'
-            >
-              <Image src='/Add Circle.svg' alt='' width={17} height={17} />
-              {t('placeAd')}
+            <Link href={isAuthenticated ? '/listings/create' : '/login'}>
+              <Button
+                className='hidden md:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
+                style={{ height: 40, paddingInline: 20 }}
+              >
+                <Image src='/Add Circle.svg' alt='' width={17} height={17} />
+                {t('placeAd')}
+              </Button>
             </Link>
 
-            {/* Mobile menu toggle */}
-            <button
-              className='lg:hidden text-[#1f3d6b] p-2'
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label='Menu'
-            >
-              <svg
-                className='w-6 h-6'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                {isMobileMenuOpen ? (
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M6 18L18 6M6 6l12 12'
-                  />
-                ) : (
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M4 6h16M4 12h16M4 18h16'
-                  />
-                )}
-              </svg>
-            </button>
+            {/* Mobile toggle */}
+            {isMobile && (
+              <Button
+                className='!text-[#1f3d6b] !border-none !shadow-none'
+                icon={<MenuOutlined />}
+                onClick={() => setMobileOpen(true)}
+                aria-label='Menu'
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className='lg:hidden max-w-[1400px] mx-auto px-4 mt-2'>
-          <div className='bg-white rounded-xl border border-gray-100 p-4 shadow-lg space-y-1'>
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <Drawer
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          placement='left'
+          size='min(100vw, 360px)'
+          styles={{ body: { padding: 0 } }}
+          title={
+            <Image
+              src='/icon.webp'
+              alt='TM Cargo'
+              width={80}
+              height={40}
+              className='object-contain'
+            />
+          }
+        >
+          <div className='p-4 space-y-1'>
             <Link
               href='/listings'
               className='flex items-center gap-2 px-4 py-3 rounded-lg bg-gray-50 font-medium text-gray-900'
@@ -227,38 +214,30 @@ export default function Navbar() {
               <Image src='/Arrow Download.svg' alt='' width={18} height={18} />
               {t('downloadApp')}
             </a>
-            <a
-              href='#cooperation'
-              className='flex items-center gap-2 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50'
-            >
-              <Image src='/Handshake.svg' alt='' width={18} height={18} />
-              {t('cooperation')}
-            </a>
+
             <div className='mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2'>
               <LanguageSwitcher />
-              {!isAuthenticated && (
-                <Link
-                  href='/login'
-                  className='flex items-center justify-center gap-2 bg-[#2d4f87] text-white py-2.5 rounded-lg font-medium hover:bg-[#1e3a6b] transition-colors'
-                >
-                  <Image src='/Person.svg' alt='' width={18} height={18} />
-                  {t('loginAndRegister')}
+
+              {!isAuthenticated ? (
+                <Link href='/login'>
+                  <Button
+                    type='primary'
+                    block
+                    icon={
+                      <Image src='/Person.svg' alt='' width={18} height={18} />
+                    }
+                    style={{ backgroundColor: '#2d4f87' }}
+                  >
+                    {t('loginAndRegister')}
+                  </Button>
                 </Link>
-              )}
-              <Link
-                href={isAuthenticated ? '/listings/create' : '/login'}
-                className='flex items-center justify-center gap-2 bg-[#2d4f87] text-white py-2.5 rounded-lg font-medium hover:bg-[#1e3a6b] transition-colors'
-              >
-                <Image src='/Add Circle.svg' alt='' width={18} height={18} />
-                {t('placeAd')}
-              </Link>
-              {isAuthenticated && (
+              ) : (
                 <>
                   <Link
                     href='/profile'
                     className='flex items-center gap-2 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50'
                   >
-                    {t('profile')}
+                    {t('myListings')}
                   </Link>
                   <Link
                     href='/favorites'
@@ -266,17 +245,32 @@ export default function Navbar() {
                   >
                     {t('favorites')}
                   </Link>
-                  <button
-                    onClick={() => logoutMutation.mutate()}
-                    className='flex items-center px-4 py-3 rounded-lg text-red-600 text-left hover:bg-red-50 transition-colors'
-                  >
+                  <Button danger block onClick={() => logoutMutation.mutate()}>
                     {t('logout')}
-                  </button>
+                  </Button>
                 </>
               )}
+
+              <Link href={isAuthenticated ? '/listings/create' : '/login'}>
+                <Button
+                  type='primary'
+                  block
+                  icon={
+                    <Image
+                      src='/Add Circle.svg'
+                      alt=''
+                      width={18}
+                      height={18}
+                    />
+                  }
+                  style={{ backgroundColor: '#2d4f87' }}
+                >
+                  {t('placeAd')}
+                </Button>
+              </Link>
             </div>
           </div>
-        </div>
+        </Drawer>
       )}
     </header>
   );

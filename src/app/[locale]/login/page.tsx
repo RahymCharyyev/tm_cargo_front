@@ -1,5 +1,6 @@
 'use client';
 
+import { Alert, Button, Form, Input, Segmented } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLogin } from '@/lib/hooks';
@@ -10,16 +11,15 @@ export default function LoginPage() {
   const router = useRouter();
   const loginMutation = useLogin();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [form] = Form.useForm();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (values: { email?: string; phone?: string; password: string }) => {
     setError('');
     loginMutation.mutate(
-      mode === 'email' ? { email, password } : { phone, password },
+      mode === 'email'
+        ? { email: values.email!, password: values.password }
+        : { phone: values.phone!, password: values.password },
       {
         onSuccess: () => router.push('/'),
         onError: (err) => setError(err.message),
@@ -31,96 +31,92 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          {/* Header */}
           <div className="bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] px-8 py-8 text-center">
             <h1 className="text-2xl font-bold text-white">{t('loginTitle')}</h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8 space-y-5">
-            {/* Mode Toggle */}
-            <div className="flex bg-gray-100 rounded-xl p-1">
-              <button
-                type="button"
-                onClick={() => setMode('email')}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-                  mode === 'email' ? 'bg-white text-[#3D7EF9] shadow-sm' : 'text-gray-500'
-                }`}
-              >
-                {t('useEmail')}
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('phone')}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-                  mode === 'phone' ? 'bg-white text-[#3D7EF9] shadow-sm' : 'text-gray-500'
-                }`}
-              >
-                {t('usePhone')}
-              </button>
-            </div>
-
-            {mode === 'email' ? (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('emailLabel')}</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] transition-colors"
-                  placeholder="name@example.com"
+          <div className="p-8">
+            <Form form={form} layout="vertical" onFinish={handleSubmit} className="space-y-0">
+              <Form.Item className="mb-5">
+                <Segmented
+                  block
+                  value={mode}
+                  onChange={(v) => {
+                    setMode(v as 'email' | 'phone');
+                    form.resetFields();
+                    setError('');
+                  }}
+                  options={[
+                    { value: 'email', label: t('useEmail') },
+                    { value: 'phone', label: t('usePhone') },
+                  ]}
                 />
-              </div>
-            ) : (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('phoneLabel')}</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] transition-colors"
-                  placeholder="+993 6X XXXXXX"
-                />
-              </div>
-            )}
+              </Form.Item>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('passwordLabel')}</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9] transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
+              {mode === 'email' ? (
+                <Form.Item
+                  label={t('emailLabel')}
+                  name="email"
+                  rules={[{ required: true, type: 'email' }]}
+                >
+                  <Input type="email" placeholder="name@example.com" size="large" />
+                </Form.Item>
+              ) : (
+                <Form.Item
+                  label={t('phoneLabel')}
+                  name="phone"
+                  rules={[{ required: true }]}
+                >
+                  <Input type="tel" placeholder="+993 6X XXXXXX" size="large" />
+                </Form.Item>
+              )}
 
-            {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>
-            )}
+              <Form.Item
+                label={t('passwordLabel')}
+                name="password"
+                rules={[{ required: true }]}
+              >
+                <Input.Password placeholder="••••••••" size="large" />
+              </Form.Item>
 
-            <button
-              type="submit"
-              disabled={loginMutation.isPending}
-              className="w-full py-3 bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-60"
-            >
-              {loginMutation.isPending ? '...' : t('loginBtn')}
-            </button>
+              {error && (
+                <Form.Item>
+                  <Alert type="error" message={error} showIcon />
+                </Form.Item>
+              )}
 
-            <div className="text-center space-y-2 text-sm">
-              <Link href="/reset-password" className="block text-[#3D7EF9] hover:underline">
-                {t('forgotPassword')}
-              </Link>
-              <p className="text-gray-500">
-                {t('noAccount')}{' '}
-                <Link href="/register" className="text-[#3D7EF9] font-medium hover:underline">
-                  {t('registerBtn')}
+              <Form.Item className="mb-4">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  size="large"
+                  loading={loginMutation.isPending}
+                  style={{
+                    background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
+                    border: 'none',
+                    borderRadius: 12,
+                    height: 48,
+                    fontWeight: 500,
+                  }}
+                >
+                  {t('loginBtn')}
+                </Button>
+              </Form.Item>
+
+              <div className="text-center space-y-2 text-sm">
+                <Link href="/reset-password" className="block text-[#3D7EF9] hover:underline">
+                  {t('forgotPassword')}
                 </Link>
-              </p>
-            </div>
-          </form>
+                <p className="text-gray-500">
+                  {t('noAccount')}{' '}
+                  <Link href="/register" className="text-[#3D7EF9] font-medium hover:underline">
+                    {t('registerBtn')}
+                  </Link>
+                </p>
+              </div>
+            </Form>
+          </div>
         </div>
       </div>
     </div>

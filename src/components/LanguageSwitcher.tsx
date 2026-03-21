@@ -1,12 +1,13 @@
 'use client';
 
-import { useLocale, useTranslations } from 'next-intl';
+import { Segmented } from 'antd';
+import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 
 const locales = [
-  { code: 'ru', flag: '🇷🇺' },
-  { code: 'tk', flag: '🇹🇲' },
-  { code: 'en', flag: '🇺🇸' },
+  { code: 'ru', label: '🇷🇺 RU' },
+  { code: 'tk', label: '🇹🇲 TK' },
+  { code: 'en', label: '🇺🇸 EN' },
 ];
 
 export default function LanguageSwitcher() {
@@ -26,21 +27,11 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <div className="flex items-center gap-0.5 bg-gray-100 rounded-lg p-0.5">
-      {locales.map((locale) => (
-        <button
-          key={locale.code}
-          onClick={() => changeLocale(locale.code)}
-          className={`px-2.5 py-1 rounded-md text-base transition-all duration-200 ${
-            currentLocale === locale.code
-              ? 'bg-[#3D7EF9] text-white shadow-sm scale-105'
-              : 'hover:bg-gray-200 text-gray-600'
-          }`}
-          title={locale.code.toUpperCase()}
-        >
-          {locale.flag}
-        </button>
-      ))}
-    </div>
+    <Segmented
+      value={currentLocale}
+      onChange={(val) => changeLocale(val as string)}
+      options={locales.map((l) => ({ value: l.code, label: l.label }))}
+      size="small"
+    />
   );
 }

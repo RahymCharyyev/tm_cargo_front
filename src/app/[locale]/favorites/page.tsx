@@ -1,8 +1,9 @@
 'use client';
 
+import { Button, Empty } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useFavorites, useRemoveFavorite } from '@/lib/hooks';
+import { useFavorites } from '@/lib/hooks';
 import ListingCard from '@/components/ListingCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import Pagination from '@/components/Pagination';
@@ -11,7 +12,6 @@ import { Link } from '@/i18n/navigation';
 export default function FavoritesPage() {
   const t = useTranslations('favorites');
   const tl = useTranslations('listing');
-  const tc = useTranslations('common');
   const [page, setPage] = useState(1);
   const { data, isLoading } = useFavorites({ page, perPage: 12 });
 
@@ -25,15 +25,30 @@ export default function FavoritesPage() {
         <LoadingSpinner />
       ) : data?.data?.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-          <div className="text-6xl mb-4">💝</div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('empty')}</h2>
-          <p className="text-gray-500 mb-6">{t('emptyDesc')}</p>
-          <Link
-            href="/"
-            className="inline-flex px-6 py-3 bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] text-white rounded-xl font-medium hover:shadow-lg transition-all"
+          <Empty
+            image="💝"
+            imageStyle={{ fontSize: 64 }}
+            description={
+              <div className="space-y-2">
+                <h2 className="text-xl font-semibold text-gray-900">{t('empty')}</h2>
+                <p className="text-gray-500">{t('emptyDesc')}</p>
+              </div>
+            }
           >
-            {tl('allListings')}
-          </Link>
+            <Link href="/">
+              <Button
+                type="primary"
+                size="large"
+                style={{
+                  background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
+                  border: 'none',
+                  borderRadius: 12,
+                }}
+              >
+                {tl('allListings')}
+              </Button>
+            </Link>
+          </Empty>
         </div>
       ) : (
         <>

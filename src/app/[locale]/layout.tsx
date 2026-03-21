@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { routing } from '@/i18n/routing';
 import { Providers } from '@/lib/providers';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import type { Metadata } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
@@ -85,11 +86,13 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`font-sans antialiased bg-[#E8F2FF]`}>
         <NextIntlClientProvider>
-          <Providers>
-            <Navbar />
-            <main className='min-h-screen'>{children}</main>
-            <Footer />
-          </Providers>
+          <AntdRegistry>
+            <Providers locale={locale}>
+              <Navbar />
+              <main className='min-h-screen'>{children}</main>
+              <Footer />
+            </Providers>
+          </AntdRegistry>
         </NextIntlClientProvider>
       </body>
     </html>

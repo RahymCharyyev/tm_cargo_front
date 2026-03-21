@@ -1,67 +1,96 @@
 'use client';
 
+import { Alert, Button, Form, Input, Segmented } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { useResetPassword, useResetPasswordVerify, useResetPasswordPhoneStart, useResetPasswordPhone } from '@/lib/hooks';
+import {
+  useResetPassword,
+  useResetPasswordVerify,
+  useResetPasswordPhoneStart,
+  useResetPasswordPhone,
+} from '@/lib/hooks';
 import { Link, useRouter } from '@/i18n/navigation';
 
 export default function ResetPasswordPage() {
   const t = useTranslations('auth');
   const router = useRouter();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
-
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [password, setPassword] = useState('');
   const [step, setStep] = useState<'input' | 'verify'>('input');
+  const [phoneStep, setPhoneStep] = useState<'input' | 'newpass'>('input');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const [phone, setPhone] = useState('');
-  const [phoneStep, setPhoneStep] = useState<'input' | 'newpass'>('input');
+  const [emailForm] = Form.useForm();
+  const [verifyForm] = Form.useForm();
+  const [phoneForm] = Form.useForm();
+  const [phonePassForm] = Form.useForm();
 
   const resetPassword = useResetPassword();
   const resetPasswordVerify = useResetPasswordVerify();
   const resetPhoneStart = useResetPasswordPhoneStart();
   const resetPhone = useResetPasswordPhone();
 
-  const handleEmailReset = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleEmailStep1 = (values: { email: string }) => {
     setError('');
     setSuccess('');
-
-    if (step === 'input') {
-      resetPassword.mutate({ email }, {
+    setEmail(values.email);
+    resetPassword.mutate(
+      { email: values.email },
+      {
         onSuccess: () => setStep('verify'),
         onError: (err) => setError(err.message),
-      });
-    } else {
-      resetPasswordVerify.mutate({ email, otp, password }, {
+      },
+    );
+  };
+
+  const handleEmailVerify = (values: { otp: string; password: string }) => {
+    setError('');
+    setSuccess('');
+    resetPasswordVerify.mutate(
+      { email, otp: values.otp, password: values.password },
+      {
         onSuccess: () => {
           setSuccess(t('passwordResetSuccess'));
           setTimeout(() => router.push('/login'), 1500);
         },
         onError: (err) => setError(err.message),
-      });
-    }
+      },
+    );
   };
 
-  const handlePhoneReset = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handlePhoneStep1 = (values: { phone: string }) => {
     setError('');
     setSuccess('');
-
-    if (phoneStep === 'input') {
-      resetPhoneStart.mutate({ phone }, {
+    setPhone(values.phone);
+    resetPhoneStart.mutate(
+      { phone: values.phone },
+      {
         onSuccess: () => setPhoneStep('newpass'),
         onError: (err) => setError(err.message),
-      });
-    } else {
-      resetPhone.mutate({ phone, password }, {
+      },
+    );
+  };
+
+  const handlePhoneReset = (values: { password: string }) => {
+    setError('');
+    setSuccess('');
+    resetPhone.mutate(
+      { phone, password: values.password },
+      {
         onSuccess: () => router.push('/'),
         onError: (err) => setError(err.message),
-      });
-    }
+      },
+    );
+  };
+
+  const primaryButtonStyle = {
+    background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
+    border: 'none',
+    borderRadius: 12,
+    height: 48,
+    fontWeight: 500,
   };
 
   return (
@@ -73,81 +102,135 @@ export default function ResetPasswordPage() {
           </div>
 
           <div className="p-8 space-y-5">
-            <div className="flex bg-gray-100 rounded-xl p-1">
-              <button
-                type="button"
-                onClick={() => { setMode('email'); setStep('input'); setError(''); setSuccess(''); }}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-                  mode === 'email' ? 'bg-white text-[#3D7EF9] shadow-sm' : 'text-gray-500'
-                }`}
-              >
-                {t('useEmail')}
-              </button>
-              <button
-                type="button"
-                onClick={() => { setMode('phone'); setPhoneStep('input'); setError(''); setSuccess(''); }}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
-                  mode === 'phone' ? 'bg-white text-[#3D7EF9] shadow-sm' : 'text-gray-500'
-                }`}
-              >
-                {t('usePhone')}
-              </button>
-            </div>
+            <Segmented
+              block
+              value={mode}
+              onChange={(v) => {
+                setMode(v as 'email' | 'phone');
+                setStep('input');
+                setPhoneStep('input');
+                setError('');
+                setSuccess('');
+                emailForm.resetFields();
+                verifyForm.resetFields();
+                phoneForm.resetFields();
+                phonePassForm.resetFields();
+              }}
+              options={[
+                { value: 'email', label: t('useEmail') },
+                { value: 'phone', label: t('usePhone') },
+              ]}
+            />
 
             {mode === 'email' ? (
-              <form onSubmit={handleEmailReset} className="space-y-4">
-                {step === 'input' ? (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('emailLabel')}</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]" />
-                  </div>
-                ) : (
-                  <>
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-sm text-blue-700">
-                      {t('otpSent')} {email}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('otpLabel')}</label>
-                      <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} required className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('enterNewPassword')}</label>
-                      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]" placeholder="••••••••" />
-                    </div>
-                  </>
-                )}
-
-                {error && <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>}
-                {success && <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-sm text-green-600">{success}</div>}
-
-                <button type="submit" disabled={resetPassword.isPending || resetPasswordVerify.isPending} className="w-full py-3 bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-60">
-                  {step === 'input' ? t('sendOtpBtn') : t('resetBtn')}
-                </button>
-              </form>
+              step === 'input' ? (
+                <Form form={emailForm} layout="vertical" onFinish={handleEmailStep1}>
+                  <Form.Item
+                    label={t('emailLabel')}
+                    name="email"
+                    rules={[{ required: true, type: 'email' }]}
+                  >
+                    <Input type="email" size="large" />
+                  </Form.Item>
+                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+                  {success && <Alert type="success" message={success} showIcon className="mb-4" />}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    size="large"
+                    loading={resetPassword.isPending}
+                    style={primaryButtonStyle}
+                  >
+                    {t('sendOtpBtn')}
+                  </Button>
+                </Form>
+              ) : (
+                <Form form={verifyForm} layout="vertical" onFinish={handleEmailVerify}>
+                  <Alert
+                    type="info"
+                    message={`${t('otpSent')} ${email}`}
+                    showIcon
+                    className="mb-4"
+                  />
+                  <Form.Item
+                    label={t('otpLabel')}
+                    name="otp"
+                    rules={[{ required: true }]}
+                  >
+                    <Input size="large" />
+                  </Form.Item>
+                  <Form.Item
+                    label={t('enterNewPassword')}
+                    name="password"
+                    rules={[{ required: true }]}
+                  >
+                    <Input.Password placeholder="••••••••" size="large" />
+                  </Form.Item>
+                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+                  {success && <Alert type="success" message={success} showIcon className="mb-4" />}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    size="large"
+                    loading={resetPasswordVerify.isPending}
+                    style={primaryButtonStyle}
+                  >
+                    {t('resetBtn')}
+                  </Button>
+                </Form>
+              )
             ) : (
-              <form onSubmit={handlePhoneReset} className="space-y-4">
-                {phoneStep === 'input' ? (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('phoneLabel')}</label>
-                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]" />
-                  </div>
-                ) : (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('enterNewPassword')}</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3D7EF9]/30 focus:border-[#3D7EF9]" placeholder="••••••••" />
-                  </div>
-                )}
-
-                {error && <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>}
-
-                <button type="submit" disabled={resetPhoneStart.isPending || resetPhone.isPending} className="w-full py-3 bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-60">
-                  {phoneStep === 'input' ? t('sendOtpBtn') : t('resetBtn')}
-                </button>
-              </form>
+              phoneStep === 'input' ? (
+                <Form form={phoneForm} layout="vertical" onFinish={handlePhoneStep1}>
+                  <Form.Item
+                    label={t('phoneLabel')}
+                    name="phone"
+                    rules={[{ required: true }]}
+                  >
+                    <Input type="tel" size="large" />
+                  </Form.Item>
+                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    size="large"
+                    loading={resetPhoneStart.isPending}
+                    style={primaryButtonStyle}
+                  >
+                    {t('sendOtpBtn')}
+                  </Button>
+                </Form>
+              ) : (
+                <Form form={phonePassForm} layout="vertical" onFinish={handlePhoneReset}>
+                  <Form.Item
+                    label={t('enterNewPassword')}
+                    name="password"
+                    rules={[{ required: true }]}
+                  >
+                    <Input.Password placeholder="••••••••" size="large" />
+                  </Form.Item>
+                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    block
+                    size="large"
+                    loading={resetPhone.isPending}
+                    style={primaryButtonStyle}
+                  >
+                    {t('resetBtn')}
+                  </Button>
+                </Form>
+              )
             )}
 
             <p className="text-center text-sm text-gray-500">
-              <Link href="/login" className="text-[#3D7EF9] font-medium hover:underline">{t('loginBtn')}</Link>
+              <Link href="/login" className="text-[#3D7EF9] font-medium hover:underline">
+                {t('loginBtn')}
+              </Link>
             </p>
           </div>
         </div>

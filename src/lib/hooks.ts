@@ -501,9 +501,11 @@ export function useAddFavorite() {
   return useMutation({
     mutationFn: (listingId: string) =>
       api.post<{ success: boolean }>('/listing-favorites', { listingId }),
-    onSuccess: () => {
+    onSuccess: (_data, listingId) => {
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
       queryClient.invalidateQueries({ queryKey: ['listings'] });
+      queryClient.invalidateQueries({ queryKey: ['listings-infinite'] });
+      queryClient.invalidateQueries({ queryKey: ['listing', listingId] });
     },
   });
 }
@@ -513,9 +515,11 @@ export function useRemoveFavorite() {
   return useMutation({
     mutationFn: (id: string) =>
       api.delete<{ success: boolean }>(`/listing-favorites/${id}`),
-    onSuccess: () => {
+    onSuccess: (_data, id) => {
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
       queryClient.invalidateQueries({ queryKey: ['listings'] });
+      queryClient.invalidateQueries({ queryKey: ['listings-infinite'] });
+      queryClient.invalidateQueries({ queryKey: ['listing', id] });
     },
   });
 }

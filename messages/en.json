@@ -143,6 +143,8 @@
     "ownerInfo": "Owner",
     "addFavorite": "Add to favorites",
     "removeFavorite": "Remove from favorites",
+    "addedToFavorites": "Added to favorites",
+    "removedFromFavorites": "Removed from favorites",
     "callNow": "Call now",
     "writeEmail": "Send email",
     "createTitle": "Post New Listing",

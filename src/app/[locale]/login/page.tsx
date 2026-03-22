@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Form, Input, Segmented } from 'antd';
+import { Alert, Button, Form, Input, Segmented, Space } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLogin } from '@/lib/hooks';
@@ -25,7 +25,9 @@ export default function LoginPage() {
     password: string;
   }) => {
     setError('');
-    const phone = values.phone ? `+993${values.phone.replace(/^\+993/, '')}` : undefined;
+    const phone = values.phone
+      ? `+993${values.phone.replace(/^\+993/, '')}`
+      : undefined;
     loginMutation.mutate(
       mode === 'email'
         ? { email: values.email!, password: values.password }
@@ -60,7 +62,6 @@ export default function LoginPage() {
   return (
     <AuthSplitShell
       formTitle={t('loginTitle')}
-      heroKicker={t('authHeroKicker')}
       heroTitle={t('authHeroTitleLogin')}
       heroSubtitle={t('authHeroSubtitleLogin')}
       termsFooter={termsFooter}
@@ -118,7 +119,12 @@ export default function LoginPage() {
             rules={[{ required: true }]}
             className='mb-5'
           >
-            <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
+            <Input
+              type='tel'
+              prefix='+993'
+              placeholder='6X XXXXXX'
+              size='large'
+            />
           </Form.Item>
         )}
 

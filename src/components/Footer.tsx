@@ -3,10 +3,16 @@
 import { MailOutlined, PhoneOutlined, SafetyOutlined } from '@ant-design/icons';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 
 export default function Footer() {
   const t = useTranslations('footer');
+  const pathname = usePathname();
+  const isAuthPage =
+    pathname === '/login' ||
+    pathname === '/register' ||
+    pathname === '/reset-password';
+  if (isAuthPage) return null;
 
   return (
     <footer className='relative mt-auto  bg-white text-slate-800 shadow-[0_-1px_0_0_rgba(28,53,96,0.06)]'>

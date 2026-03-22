@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Form, Input, Segmented } from 'antd';
+import { Alert, Button, Form, Input, Segmented, Space } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -114,7 +114,6 @@ export default function ResetPasswordPage() {
   return (
     <AuthSplitShell
       formTitle={t('resetPasswordTitle')}
-      heroKicker={t('authHeroKicker')}
       heroTitle={t('authHeroTitleReset')}
       heroSubtitle={t('authHeroSubtitleReset')}
       termsFooter={termsFooter}
@@ -257,7 +256,12 @@ export default function ResetPasswordPage() {
               rules={[{ required: true }]}
               className='mb-5'
             >
-              <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
+              <Input
+                prefix='+993'
+                type='tel'
+                placeholder='6X XXXXXX'
+                size='large'
+              />
             </Form.Item>
             {error && (
               <Alert type='error' message={error} showIcon className='mb-4' />

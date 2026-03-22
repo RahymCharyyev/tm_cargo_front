@@ -29,11 +29,73 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import { AuthFieldLabel } from '@/components/auth/AuthSplitShell';
 import Image from 'next/image';
 
-const SENDER_TYPES = ['cargo', 'traveler', 'load'] as const;
-const LOCATION_TYPES = ['international', 'intercity', 'local'] as const;
+const CREATE_CATEGORIES = ['international', 'intercity', 'local', 'traveler', 'load'] as const;
+type CreateCategory = (typeof CREATE_CATEGORIES)[number];
+
+const ROUTE_TYPES = ['international', 'intercity', 'local'] as const;
 const CURRENCIES = ['manat', 'dollar', 'euro'] as const;
 
-type ListingRole = 'sender' | 'carrier';
+const blockLetters: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (/[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault();
+};
+
+function getSubcategoryOptions(
+  category: CreateCategory,
+  t: (key: string) => string,
+): { label: string; value: string }[] {
+  if (category === 'traveler') {
+    return [
+      { label: t('filterSubPassenger'), value: 'sub1' },
+      { label: t('filterSubCar'), value: 'sub2' },
+    ];
+  }
+  return [
+    { label: t('sender'), value: 'sub1' },
+    { label: t('carrier'), value: 'sub2' },
+  ];
+}
+
+function deriveApiFields(category: CreateCategory, subcategory: string, routeType?: string) {
+  if (category === 'international' || category === 'intercity' || category === 'local') {
+    return {
+      locationType: category,
+      type: subcategory === 'sub1' ? 'cargo' : 'vehicle',
+      travelerType: undefined,
+      loadType: undefined,
+    };
+  }
+  if (category === 'traveler') {
+    return {
+      locationType: routeType || 'international',
+      type: 'traveler' as const,
+      travelerType: subcategory === 'sub1' ? 'person' : 'vehicle',
+      loadType: undefined,
+    };
+  }
+  return {
+    locationType: routeType || 'international',
+    type: 'load' as const,
+    travelerType: undefined,
+    loadType: subcategory === 'sub1' ? 'load' : 'vehicle',
+  };
+}
+
+function categoryFromListing(type: string, locationType: string): CreateCategory {
+  if (type === 'traveler') return 'traveler';
+  if (type === 'load') return 'load';
+  return locationType as CreateCategory;
+}
+
+function subcategoryFromListing(
+  type: string,
+  travelerType?: string,
+  loadType?: string,
+): string {
+  if (type === 'traveler') return travelerType === 'vehicle' ? 'sub2' : 'sub1';
+  if (type === 'load') return loadType === 'vehicle' ? 'sub2' : 'sub1';
+  return type === 'vehicle' ? 'sub2' : 'sub1';
+}
 
 export default function EditListingPage({
   params,
@@ -60,9 +122,12 @@ export default function EditListingPage({
     if (listing && !initialized) {
       setInitialized(true);
 
-      const type = listing.type;
-      const role: ListingRole =
-        type === 'vehicle' ? 'carrier' : 'sender';
+      const cat = categoryFromListing(listing.type, listing.locationType);
+      const sub = subcategoryFromListing(
+        listing.type,
+        listing.traveler?.travelerType,
+        listing.load?.loadType,
+      );
 
       const weightKg =
         listing.cargo?.weight_kg ??
@@ -76,10 +141,10 @@ export default function EditListingPage({
       const phoneWithout993 = phoneRaw.replace(/^\+993/, '');
 
       form.setFieldsValue({
+        category: cat,
+        subcategory: sub,
+        routeType: (cat === 'traveler' || cat === 'load') ? listing.locationType : 'international',
         title: listing.title,
-        type,
-        role,
-        locationType: listing.locationType,
         fromLocationId: listing.fromLocationId,
         toLocationId: listing.toLocationId,
         price: listing.price ?? undefined,
@@ -97,9 +162,7 @@ export default function EditListingPage({
           listing.traveler?.vehicleTypeId ||
           listing.load?.vehicleTypeId ||
           undefined,
-        travelerType: listing.traveler?.travelerType || 'person',
         bodyCount: listing.traveler?.bodyCount ?? 1,
-        loadType: listing.load?.loadType || 'load',
         isActive: listing.isActive,
       });
     }
@@ -130,7 +193,11 @@ export default function EditListingPage({
   const handleSubmit = async (values: Record<string, unknown>) => {
     setError('');
 
-    const type = values.type as string;
+    const category = values.category as CreateCategory;
+    const subcategory = (values.subcategory as string) || 'sub1';
+    const routeType = values.routeType as string | undefined;
+    const derived = deriveApiFields(category, subcategory, routeType);
+
     const weightTons = values.weight_tons;
     const weight_kg =
       weightTons != null && weightTons !== ''
@@ -139,8 +206,8 @@ export default function EditListingPage({
 
     const body: Record<string, unknown> = {
       title: values.title,
-      type,
-      locationType: values.locationType,
+      type: derived.type,
+      locationType: derived.locationType,
       fromLocationId: values.fromLocationId,
       toLocationId: values.toLocationId,
       description: values.description || undefined,
@@ -154,18 +221,18 @@ export default function EditListingPage({
       isActive: values.isActive,
     };
 
-    if (type === 'cargo' || type === 'vehicle') {
+    if (derived.type === 'cargo' || derived.type === 'vehicle') {
       body.weight_kg = weight_kg;
       body.volume_m3 = values.volume_m3 ? Number(values.volume_m3) : undefined;
       body.vehicleTypeId = values.vehicleTypeId || undefined;
     }
-    if (type === 'traveler') {
-      body.travelerType = values.travelerType;
-      body.bodyCount = Number(values.bodyCount);
+    if (derived.type === 'traveler') {
+      body.travelerType = derived.travelerType;
+      body.bodyCount = Number(values.bodyCount) || 1;
       body.vehicleTypeId = values.vehicleTypeId || undefined;
     }
-    if (type === 'load') {
-      body.loadType = values.loadType;
+    if (derived.type === 'load') {
+      body.loadType = derived.loadType;
       body.weight_kg = weight_kg;
       body.vehicleTypeId = values.vehicleTypeId || undefined;
     }
@@ -186,14 +253,14 @@ export default function EditListingPage({
     });
   };
 
-  const categoryOptions = LOCATION_TYPES.map((lt) => ({
-    value: lt,
-    label:
-      lt === 'international'
-        ? t('createCategoryInternational')
-        : lt === 'intercity'
-          ? t('createCategoryIntercity')
-          : t('createCategoryLocal'),
+  const categoryOptions = CREATE_CATEGORIES.map((cat) => ({
+    value: cat,
+    label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
+  }));
+
+  const routeTypeOptions = ROUTE_TYPES.map((rt) => ({
+    value: rt,
+    label: t(`filterCat${rt.charAt(0).toUpperCase()}${rt.slice(1)}` as never),
   }));
 
   return (
@@ -212,7 +279,6 @@ export default function EditListingPage({
               {t('createHeroSubtitle')}
             </p>
 
-            {/* Existing images */}
             {listing?.images && listing.images.length > 0 && (
               <div className='mt-6'>
                 <p className='text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3'>
@@ -243,21 +309,16 @@ export default function EditListingPage({
                 layout='vertical'
                 className='auth-split-form create-listing-page-form'
                 initialValues={{
-                  role: 'sender' satisfies ListingRole,
-                  type: 'cargo',
-                  locationType: 'international',
+                  category: 'international' as CreateCategory,
+                  subcategory: 'sub1',
+                  routeType: 'international',
                   currency: 'manat',
-                  travelerType: 'person',
                   bodyCount: 1,
-                  loadType: 'load',
                   isActive: true,
                 }}
-                onValuesChange={(changed, all) => {
-                  if (changed.role === 'carrier') {
-                    form.setFieldsValue({ type: 'vehicle' });
-                  }
-                  if (changed.role === 'sender' && all.type === 'vehicle') {
-                    form.setFieldsValue({ type: 'cargo' });
+                onValuesChange={(changed) => {
+                  if (changed.category) {
+                    form.setFieldsValue({ subcategory: 'sub1' });
                   }
                 }}
                 onFinish={handleSubmit}
@@ -265,7 +326,7 @@ export default function EditListingPage({
                 <div className='mb-6 grid gap-4 sm:grid-cols-2'>
                   <Form.Item
                     label={<AuthFieldLabel>{t('category')}</AuthFieldLabel>}
-                    name='locationType'
+                    name='category'
                     rules={[
                       { required: true, message: t('selectLocationType') },
                     ]}
@@ -277,47 +338,45 @@ export default function EditListingPage({
                     />
                   </Form.Item>
 
-                  <Form.Item
-                    label={<AuthFieldLabel>{t('createIAmA')}</AuthFieldLabel>}
-                    name='role'
-                    rules={[{ required: true }]}
-                  >
-                    <Segmented
-                      block
-                      options={[
-                        { label: t('sender'), value: 'sender' },
-                        { label: t('carrier'), value: 'carrier' },
-                      ]}
-                    />
+                  <Form.Item noStyle shouldUpdate={(prev, cur) => prev.category !== cur.category}>
+                    {({ getFieldValue }) => {
+                      const cat = getFieldValue('category') as CreateCategory;
+                      const opts = getSubcategoryOptions(cat, t as (key: string) => string);
+                      return (
+                        <Form.Item
+                          label={<AuthFieldLabel>{t('createIAmA')}</AuthFieldLabel>}
+                          name='subcategory'
+                          rules={[{ required: true }]}
+                        >
+                          <Segmented
+                            block
+                            options={opts}
+                          />
+                        </Form.Item>
+                      );
+                    }}
                   </Form.Item>
                 </div>
 
-                <Form.Item noStyle shouldUpdate>
-                  {({ getFieldValue }) =>
-                    getFieldValue('role') === 'sender' ? (
+                {/* Route type — only for traveler / load */}
+                <Form.Item noStyle shouldUpdate={(prev, cur) => prev.category !== cur.category}>
+                  {({ getFieldValue }) => {
+                    const cat = getFieldValue('category') as CreateCategory;
+                    if (cat !== 'traveler' && cat !== 'load') return null;
+                    return (
                       <Form.Item
-                        label={
-                          <AuthFieldLabel>
-                            {t('createListingTypeSender')}
-                          </AuthFieldLabel>
-                        }
-                        name='type'
-                        rules={[{ required: true }]}
+                        label={<AuthFieldLabel>{t('locationType')}</AuthFieldLabel>}
+                        name='routeType'
+                        rules={[{ required: true, message: t('selectLocationType') }]}
                       >
                         <Select
                           size='large'
-                          options={SENDER_TYPES.map((ty) => ({
-                            value: ty,
-                            label: t(ty),
-                          }))}
+                          options={routeTypeOptions}
+                          popupMatchSelectWidth={false}
                         />
                       </Form.Item>
-                    ) : (
-                      <Form.Item name='type' hidden>
-                        <Input />
-                      </Form.Item>
-                    )
-                  }
+                    );
+                  }}
                 </Form.Item>
 
                 <Form.Item
@@ -386,16 +445,18 @@ export default function EditListingPage({
                   </div>
                 </div>
 
+                {/* Type-specific fields */}
                 <Form.Item noStyle shouldUpdate>
                   {({ getFieldValue }) => {
-                    const type = getFieldValue('type') as string | undefined;
-                    if (type === 'cargo' || type === 'vehicle') {
+                    const cat = getFieldValue('category') as CreateCategory;
+                    const sub = getFieldValue('subcategory') as string;
+                    const derived = deriveApiFields(cat, sub);
+
+                    if (derived.type === 'cargo' || derived.type === 'vehicle') {
                       return (
                         <div className='mt-2 grid gap-4 sm:grid-cols-3'>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>}
                             name='weight_tons'
                           >
                             <InputNumber
@@ -404,12 +465,11 @@ export default function EditListingPage({
                               step={0.01}
                               placeholder='0.00'
                               className='w-full'
+                              onKeyDown={blockLetters}
                             />
                           </Form.Item>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('volumeM3')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('volumeM3')}</AuthFieldLabel>}
                             name='volume_m3'
                           >
                             <InputNumber
@@ -418,12 +478,11 @@ export default function EditListingPage({
                               step={0.01}
                               placeholder='0.00'
                               className='w-full'
+                              onKeyDown={blockLetters}
                             />
                           </Form.Item>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -431,32 +490,13 @@ export default function EditListingPage({
                         </div>
                       );
                     }
-                    if (type === 'traveler') {
+
+                    if (derived.type === 'traveler') {
                       return (
-                        <div className='mt-2 grid gap-4 sm:grid-cols-3'>
+                        <div className='mt-2 grid gap-4 sm:grid-cols-2'>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>
-                                {t('travelerType')}
-                              </AuthFieldLabel>
-                            }
-                            name='travelerType'
-                            initialValue='person'
-                          >
-                            <Select
-                              size='large'
-                              options={[
-                                { value: 'person', label: t('person') },
-                                { value: 'vehicle', label: t('vehicle') },
-                              ]}
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('bodyCount')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('bodyCount')}</AuthFieldLabel>}
                             name='bodyCount'
-                            initialValue={1}
                           >
                             <InputNumber
                               size='large'
@@ -465,9 +505,7 @@ export default function EditListingPage({
                             />
                           </Form.Item>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -475,28 +513,12 @@ export default function EditListingPage({
                         </div>
                       );
                     }
-                    if (type === 'load') {
+
+                    if (derived.type === 'load') {
                       return (
-                        <div className='mt-2 grid gap-4 sm:grid-cols-3'>
+                        <div className='mt-2 grid gap-4 sm:grid-cols-2'>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('loadType')}</AuthFieldLabel>
-                            }
-                            name='loadType'
-                            initialValue='load'
-                          >
-                            <Select
-                              size='large'
-                              options={[
-                                { value: 'load', label: t('load') },
-                                { value: 'vehicle', label: t('vehicle') },
-                              ]}
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>}
                             name='weight_tons'
                           >
                             <InputNumber
@@ -505,12 +527,11 @@ export default function EditListingPage({
                               step={0.01}
                               placeholder='0.00'
                               className='w-full'
+                              onKeyDown={blockLetters}
                             />
                           </Form.Item>
                           <Form.Item
-                            label={
-                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
-                            }
+                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -518,6 +539,7 @@ export default function EditListingPage({
                         </div>
                       );
                     }
+
                     return null;
                   }}
                 </Form.Item>

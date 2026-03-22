@@ -12,7 +12,7 @@ const locales = [
   { code: 'en', label: 'English', short: 'EN' },
 ] as const;
 
-type Variant = 'navbar' | 'drawer';
+type Variant = 'navbar' | 'drawer' | 'glass';
 
 export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Variant }) {
   const tNav = useTranslations('nav');
@@ -73,6 +73,33 @@ export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Var
           })}
         </div>
       </div>
+    );
+  }
+
+  if (variant === 'glass') {
+    return (
+      <Dropdown
+        menu={{
+          items: menuItems,
+          onClick: onMenuClick,
+          selectable: true,
+          selectedKeys: [currentLocale],
+        }}
+        trigger={['click']}
+        placement='bottomRight'
+      >
+        <button
+          type='button'
+          className='inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:bg-white/20 hover:text-white focus:outline-none'
+          aria-label='Language'
+        >
+          <GlobalOutlined className='text-sm' />
+          <span className='tabular-nums'>{current.short}</span>
+          <svg className='h-3 w-3 opacity-70' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+          </svg>
+        </button>
+      </Dropdown>
     );
   }
 

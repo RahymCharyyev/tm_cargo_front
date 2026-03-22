@@ -13,7 +13,7 @@ import {
 import { useBannerType } from '@/lib/useBannerType';
 import { useAuthStore } from '@/lib/auth-store';
 import { useRouter } from '@/i18n/navigation';
-import { Button, Modal as AntModal } from 'antd';
+import { Button, Modal as AntModal, message } from 'antd';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
@@ -164,9 +164,13 @@ export default function ListingDetailPage({
       return;
     }
     if (listing.isFavorite) {
-      removeFav.mutate(listing.id);
+      removeFav.mutate(listing.id, {
+        onSuccess: () => message.success(t('removedFromFavorites')),
+      });
     } else {
-      addFav.mutate(listing.id);
+      addFav.mutate(listing.id, {
+        onSuccess: () => message.success(t('addedToFavorites')),
+      });
     }
   };
 

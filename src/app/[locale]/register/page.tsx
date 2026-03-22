@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Form, Input, Segmented, Spin } from 'antd';
+import { Alert, Button, Form, Input, Segmented, Space, Spin } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -144,7 +144,6 @@ export default function RegisterPage() {
   return (
     <AuthSplitShell
       formTitle={t('registerTitle')}
-      heroKicker={t('authHeroKicker')}
       heroTitle={t('authHeroTitleRegister')}
       heroSubtitle={t('authHeroSubtitleRegister')}
       termsFooter={termsFooter}
@@ -286,7 +285,12 @@ export default function RegisterPage() {
                   rules={[{ required: true }]}
                   className='mb-5'
                 >
-                  <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
+                  <Input
+                    prefix='+993'
+                    type='tel'
+                    placeholder='6X XXXXXX'
+                    size='large'
+                  />
                 </Form.Item>
                 {error && (
                   <Alert

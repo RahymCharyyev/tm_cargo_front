@@ -25,6 +25,12 @@ export default function Navbar() {
   }, [pathname]);
 
   const isHome = pathname === '/' || pathname.match(/^\/[a-z]{2}\/?$/);
+  const isAuthPage =
+    pathname === '/login' ||
+    pathname === '/register' ||
+    pathname === '/reset-password';
+
+  if (isAuthPage) return null;
 
   const userMenuItems: MenuProps['items'] = [
     {
@@ -122,33 +128,35 @@ export default function Navbar() {
               <LanguageSwitcher />
             </div>
 
-            {/* Desktop auth — только lg+, на планшетах/мобильных — в Drawer */}
+            {/* Desktop auth — lg+ only, on mobile/tablet — inside Drawer */}
             {isAuthenticated ? (
-              <Dropdown
-                menu={{ items: userMenuItems }}
-                trigger={['click']}
-                placement='bottomRight'
-              >
-                <Button
-                  className='hidden lg:flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
-                  style={{ height: 40, paddingInline: 20 }}
+              <div className='hidden lg:block'>
+                <Dropdown
+                  menu={{ items: userMenuItems }}
+                  trigger={['click']}
+                  placement='bottomRight'
                 >
-                  <Image
-                    src='/Person.svg'
-                    alt=''
-                    width={17}
-                    height={17}
-                    className='opacity-80'
-                  />
-                  <span className='max-w-[120px] truncate'>
-                    {user?.phone || user?.email || user?.fullName || 'User'}
-                  </span>
-                </Button>
-              </Dropdown>
+                  <Button
+                    className='!flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
+                    style={{ height: 40, paddingInline: 20 }}
+                  >
+                    <Image
+                      src='/Person.svg'
+                      alt=''
+                      width={17}
+                      height={17}
+                      className='opacity-80'
+                    />
+                    <span className='max-w-[120px] truncate'>
+                      {user?.phone || user?.email || user?.fullName || 'User'}
+                    </span>
+                  </Button>
+                </Dropdown>
+              </div>
             ) : (
-              <Link href='/login'>
+              <Link href='/login' className='hidden lg:block'>
                 <Button
-                  className='hidden lg:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
+                  className='!flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
                   style={{ height: 40, paddingInline: 20 }}
                 >
                   <Image
@@ -163,9 +171,9 @@ export default function Navbar() {
               </Link>
             )}
 
-            <Link href={isAuthenticated ? '/listings/create' : '/login'}>
+            <Link href={isAuthenticated ? '/listings/create' : '/login'} className='hidden lg:block'>
               <Button
-                className='hidden lg:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
+                className='!flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
                 style={{ height: 40, paddingInline: 20 }}
               >
                 <Image src='/Add Circle.svg' alt='' width={17} height={17} />

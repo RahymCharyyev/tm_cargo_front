@@ -220,6 +220,7 @@ export default function ListingFilterContent({
             min={0}
             step={0.1}
             style={{ width: '100%' }}
+            onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
           />
         </div>
 
@@ -233,6 +234,7 @@ export default function ListingFilterContent({
             min={0}
             step={0.1}
             style={{ width: '100%' }}
+            onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
           />
         </div>
 

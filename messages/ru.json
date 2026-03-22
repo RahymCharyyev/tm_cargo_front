@@ -143,6 +143,8 @@
     "ownerInfo": "Владелец",
     "addFavorite": "Добавить в избранное",
     "removeFavorite": "Убрать из избранного",
+    "addedToFavorites": "Добавлено в избранное",
+    "removedFromFavorites": "Удалено из избранного",
     "callNow": "Позвонить",
     "writeEmail": "Написать на почту",
     "createTitle": "Новое объявление",

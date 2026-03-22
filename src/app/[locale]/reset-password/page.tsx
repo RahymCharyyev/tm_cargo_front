@@ -68,9 +68,10 @@ export default function ResetPasswordPage() {
   const handlePhoneStep1 = (values: { phone: string }) => {
     setError('');
     setSuccess('');
-    setPhone(values.phone);
+    const fullPhone = `+993${values.phone.replace(/^\+993/, '')}`;
+    setPhone(fullPhone);
     resetPhoneStart.mutate(
-      { phone: values.phone },
+      { phone: fullPhone },
       {
         onSuccess: () => setPhoneStep('newpass'),
         onError: (err) => setError(err.message),
@@ -256,7 +257,7 @@ export default function ResetPasswordPage() {
               rules={[{ required: true }]}
               className='mb-5'
             >
-              <Input type='tel' size='large' />
+              <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
             </Form.Item>
             {error && (
               <Alert type='error' message={error} showIcon className='mb-4' />

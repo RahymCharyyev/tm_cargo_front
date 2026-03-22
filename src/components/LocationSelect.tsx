@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Select } from 'antd';
 import { useLocations, type LocationData } from '@/lib/hooks';
 
@@ -50,10 +50,23 @@ export default function LocationSelect({
   const locale = useLocale();
   const [search, setSearch] = useState('');
 
+  const cachedLocs = useRef<Map<string, LocationData>>(new Map());
+
   const { data, isFetching } = useLocations({
     name: search || undefined,
     perPage: 20,
   });
+
+  if (data?.data) {
+    for (const loc of data.data) {
+      cachedLocs.current.set(loc.id, loc);
+    }
+  }
+
+  const findLoc = useCallback(
+    (id: string | number | undefined) => cachedLocs.current.get(String(id)),
+    [],
+  );
 
   const options =
     data?.data?.map((loc) => ({
@@ -98,7 +111,7 @@ export default function LocationSelect({
         );
       }}
       labelRender={(props) => {
-        const loc = data?.data?.find((l) => l.id === props.value);
+        const loc = findLoc(props.value);
         if (!loc) return <span>{props.label as string}</span>;
         const flagUrl = getLocationFlag(loc);
         return (

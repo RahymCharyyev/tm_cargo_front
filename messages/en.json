@@ -16,7 +16,8 @@
     "logout": "Logout",
     "locationWeb": "Ashgabat",
     "specTech": "Spec. Tech",
-    "parts": "Auto parts"
+    "parts": "Auto parts",
+    "language": "Language"
   },
   "home": {
     "adBanner": "Advertisement 1",
@@ -223,7 +224,14 @@
     "applyAdvertisement": "Apply advertisement",
     "applyTermsPrefix": "By applying, you agree to Cargo TM's",
     "applyTermsService": "Terms of Service",
-    "applyTermsAnd": "and"
+    "applyTermsAnd": "and",
+    "filterCatInternational": "International",
+    "filterCatIntercity": "Within Turkmenistan",
+    "filterCatLocal": "Within City / Region",
+    "filterCatTraveler": "Hitchhiking",
+    "filterCatLoad": "Parcels",
+    "filterSubPassenger": "Passenger",
+    "filterSubCar": "Car"
   },
   "profile": {
     "title": "Profile",
@@ -240,6 +248,7 @@
     "emptyDesc": "Start adding listings to your favorites to see them here."
   },
   "footer": {
+    "brandTagline": "Logistics",
     "description": "A modern solution for cargo delivery. Reliable, fast, convenient.",
     "contacts": "Contacts",
     "support": "Support",

@@ -16,7 +16,8 @@
     "logout": "Выйти",
     "locationWeb": "Ашхабад",
     "specTech": "Спецтехника",
-    "parts": "Автозапчасти"
+    "parts": "Автозапчасти",
+    "language": "Язык"
   },
   "home": {
     "adBanner": "Реклама 1",
@@ -28,7 +29,7 @@
     "withinTurkmenistan": "Внутри Туркменистана",
     "withinCityRegion": "Внутри Города / Региона",
     "hitchhiking": "Попутка",
-    "parcels": "Посылки",
+    "parcels": "Почта",
     "recentlyAdded": "Последние добавленные",
     "viewAll": "Просмотреть все"
   },
@@ -223,7 +224,14 @@
     "applyAdvertisement": "Разместить объявление",
     "applyTermsPrefix": "Размещая объявление, вы соглашаетесь с",
     "applyTermsService": "Условиями использования",
-    "applyTermsAnd": "и"
+    "applyTermsAnd": "и",
+    "filterCatInternational": "Международные",
+    "filterCatIntercity": "Внутри Туркменистана",
+    "filterCatLocal": "Внутри Города / Региона",
+    "filterCatTraveler": "Попутка",
+    "filterCatLoad": "Почта",
+    "filterSubPassenger": "Пассажир",
+    "filterSubCar": "Машина"
   },
   "profile": {
     "title": "Профиль",
@@ -240,6 +248,7 @@
     "emptyDesc": "Добавляйте объявления в избранное, чтобы видеть их здесь."
   },
   "footer": {
+    "brandTagline": "Логистика",
     "description": "Современное решение для грузоперевозок. Надёжно, быстро, удобно.",
     "contacts": "Контакты",
     "support": "Поддержка",

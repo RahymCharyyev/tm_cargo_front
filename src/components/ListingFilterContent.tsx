@@ -13,7 +13,25 @@ function getIconUrl(icon: string | null | undefined): string | null {
   return `https://tm-cargo.com.tm/api/${icon}`;
 }
 
-const LOCATION_TYPES = ['international', 'intercity', 'local'] as const;
+const FILTER_CATEGORIES = [
+  'international',
+  'intercity',
+  'local',
+  'traveler',
+  'load',
+] as const;
+
+type FilterCategory = (typeof FILTER_CATEGORIES)[number] | '';
+
+function getSubcategoryLabels(
+  cat: string,
+  t: (key: string) => string,
+): { label1: string; label2: string } | null {
+  if (cat === 'traveler') {
+    return { label1: t('filterSubPassenger'), label2: t('filterSubCar') };
+  }
+  return { label1: t('sender'), label2: t('carrier') };
+}
 
 function getTypeName(vehicleType: VehicleType, locale: string): string {
   return (
@@ -24,8 +42,8 @@ function getTypeName(vehicleType: VehicleType, locale: string): string {
 }
 
 interface ListingFilterContentProps {
-  locationType: string;
-  onLocationTypeChange: (value: string) => void;
+  category: FilterCategory;
+  onCategoryChange: (value: FilterCategory) => void;
   from: string;
   onFromChange: (value: string) => void;
   to: string;
@@ -54,8 +72,8 @@ interface ListingFilterContentProps {
 const labelClass = 'mb-1.5 block text-[13px] font-medium text-[#0F172A]';
 
 export default function ListingFilterContent({
-  locationType,
-  onLocationTypeChange,
+  category,
+  onCategoryChange,
   from,
   onFromChange,
   to,
@@ -84,9 +102,12 @@ export default function ListingFilterContent({
   const tc = useTranslations('common');
   const locale = useLocale();
 
-  const locationTypeOptions = [
-    { value: '', label: tc('all') },
-    ...LOCATION_TYPES.map((lt) => ({ value: lt, label: t(lt) })),
+  const categoryOptions = [
+    { value: '' as FilterCategory, label: tc('all') },
+    ...FILTER_CATEGORIES.map((cat) => ({
+      value: cat,
+      label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
+    })),
   ];
 
   const vehicleTypeOptions = [
@@ -108,6 +129,8 @@ export default function ListingFilterContent({
     { value: 'price_asc', label: t('priceLowHigh') },
     { value: 'price_desc', label: t('priceHighLow') },
   ];
+
+  const subLabels = getSubcategoryLabels(category, t as (key: string) => string);
 
   return (
     <section
@@ -148,22 +171,24 @@ export default function ListingFilterContent({
         <div>
           <label className={labelClass}>{t('category')}</label>
           <Select
-            value={locationType || ''}
-            onChange={onLocationTypeChange}
-            options={locationTypeOptions}
+            value={category}
+            onChange={(val) => onCategoryChange(val as FilterCategory)}
+            options={categoryOptions}
             style={{ width: '100%' }}
           />
         </div>
 
-        {/* Sender / Carrier checkboxes */}
-        <div className="flex flex-wrap gap-6">
-          <Checkbox checked={senderSelected} onChange={onSenderToggle}>
-            <span className="text-[15px] font-medium text-[#111827]">{t('sender')}</span>
-          </Checkbox>
-          <Checkbox checked={carrierSelected} onChange={onCarrierToggle}>
-            <span className="text-[15px] font-medium text-[#111827]">{t('carrier')}</span>
-          </Checkbox>
-        </div>
+        {/* Subcategory checkboxes — labels change per category */}
+        {subLabels && (
+          <div className="flex flex-wrap gap-6">
+            <Checkbox checked={senderSelected} onChange={onSenderToggle}>
+              <span className="text-[15px] font-medium text-[#111827]">{subLabels.label1}</span>
+            </Checkbox>
+            <Checkbox checked={carrierSelected} onChange={onCarrierToggle}>
+              <span className="text-[15px] font-medium text-[#111827]">{subLabels.label2}</span>
+            </Checkbox>
+          </div>
+        )}
 
         {/* From */}
         <div>

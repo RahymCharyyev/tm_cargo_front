@@ -16,7 +16,8 @@
     "logout": "Çykmak",
     "locationWeb": "Aşgabat",
     "specTech": "Ýörite tehnika",
-    "parts": "Ätiýaçlyk şaýlar"
+    "parts": "Ätiýaçlyk şaýlar",
+    "language": "Dil"
   },
   "home": {
     "adBanner": "Reklama 1",
@@ -28,7 +29,7 @@
     "withinTurkmenistan": "Türkmenistan içinde",
     "withinCityRegion": "Şäher / Sebit içinde",
     "hitchhiking": "Ýolagçy",
-    "parcels": "Bukjalar",
+    "parcels": "Poçta",
     "recentlyAdded": "Soňky goşulanlar",
     "viewAll": "Hemmesini gör"
   },
@@ -223,7 +224,14 @@
     "applyAdvertisement": "Bildiriş goýmak",
     "applyTermsPrefix": "Bildiriş goýmak bilen, siz kabul edýärsiňiz",
     "applyTermsService": "Ulanyş şertleri",
-    "applyTermsAnd": "we"
+    "applyTermsAnd": "we",
+    "filterCatInternational": "Halkara",
+    "filterCatIntercity": "Türkmenistan içinde",
+    "filterCatLocal": "Şäher / Sebit içinde",
+    "filterCatTraveler": "Ýolagçy",
+    "filterCatLoad": "Poçta",
+    "filterSubPassenger": "Ýolagçy",
+    "filterSubCar": "Maşyn"
   },
   "profile": {
     "title": "Profil",
@@ -240,6 +248,7 @@
     "emptyDesc": "Bildirişleri halanlaryňyza goşuň we şu ýerde görüň."
   },
   "footer": {
+    "brandTagline": "Logistik",
     "description": "Ýük daşamak üçin döwrebap çözgüt. Ynamly, çalt we amatly.",
     "contacts": "Habarlaşmak",
     "support": "Goldaw",

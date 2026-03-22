@@ -85,7 +85,7 @@ export default function CreateListingPage() {
       fromLocationId: values.fromLocationId,
       toLocationId: values.toLocationId,
       description: values.description || undefined,
-      phone: values.phone || undefined,
+      phone: values.phone ? `+993${String(values.phone).replace(/^\+993/, '')}` : undefined,
       email: values.email || undefined,
       price: values.price ? Number(values.price) : undefined,
       currency: values.price ? values.currency : undefined,
@@ -535,7 +535,8 @@ export default function CreateListingPage() {
                     <Input
                       type='tel'
                       size='large'
-                      placeholder={t('placeholderPhoneListing')}
+                      addonBefore='+993'
+                      placeholder='6X XXXXXX'
                     />
                   </Form.Item>
                   <Form.Item

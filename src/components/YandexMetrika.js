@@ -1,25 +1,23 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
 import ym, { YMInitializer } from 'react-yandex-metrika';
 
-const YM_COUNTER_ID = 103419917; // Замените на ваш ID счетчика
-
-const YandexMetrika = () => {
+function YandexMetrikaInner({ counterId }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  // Отправляем событие "hit" при изменении маршрута
   useEffect(() => {
-    if (pathname) {
-      ym('reachGoal', 'goal_name');
-      ym('hit', pathname);
-    }
-  }, [pathname]);
+    if (!counterId || !pathname) return;
+    const qs = searchParams?.toString();
+    const url = pathname + (qs ? `?${qs}` : '');
+    ym('hit', url);
+  }, [counterId, pathname, searchParams]);
 
   return (
     <YMInitializer
-      accounts={[YM_COUNTER_ID]}
+      accounts={[counterId]}
       options={{
         defer: true,
         webvisor: true,
@@ -30,6 +28,19 @@ const YandexMetrika = () => {
       version='2'
     />
   );
-};
+}
 
-export default YandexMetrika;
+export default function YandexMetrika() {
+  const raw = process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID;
+  const counterId = raw ? Number.parseInt(String(raw).trim(), 10) : NaN;
+
+  if (!Number.isFinite(counterId) || counterId <= 0) {
+    return null;
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <YandexMetrikaInner counterId={counterId} />
+    </Suspense>
+  );
+}

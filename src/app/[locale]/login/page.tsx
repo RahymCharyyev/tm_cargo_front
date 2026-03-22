@@ -25,10 +25,11 @@ export default function LoginPage() {
     password: string;
   }) => {
     setError('');
+    const phone = values.phone ? `+993${values.phone.replace(/^\+993/, '')}` : undefined;
     loginMutation.mutate(
       mode === 'email'
         ? { email: values.email!, password: values.password }
-        : { phone: values.phone!, password: values.password },
+        : { phone: phone!, password: values.password },
       {
         onSuccess: () => router.push('/'),
         onError: (err) => setError(err.message),
@@ -117,7 +118,7 @@ export default function LoginPage() {
             rules={[{ required: true }]}
             className='mb-5'
           >
-            <Input type='tel' placeholder='+993 6X XXXXXX' size='large' />
+            <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
           </Form.Item>
         )}
 

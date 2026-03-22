@@ -1,5 +1,7 @@
 import Footer from '@/components/Footer';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import Navbar from '@/components/Navbar';
+import YandexMetrika from '@/components/YandexMetrika';
 import { routing } from '@/i18n/routing';
 import { Providers } from '@/lib/providers';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
@@ -85,6 +87,8 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`font-sans antialiased bg-[#E8F2FF]`}>
+        <GoogleAnalytics />
+        <YandexMetrika />
         <NextIntlClientProvider>
           <AntdRegistry>
             <Providers locale={locale}>

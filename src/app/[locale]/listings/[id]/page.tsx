@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, type ReactNode } from 'react';
+import { use, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import {
@@ -66,6 +66,25 @@ export default function ListingDetailPage({
   const addFav = useAddFavorite();
   const removeFav = useRemoveFavorite();
   const [activeImg, setActiveImg] = useState(0);
+  const [fullscreen, setFullscreen] = useState(false);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!fullscreen) return;
+    if (e.key === 'Escape') setFullscreen(false);
+    if (e.key === 'ArrowRight') setActiveImg((prev) => {
+      const imgs = listing?.images ?? [];
+      return imgs.length > 0 ? (prev + 1) % imgs.length : prev;
+    });
+    if (e.key === 'ArrowLeft') setActiveImg((prev) => {
+      const imgs = listing?.images ?? [];
+      return imgs.length > 0 ? (prev - 1 + imgs.length) % imgs.length : prev;
+    });
+  }, [fullscreen, listing?.images]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const topBanner = banners?.data?.find((b) => b.location === 'top');
 
@@ -140,7 +159,10 @@ export default function ListingDetailPage({
   };
 
   const handleFavorite = () => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
     if (listing.isFavorite) {
       removeFav.mutate(listing.id);
     } else {
@@ -242,7 +264,11 @@ export default function ListingDetailPage({
             >
               {images.length > 0 ? (
                 <div>
-                  <div className='relative' style={{ height: '420px' }}>
+                  <div
+                    className='relative cursor-pointer group'
+                    style={{ height: '420px' }}
+                    onClick={() => setFullscreen(true)}
+                  >
                     <Image
                       src={`https://tm-cargo.com.tm/api/${images[activeImg]?.filename}`}
                       alt={listing.title}
@@ -250,6 +276,11 @@ export default function ListingDetailPage({
                       crossOrigin='anonymous'
                       className='object-cover'
                     />
+                    <div className='absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center'>
+                      <svg className='w-10 h-10 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7' />
+                      </svg>
+                    </div>
                   </div>
                   {images.length > 1 && (
                     <div className='flex gap-3 p-4 overflow-x-auto'>
@@ -349,26 +380,24 @@ export default function ListingDetailPage({
               <h2 className='text-xl font-bold text-black'>
                 {t('detailInfo')}
               </h2>
-              {isAuthenticated && (
-                <Button
-                  type='text'
-                  shape='circle'
-                  onClick={handleFavorite}
-                  title={listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
-                  icon={
-                    <svg
-                      className='w-6 h-6'
-                      fill={listing.isFavorite ? 'currentColor' : 'none'}
-                      stroke='currentColor'
-                      style={{ color: listing.isFavorite ? '#ef4444' : '#9ca3af' }}
-                      viewBox='0 0 24 24'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
-                        d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
-                    </svg>
-                  }
-                />
-              )}
+              <Button
+                type='text'
+                shape='circle'
+                onClick={handleFavorite}
+                title={listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
+                icon={
+                  <svg
+                    className='w-6 h-6'
+                    fill={listing.isFavorite ? 'currentColor' : 'none'}
+                    stroke='currentColor'
+                    style={{ color: listing.isFavorite ? '#ef4444' : '#9ca3af' }}
+                    viewBox='0 0 24 24'
+                  >
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
+                  </svg>
+                }
+              />
             </div>
 
             {/* Info panel card */}
@@ -671,31 +700,111 @@ export default function ListingDetailPage({
                 </a>
               )}
 
-              {isAuthenticated && (
-                <Button
-                  block
-                  size='large'
-                  onClick={handleFavorite}
-                  icon={
-                    <svg
-                      className='w-5 h-5 text-[#2B529B]'
-                      fill={listing.isFavorite ? 'currentColor' : 'none'}
-                      stroke='currentColor'
-                      viewBox='0 0 24 24'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
-                        d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
-                    </svg>
-                  }
-                  style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
-                >
-                  {listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
-                </Button>
-              )}
+              <Button
+                block
+                size='large'
+                onClick={handleFavorite}
+                icon={
+                  <svg
+                    className='w-5 h-5 text-[#2B529B]'
+                    fill={listing.isFavorite ? 'currentColor' : 'none'}
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
+                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
+                  </svg>
+                }
+                style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
+              >
+                {listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
+              </Button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Fullscreen image viewer */}
+      {fullscreen && images.length > 0 && (
+        <div
+          className='fixed inset-0 z-[9999] bg-black/95 flex flex-col items-center justify-center'
+          onClick={() => setFullscreen(false)}
+        >
+          <button
+            type='button'
+            onClick={() => setFullscreen(false)}
+            className='absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
+          >
+            <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
+            </svg>
+          </button>
+
+          <div
+            className='relative w-full h-full flex items-center justify-center px-16'
+            onClick={(e) => e.stopPropagation()}
+          >
+            {images.length > 1 && (
+              <button
+                type='button'
+                onClick={() => setActiveImg((prev) => (prev - 1 + images.length) % images.length)}
+                className='absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
+              >
+                <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M15 19l-7-7 7-7' />
+                </svg>
+              </button>
+            )}
+
+            <Image
+              src={`https://tm-cargo.com.tm/api/${images[activeImg]?.filename}`}
+              alt={listing.title}
+              fill
+              crossOrigin='anonymous'
+              className='object-contain'
+            />
+
+            {images.length > 1 && (
+              <button
+                type='button'
+                onClick={() => setActiveImg((prev) => (prev + 1) % images.length)}
+                className='absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
+              >
+                <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 5l7 7-7 7' />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {images.length > 1 && (
+            <div className='absolute bottom-6 flex gap-2 overflow-x-auto px-4 max-w-full'>
+              {images.map((img, idx) => (
+                <button
+                  key={img.id}
+                  onClick={(e) => { e.stopPropagation(); setActiveImg(idx); }}
+                  className={`shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
+                    idx === activeImg ? 'border-white scale-105' : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}
+                >
+                  <Image
+                    src={`https://tm-cargo.com.tm/api/${img.filename}`}
+                    alt=''
+                    width={80}
+                    height={56}
+                    crossOrigin='anonymous'
+                    className='object-cover w-20 h-14'
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className='absolute top-4 left-1/2 -translate-x-1/2 text-white/60 text-sm'>
+            {activeImg + 1} / {images.length}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

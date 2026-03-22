@@ -73,9 +73,10 @@ export default function RegisterPage() {
 
   const handlePhoneStep1 = (values: { phone: string }) => {
     setError('');
-    setPhone(values.phone);
+    const fullPhone = `+993${values.phone.replace(/^\+993/, '')}`;
+    setPhone(fullPhone);
     isPhoneRegisterable.mutate(
-      { phone: values.phone },
+      { phone: fullPhone },
       {
         onSuccess: () => {
           setPhoneStep('waiting');
@@ -285,7 +286,7 @@ export default function RegisterPage() {
                   rules={[{ required: true }]}
                   className='mb-5'
                 >
-                  <Input type='tel' placeholder='+993 6X XXXXXX' size='large' />
+                  <Input type='tel' addonBefore='+993' placeholder='6X XXXXXX' size='large' />
                 </Form.Item>
                 {error && (
                   <Alert

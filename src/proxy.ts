@@ -1,5 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
+
+const fallbackLocale = routing.defaultLocale;
 import { NextRequest, NextResponse } from 'next/server';
 
 const intlMiddleware = createMiddleware(routing);
@@ -16,13 +18,13 @@ export default function proxy(request: NextRequest) {
 
   // Redirect to login if accessing protected routes without token
   if (protectedPaths.some((p) => pathWithoutLocale.startsWith(p)) && !token) {
-    const locale = pathname.match(/^\/(en|ru|tk)/)?.[1] || 'tk';
+    const locale = pathname.match(/^\/(en|ru|tk)/)?.[1] || fallbackLocale;
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
   }
 
   // Redirect to home if accessing auth pages while logged in
   if (authPaths.some((p) => pathWithoutLocale.startsWith(p)) && token) {
-    const locale = pathname.match(/^\/(en|ru|tk)/)?.[1] || 'tk';
+    const locale = pathname.match(/^\/(en|ru|tk)/)?.[1] || fallbackLocale;
     return NextResponse.redirect(new URL(`/${locale}`, request.url));
   }
 

@@ -14,6 +14,31 @@ import Image from 'next/image';
 
 const listPath = '/listings';
 
+type FilterCategory = 'international' | 'intercity' | 'local' | 'traveler' | 'load' | '';
+
+function categoryFromParams(
+  locationType?: string,
+  type?: string,
+): FilterCategory {
+  if (type === 'traveler') return 'traveler';
+  if (type === 'load') return 'load';
+  if (locationType === 'international') return 'international';
+  if (locationType === 'intercity') return 'intercity';
+  if (locationType === 'local') return 'local';
+  return '';
+}
+
+function categoryToParams(category: FilterCategory): {
+  locationType?: string;
+  type?: string;
+} {
+  if (category === 'traveler') return { type: 'traveler' };
+  if (category === 'load') return { type: 'load' };
+  if (category === 'international' || category === 'intercity' || category === 'local')
+    return { locationType: category };
+  return {};
+}
+
 function buildListingsQuery(params: {
   type?: string;
   locationType?: string;
@@ -21,6 +46,8 @@ function buildListingsQuery(params: {
   to?: string;
   kind?: string;
   sort?: string;
+  travelerType?: string;
+  loadType?: string;
 }) {
   const search = new URLSearchParams();
   if (params.type) search.set('type', params.type);
@@ -29,6 +56,8 @@ function buildListingsQuery(params: {
   if (params.to) search.set('to', params.to);
   if (params.kind) search.set('kind', params.kind);
   if (params.sort && params.sort !== 'newest') search.set('sort', params.sort);
+  if (params.travelerType) search.set('travelerType', params.travelerType);
+  if (params.loadType) search.set('loadType', params.loadType);
   const q = search.toString();
   return q ? `${listPath}?${q}` : listPath;
 }
@@ -53,6 +82,8 @@ export default function ListingsPage({
   const to = (resolvedSearchParams.to as string) || undefined;
   const kind = (resolvedSearchParams.kind as string) || undefined;
   const sort = (resolvedSearchParams.sort as string) || 'newest';
+  const travelerType = (resolvedSearchParams.travelerType as string) || undefined;
+  const loadType = (resolvedSearchParams.loadType as string) || undefined;
 
   const {
     data: infiniteData,
@@ -67,6 +98,8 @@ export default function ListingsPage({
     toLocationId: to,
     vehicleTypeId: kind,
     sort,
+    travelerType,
+    loadType,
   });
 
   const listings = infiniteData?.pages.flatMap((p) => p.data) ?? [];
@@ -96,32 +129,49 @@ export default function ListingsPage({
   const { data: vehicleTypes } = useVehicleTypes({ perPage: 100 });
   const { data: banners } = useBanners({ type: bannerType });
 
-  const [filterType, setFilterType] = useState(type || '');
-  const [filterLocType, setFilterLocType] = useState(locationType || '');
+  const initialCategory = categoryFromParams(locationType, type);
+
+  function deriveSub(
+    cat: FilterCategory,
+    urlType?: string,
+    urlTravelerType?: string,
+    urlLoadType?: string,
+  ): { sub1: boolean; sub2: boolean } {
+    if (cat === 'traveler') {
+      return { sub1: urlTravelerType === 'person', sub2: urlTravelerType === 'vehicle' };
+    }
+    if (cat === 'load') {
+      return { sub1: urlLoadType === 'load', sub2: urlLoadType === 'vehicle' };
+    }
+    return { sub1: urlType === 'cargo', sub2: urlType === 'vehicle' };
+  }
+
+  const initSub = deriveSub(initialCategory, type, travelerType, loadType);
+  const [filterCategory, setFilterCategory] = useState<FilterCategory>(initialCategory);
   const [filterFrom, setFilterFrom] = useState(from || '');
   const [filterTo, setFilterTo] = useState(to || '');
   const [filterKind, setFilterKind] = useState(kind || '');
   const [filterSort, setFilterSort] = useState(sort === 'newest' ? '' : sort);
-  const [filterSender, setFilterSender] = useState(type === 'cargo');
-  const [filterCarrier, setFilterCarrier] = useState(type === 'vehicle');
+  const [filterSender, setFilterSender] = useState(initSub.sub1);
+  const [filterCarrier, setFilterCarrier] = useState(initSub.sub2);
   const [filterWeight, setFilterWeight] = useState('');
   const [filterVolume, setFilterVolume] = useState('');
   const [filterDate, setFilterDate] = useState('');
 
   useEffect(() => {
-    setFilterType(type || '');
-    setFilterLocType(locationType || '');
+    const cat = categoryFromParams(locationType, type);
+    const sub = deriveSub(cat, type, travelerType, loadType);
+    setFilterCategory(cat);
     setFilterFrom(from || '');
     setFilterTo(to || '');
     setFilterKind(kind || '');
     setFilterSort(sort === 'newest' ? '' : sort);
-    setFilterSender(type === 'cargo');
-    setFilterCarrier(type === 'vehicle');
-  }, [type, locationType, from, to, kind, sort]);
+    setFilterSender(sub.sub1);
+    setFilterCarrier(sub.sub2);
+  }, [type, locationType, from, to, kind, sort, travelerType, loadType]);
 
   const clearFilters = () => {
-    setFilterType('');
-    setFilterLocType('');
+    setFilterCategory('');
     setFilterFrom('');
     setFilterTo('');
     setFilterKind('');
@@ -135,22 +185,39 @@ export default function ListingsPage({
     setIsFilterOpen(false);
   };
 
-  const effectiveType =
-    filterSender && !filterCarrier
-      ? 'cargo'
-      : filterCarrier && !filterSender
-        ? 'vehicle'
-        : filterType || undefined;
+  const handleCategoryChange = (cat: FilterCategory) => {
+    setFilterCategory(cat);
+    setFilterSender(false);
+    setFilterCarrier(false);
+  };
 
   const applyFilters = () => {
+    const catParams = categoryToParams(filterCategory);
+    let effectiveType = catParams.type;
+    let effectiveTravelerType: string | undefined;
+    let effectiveLoadType: string | undefined;
+
+    if (filterCategory === 'traveler') {
+      if (filterSender && !filterCarrier) effectiveTravelerType = 'person';
+      else if (filterCarrier && !filterSender) effectiveTravelerType = 'vehicle';
+    } else if (filterCategory === 'load') {
+      if (filterSender && !filterCarrier) effectiveLoadType = 'load';
+      else if (filterCarrier && !filterSender) effectiveLoadType = 'vehicle';
+    } else {
+      if (filterSender && !filterCarrier) effectiveType = 'cargo';
+      else if (filterCarrier && !filterSender) effectiveType = 'vehicle';
+    }
+
     router.push(
       buildListingsQuery({
         type: effectiveType,
-        locationType: filterLocType || undefined,
+        locationType: catParams.locationType,
         from: filterFrom || undefined,
         to: filterTo || undefined,
         kind: filterKind || undefined,
         sort: filterSort || 'newest',
+        travelerType: effectiveTravelerType,
+        loadType: effectiveLoadType,
       }),
     );
     setIsFilterOpen(false);
@@ -176,6 +243,32 @@ export default function ListingsPage({
   const middleBanner = banners?.data?.find(
     (b) => b.location === 'list' || b.location === 'inside',
   );
+
+  const filterProps = {
+    category: filterCategory,
+    onCategoryChange: handleCategoryChange,
+    from: filterFrom,
+    onFromChange: setFilterFrom,
+    to: filterTo,
+    onToChange: setFilterTo,
+    weight: filterWeight,
+    onWeightChange: setFilterWeight,
+    volume: filterVolume,
+    onVolumeChange: setFilterVolume,
+    executionDate: filterDate,
+    onExecutionDateChange: setFilterDate,
+    kind: filterKind,
+    onKindChange: setFilterKind,
+    sort: filterSort,
+    onSortChange: setFilterSort,
+    senderSelected: filterSender,
+    onSenderToggle: toggleSender,
+    carrierSelected: filterCarrier,
+    onCarrierToggle: toggleCarrier,
+    vehicleTypes: vehicleTypes?.data,
+    onClear: clearFilters,
+    onApply: applyFilters,
+  };
 
   return (
     <div className='min-h-screen pb-12'>
@@ -209,31 +302,7 @@ export default function ListingsPage({
           {/* Sidebar - Фильтры */}
           <aside className='hidden lg:block w-[330px] shrink-0'>
             <div className='sticky top-20'>
-              <ListingFilterContent
-                locationType={filterLocType}
-                onLocationTypeChange={setFilterLocType}
-                from={filterFrom}
-                onFromChange={setFilterFrom}
-                to={filterTo}
-                onToChange={setFilterTo}
-                weight={filterWeight}
-                onWeightChange={setFilterWeight}
-                volume={filterVolume}
-                onVolumeChange={setFilterVolume}
-                executionDate={filterDate}
-                onExecutionDateChange={setFilterDate}
-                kind={filterKind}
-                onKindChange={setFilterKind}
-                sort={filterSort}
-                onSortChange={setFilterSort}
-                senderSelected={filterSender}
-                onSenderToggle={toggleSender}
-                carrierSelected={filterCarrier}
-                onCarrierToggle={toggleCarrier}
-                vehicleTypes={vehicleTypes?.data}
-                onClear={clearFilters}
-                onApply={applyFilters}
-              />
+              <ListingFilterContent {...filterProps} />
             </div>
           </aside>
 
@@ -275,7 +344,6 @@ export default function ListingsPage({
                   ))}
                 </div>
 
-                {/* Реклама 2 — показываем после первой страницы */}
                 {infiniteData &&
                   infiniteData.pages.length >= 1 &&
                   middleBanner && (
@@ -298,7 +366,6 @@ export default function ListingsPage({
                     </section>
                   )}
 
-                {/* Sentinel для infinite scroll */}
                 <div ref={sentinelRef} className='h-1' />
 
                 {isFetchingNextPage && (
@@ -321,7 +388,6 @@ export default function ListingsPage({
           </main>
         </div>
 
-        {/* Mobile filter drawer — triggered only by the lg:hidden button above */}
         {isMobile && (
           <Drawer
             open={isFilterOpen}
@@ -334,29 +400,7 @@ export default function ListingsPage({
             }}
           >
             <ListingFilterContent
-              locationType={filterLocType}
-              onLocationTypeChange={setFilterLocType}
-              from={filterFrom}
-              onFromChange={setFilterFrom}
-              to={filterTo}
-              onToChange={setFilterTo}
-              weight={filterWeight}
-              onWeightChange={setFilterWeight}
-              volume={filterVolume}
-              onVolumeChange={setFilterVolume}
-              executionDate={filterDate}
-              onExecutionDateChange={setFilterDate}
-              kind={filterKind}
-              onKindChange={setFilterKind}
-              sort={filterSort}
-              onSortChange={setFilterSort}
-              senderSelected={filterSender}
-              onSenderToggle={toggleSender}
-              carrierSelected={filterCarrier}
-              onCarrierToggle={toggleCarrier}
-              vehicleTypes={vehicleTypes?.data}
-              onClear={clearFilters}
-              onApply={applyFilters}
+              {...filterProps}
               onClose={() => setIsFilterOpen(false)}
               className='min-h-screen rounded-none'
             />

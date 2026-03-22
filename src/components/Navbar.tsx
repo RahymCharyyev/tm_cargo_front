@@ -117,7 +117,12 @@ export default function Navbar() {
 
           {/* Right: auth + language + mobile toggle */}
           <div className='flex items-center gap-3'>
-            {/* Desktop auth */}
+            {/* Desktop language (same breakpoint as main nav) */}
+            <div className='hidden lg:flex items-center shrink-0'>
+              <LanguageSwitcher />
+            </div>
+
+            {/* Desktop auth — только lg+, на планшетах/мобильных — в Drawer */}
             {isAuthenticated ? (
               <Dropdown
                 menu={{ items: userMenuItems }}
@@ -125,7 +130,7 @@ export default function Navbar() {
                 placement='bottomRight'
               >
                 <Button
-                  className='hidden md:flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
+                  className='hidden lg:flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
                   style={{ height: 40, paddingInline: 20 }}
                 >
                   <Image
@@ -143,7 +148,7 @@ export default function Navbar() {
             ) : (
               <Link href='/login'>
                 <Button
-                  className='hidden md:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
+                  className='hidden lg:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
                   style={{ height: 40, paddingInline: 20 }}
                 >
                   <Image
@@ -160,7 +165,7 @@ export default function Navbar() {
 
             <Link href={isAuthenticated ? '/listings/create' : '/login'}>
               <Button
-                className='hidden md:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
+                className='hidden lg:flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
                 style={{ height: 40, paddingInline: 20 }}
               >
                 <Image src='/Add Circle.svg' alt='' width={17} height={17} />
@@ -215,8 +220,8 @@ export default function Navbar() {
               {t('downloadApp')}
             </a>
 
-            <div className='mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2'>
-              <LanguageSwitcher />
+            <div className='mt-4 pt-4 border-t border-gray-100 flex flex-col gap-3'>
+              <LanguageSwitcher variant='drawer' />
 
               {!isAuthenticated ? (
                 <Link href='/login'>

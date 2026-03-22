@@ -4,16 +4,15 @@ import Script from 'next/script';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
 
-const GoogleAnalytics = ({ ga_id }) => {
+function GoogleAnalyticsInner({ ga_id }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (ga_id && pathname) {
-      const url =
-        pathname +
-        (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-
+    if (!ga_id || !pathname) return;
+    const url =
+      pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
       window.gtag('config', ga_id, {
         page_path: url,
       });
@@ -31,23 +30,29 @@ const GoogleAnalytics = ({ ga_id }) => {
         strategy='afterInteractive'
         dangerouslySetInnerHTML={{
           __html: `
-                        window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', '${ga_id}', {
-                            page_path: window.location.pathname,
-                        });
-                    `,
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${ga_id}', {
+              page_path: window.location.pathname + window.location.search,
+            });
+          `,
         }}
       />
     </>
   );
-};
+}
 
-export default function GoogleAnalyticsWithSuspense({ ga_id }) {
+export default function GoogleAnalytics() {
+  const ga_id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
+
+  if (!ga_id) {
+    return null;
+  }
+
   return (
     <Suspense fallback={null}>
-      <GoogleAnalytics ga_id={ga_id} />
+      <GoogleAnalyticsInner ga_id={ga_id} />
     </Suspense>
   );
 }

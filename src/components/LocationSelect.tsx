@@ -7,8 +7,8 @@ import { Select } from 'antd';
 import { useLocations, type LocationData } from '@/lib/hooks';
 
 interface Props {
-  value: string;
-  onChange: (id: string) => void;
+  value?: string;
+  onChange?: (id: string) => void;
   placeholder?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -70,7 +70,7 @@ export default function LocationSelect({
         filterOption: false,
         onSearch: setSearch,
       }}
-      onChange={(val) => onChange(val ?? '')}
+      onChange={(val) => onChange?.(val ?? '')}
       placeholder={placeholder || t('selectLocation')}
       loading={isFetching}
       className={className}

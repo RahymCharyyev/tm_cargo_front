@@ -88,3 +88,148 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom, #2B529B, #1a3d7a);
 }
+
+/* Auth split layout — antd inputs */
+.auth-split-form .ant-input,
+.auth-split-form .ant-input-affix-wrapper,
+.auth-split-form .ant-input-password {
+  background-color: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  min-height: 2.75rem;
+}
+
+.auth-split-form .ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
+}
+
+.auth-split-form .ant-input-affix-wrapper:focus,
+.auth-split-form .ant-input-affix-wrapper-focused,
+.auth-split-form .ant-input:focus,
+.auth-split-form .ant-input-focused {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+.auth-split-form .ant-segmented {
+  background: #e5e7eb !important;
+  border-radius: 9999px !important;
+  padding: 4px !important;
+}
+
+.auth-split-form .ant-segmented-item-selected {
+  background: #fff !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+.auth-split-primary-btn.ant-btn-primary {
+  height: 3rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  background: #1e3a8a !important;
+  border: none !important;
+  box-shadow: 0 12px 28px -12px rgba(30, 58, 138, 0.55) !important;
+}
+
+.auth-split-primary-btn.ant-btn-primary:hover {
+  background: #172554 !important;
+}
+
+.auth-split-outline-btn {
+  height: 3rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  border-color: #bfdbfe !important;
+  color: #1e3a8a !important;
+}
+
+.auth-split-outline-btn:hover {
+  border-color: #1e3a8a !important;
+  color: #172554 !important;
+}
+
+/* Create listing form — antd Select, DatePicker, InputNumber, TextArea, Upload */
+.create-listing-page-form .ant-select .ant-select-selector {
+  background-color: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  min-height: 2.75rem !important;
+  align-items: center !important;
+}
+
+.create-listing-page-form .ant-select-focused .ant-select-selector,
+.create-listing-page-form .ant-select-open .ant-select-selector {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+.create-listing-page-form .ant-picker {
+  background-color: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  width: 100%;
+  padding-block: 0.35rem;
+}
+
+.create-listing-page-form .ant-picker-focused {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+.create-listing-page-form .ant-input-number {
+  width: 100%;
+  background-color: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+}
+
+.create-listing-page-form .ant-input-number .ant-input-number-input {
+  background: transparent !important;
+}
+
+.create-listing-page-form .ant-input-number-focused {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+.create-listing-page-form .ant-input-number-group-addon {
+  background: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0 0.5rem 0.5rem 0 !important;
+}
+
+.create-listing-page-form textarea.ant-input {
+  background-color: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  min-height: 8rem;
+}
+
+.create-listing-page-form textarea.ant-input:focus {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
+.create-listing-page-form .ant-upload-select-picture-card {
+  background: #f1f5f9 !important;
+  border: 2px dashed #cbd5e1 !important;
+  border-radius: 0.75rem !important;
+}
+
+.create-listing-page-form .ant-form-item-label {
+  padding-bottom: 6px !important;
+}
+
+.create-listing-page-form .create-listing-loc .ant-select .ant-select-selector {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.create-listing-page-form .create-listing-loc .ant-select-focused .ant-select-selector {
+  box-shadow: none !important;
+}
+
+.create-listing-page-form .create-listing-loc-wrap:focus-within {
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}

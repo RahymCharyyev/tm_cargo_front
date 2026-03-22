@@ -5,8 +5,8 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useVehicleTypes, type VehicleType } from '@/lib/hooks';
 
 interface Props {
-  value: string;
-  onChange: (id: string) => void;
+  value?: string;
+  onChange?: (id: string) => void;
   placeholder?: string;
   className?: string;
   style?: React.CSSProperties;
@@ -29,7 +29,7 @@ export default function VehicleTypeSelect({ value, onChange, placeholder, classN
     <Select
       allowClear
       value={value || undefined}
-      onChange={(val) => onChange(val ?? '')}
+      onChange={(val) => onChange?.(val ?? '')}
       placeholder={placeholder || t('vehicleType')}
       options={options}
       className={className}

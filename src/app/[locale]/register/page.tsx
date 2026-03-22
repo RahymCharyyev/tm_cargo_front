@@ -11,13 +11,20 @@ import {
   useRegisterByPhone,
 } from '@/lib/hooks';
 import { Link, useRouter } from '@/i18n/navigation';
+import {
+  AuthFieldLabel,
+  AuthSplitShell,
+} from '@/components/auth/AuthSplitShell';
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
+  const tFooter = useTranslations('footer');
   const router = useRouter();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
   const [step, setStep] = useState<'input' | 'verify'>('input');
-  const [phoneStep, setPhoneStep] = useState<'input' | 'waiting' | 'complete'>('input');
+  const [phoneStep, setPhoneStep] = useState<'input' | 'waiting' | 'complete'>(
+    'input',
+  );
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -44,10 +51,19 @@ export default function RegisterPage() {
     );
   };
 
-  const handleEmailVerify = (values: { otp: string; fullName: string; password: string }) => {
+  const handleEmailVerify = (values: {
+    otp: string;
+    fullName: string;
+    password: string;
+  }) => {
     setError('');
     registerVerify.mutate(
-      { email, otp: values.otp, fullName: values.fullName, password: values.password },
+      {
+        email,
+        otp: values.otp,
+        fullName: values.fullName,
+        password: values.password,
+      },
       {
         onSuccess: () => router.push('/'),
         onError: (err) => setError(err.message),
@@ -81,7 +97,10 @@ export default function RegisterPage() {
     );
   };
 
-  const handlePhoneComplete = (values: { fullName: string; password: string }) => {
+  const handlePhoneComplete = (values: {
+    fullName: string;
+    password: string;
+  }) => {
     setError('');
     registerByPhone.mutate(
       { phone, fullName: values.fullName, password: values.password },
@@ -92,200 +111,267 @@ export default function RegisterPage() {
     );
   };
 
+  const termsFooter = (
+    <>
+      {t('authTermsContinue')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {t('authTermsOfService')}
+      </Link>{' '}
+      {t('authTermsAnd')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {tFooter('privacyPolicy')}
+      </Link>
+      .
+    </>
+  );
+
+  const secondaryLogin = (
+    <Link
+      href='/login'
+      className='flex h-12 w-full items-center justify-center rounded-lg border border-sky-200 bg-white text-xs font-semibold uppercase tracking-[0.08em] text-[#1e3a8a] transition-colors hover:border-[#1e3a8a] hover:bg-slate-50'
+    >
+      {t('loginBtn')}
+    </Link>
+  );
+
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] px-8 py-8 text-center">
-            <h1 className="text-2xl font-bold text-white">{t('registerTitle')}</h1>
-          </div>
+    <AuthSplitShell
+      formTitle={t('registerTitle')}
+      heroKicker={t('authHeroKicker')}
+      heroTitle={t('authHeroTitleRegister')}
+      heroSubtitle={t('authHeroSubtitleRegister')}
+      termsFooter={termsFooter}
+      footer={
+        <p className='text-center text-sm text-slate-600'>
+          {t('hasAccount')}{' '}
+          <Link
+            href='/login'
+            className='font-bold text-[#1e3a8a] hover:underline'
+          >
+            {t('loginBtn')}
+          </Link>
+        </p>
+      }
+    >
+      <div className='space-y-6'>
+        <Segmented
+          block
+          value={mode}
+          onChange={(v) => {
+            setMode(v as 'email' | 'phone');
+            setStep('input');
+            setPhoneStep('input');
+            setError('');
+            emailForm.resetFields();
+            verifyForm.resetFields();
+            phoneForm.resetFields();
+          }}
+          options={[
+            { value: 'email', label: t('useEmail') },
+            { value: 'phone', label: t('usePhone') },
+          ]}
+        />
 
-          <div className="p-8 space-y-5">
-            <Segmented
-              block
-              value={mode}
-              onChange={(v) => {
-                setMode(v as 'email' | 'phone');
-                setStep('input');
-                setPhoneStep('input');
-                setError('');
-                emailForm.resetFields();
-                verifyForm.resetFields();
-                phoneForm.resetFields();
-              }}
-              options={[
-                { value: 'email', label: t('useEmail') },
-                { value: 'phone', label: t('usePhone') },
-              ]}
-            />
-
-            {mode === 'email' ? (
-              step === 'input' ? (
-                <Form form={emailForm} layout="vertical" onFinish={handleEmailStep1}>
-                  <Form.Item
-                    label={t('emailLabel')}
-                    name="email"
-                    rules={[{ required: true, type: 'email' }]}
-                  >
-                    <Input type="email" placeholder="name@example.com" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+        {mode === 'email' ? (
+          step === 'input' ? (
+            <Form
+              form={emailForm}
+              layout='vertical'
+              onFinish={handleEmailStep1}
+              requiredMark={false}
+            >
+              <Form.Item
+                label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+                name='email'
+                rules={[{ required: true, type: 'email' }]}
+                className='mb-5'
+              >
+                <Input
+                  type='email'
+                  placeholder={t('placeholderEmailCompany')}
+                  size='large'
+                />
+              </Form.Item>
+              {error && (
+                <Alert type='error' title={error} showIcon className='mb-4' />
+              )}
+              <div className='flex flex-col gap-3'>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  block
+                  size='large'
+                  loading={registerEmail.isPending}
+                  className='auth-split-primary-btn'
+                >
+                  {t('sendOtpBtn')}
+                </Button>
+                {secondaryLogin}
+              </div>
+            </Form>
+          ) : (
+            <Form
+              form={verifyForm}
+              layout='vertical'
+              onFinish={handleEmailVerify}
+              requiredMark={false}
+            >
+              <Alert
+                type='info'
+                message={`${t('otpSent')} ${email}`}
+                showIcon
+                className='mb-5'
+              />
+              <Form.Item
+                label={<AuthFieldLabel>{t('otpLabel')}</AuthFieldLabel>}
+                name='otp'
+                rules={[{ required: true }]}
+                className='mb-4'
+              >
+                <Input placeholder='123456' size='large' />
+              </Form.Item>
+              <Form.Item
+                label={<AuthFieldLabel>{t('fullNameLabel')}</AuthFieldLabel>}
+                name='fullName'
+                rules={[{ required: true }]}
+                className='mb-4'
+              >
+                <Input placeholder={t('placeholderFullName')} size='large' />
+              </Form.Item>
+              <Form.Item
+                label={<AuthFieldLabel>{t('passwordLabel')}</AuthFieldLabel>}
+                name='password'
+                rules={[{ required: true }]}
+                className='mb-4'
+              >
+                <Input.Password placeholder='••••••••' size='large' />
+              </Form.Item>
+              {error && (
+                <Alert type='error' title={error} showIcon className='mb-4' />
+              )}
+              <div className='flex flex-col gap-3'>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  block
+                  size='large'
+                  loading={registerVerify.isPending}
+                  className='auth-split-primary-btn'
+                >
+                  {t('registerBtn')}
+                </Button>
+                {secondaryLogin}
+              </div>
+            </Form>
+          )
+        ) : (
+          <>
+            {phoneStep === 'input' && (
+              <Form
+                form={phoneForm}
+                layout='vertical'
+                onFinish={handlePhoneStep1}
+                requiredMark={false}
+              >
+                <Form.Item
+                  label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+                  name='phone'
+                  rules={[{ required: true }]}
+                  className='mb-5'
+                >
+                  <Input type='tel' placeholder='+993 6X XXXXXX' size='large' />
+                </Form.Item>
+                {error && (
+                  <Alert
+                    type='error'
+                    message={error}
+                    showIcon
+                    className='mb-4'
+                  />
+                )}
+                <div className='flex flex-col gap-3'>
                   <Button
-                    type="primary"
-                    htmlType="submit"
+                    type='primary'
+                    htmlType='submit'
                     block
-                    size="large"
-                    loading={registerEmail.isPending}
-                    style={{
-                      background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-                      border: 'none',
-                      borderRadius: 12,
-                      height: 48,
-                      fontWeight: 500,
-                    }}
+                    size='large'
+                    loading={isPhoneRegisterable.isPending}
+                    className='auth-split-primary-btn'
                   >
                     {t('sendOtpBtn')}
                   </Button>
-                </Form>
-              ) : (
-                <Form form={verifyForm} layout="vertical" onFinish={handleEmailVerify}>
+                  {secondaryLogin}
+                </div>
+              </Form>
+            )}
+
+            {phoneStep === 'waiting' && (
+              <div className='space-y-4 py-6 text-center'>
+                <Spin size='large' />
+                <p className='text-sm text-slate-600'>{t('phoneWaiting')}</p>
+              </div>
+            )}
+
+            {phoneStep === 'complete' && (
+              <Form
+                layout='vertical'
+                onFinish={handlePhoneComplete}
+                requiredMark={false}
+              >
+                <Alert
+                  type='success'
+                  message={`✓ ${t('phoneLabel')}: ${phone}`}
+                  showIcon
+                  className='mb-5'
+                />
+                <Form.Item
+                  label={<AuthFieldLabel>{t('fullNameLabel')}</AuthFieldLabel>}
+                  name='fullName'
+                  rules={[{ required: true }]}
+                  className='mb-4'
+                >
+                  <Input placeholder={t('placeholderFullName')} size='large' />
+                </Form.Item>
+                <Form.Item
+                  label={<AuthFieldLabel>{t('passwordLabel')}</AuthFieldLabel>}
+                  name='password'
+                  rules={[{ required: true }]}
+                  className='mb-4'
+                >
+                  <Input.Password placeholder='••••••••' size='large' />
+                </Form.Item>
+                {error && (
                   <Alert
-                    type="info"
-                    message={`${t('otpSent')} ${email}`}
+                    type='error'
+                    message={error}
                     showIcon
-                    className="mb-4"
+                    className='mb-4'
                   />
-                  <Form.Item
-                    label={t('otpLabel')}
-                    name="otp"
-                    rules={[{ required: true }]}
-                  >
-                    <Input placeholder="123456" size="large" />
-                  </Form.Item>
-                  <Form.Item
-                    label={t('fullNameLabel')}
-                    name="fullName"
-                    rules={[{ required: true }]}
-                  >
-                    <Input size="large" />
-                  </Form.Item>
-                  <Form.Item
-                    label={t('passwordLabel')}
-                    name="password"
-                    rules={[{ required: true }]}
-                  >
-                    <Input.Password placeholder="••••••••" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
+                )}
+                <div className='flex flex-col gap-3'>
                   <Button
-                    type="primary"
-                    htmlType="submit"
+                    type='primary'
+                    htmlType='submit'
                     block
-                    size="large"
-                    loading={registerVerify.isPending}
-                    style={{
-                      background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-                      border: 'none',
-                      borderRadius: 12,
-                      height: 48,
-                      fontWeight: 500,
-                    }}
+                    size='large'
+                    loading={registerByPhone.isPending}
+                    className='auth-split-primary-btn'
                   >
                     {t('registerBtn')}
                   </Button>
-                </Form>
-              )
-            ) : (
-              <>
-                {phoneStep === 'input' && (
-                  <Form form={phoneForm} layout="vertical" onFinish={handlePhoneStep1}>
-                    <Form.Item
-                      label={t('phoneLabel')}
-                      name="phone"
-                      rules={[{ required: true }]}
-                    >
-                      <Input type="tel" placeholder="+993 6X XXXXXX" size="large" />
-                    </Form.Item>
-                    {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      block
-                      size="large"
-                      loading={isPhoneRegisterable.isPending}
-                      style={{
-                        background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-                        border: 'none',
-                        borderRadius: 12,
-                        height: 48,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {t('sendOtpBtn')}
-                    </Button>
-                  </Form>
-                )}
-
-                {phoneStep === 'waiting' && (
-                  <div className="text-center py-8 space-y-4">
-                    <Spin size="large" />
-                    <p className="text-sm text-gray-600">{t('phoneWaiting')}</p>
-                  </div>
-                )}
-
-                {phoneStep === 'complete' && (
-                  <Form layout="vertical" onFinish={handlePhoneComplete}>
-                    <Alert
-                      type="success"
-                      message={`✓ ${t('phoneLabel')}: ${phone}`}
-                      showIcon
-                      className="mb-4"
-                    />
-                    <Form.Item
-                      label={t('fullNameLabel')}
-                      name="fullName"
-                      rules={[{ required: true }]}
-                    >
-                      <Input size="large" />
-                    </Form.Item>
-                    <Form.Item
-                      label={t('passwordLabel')}
-                      name="password"
-                      rules={[{ required: true }]}
-                    >
-                      <Input.Password placeholder="••••••••" size="large" />
-                    </Form.Item>
-                    {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      block
-                      size="large"
-                      loading={registerByPhone.isPending}
-                      style={{
-                        background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-                        border: 'none',
-                        borderRadius: 12,
-                        height: 48,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {t('registerBtn')}
-                    </Button>
-                  </Form>
-                )}
-              </>
+                  {secondaryLogin}
+                </div>
+              </Form>
             )}
-
-            <p className="text-center text-sm text-gray-500">
-              {t('hasAccount')}{' '}
-              <Link href="/login" className="text-[#3D7EF9] font-medium hover:underline">
-                {t('loginBtn')}
-              </Link>
-            </p>
-          </div>
-        </div>
+          </>
+        )}
       </div>
-    </div>
+    </AuthSplitShell>
   );
 }

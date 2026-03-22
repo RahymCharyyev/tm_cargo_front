@@ -5,16 +5,25 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLogin } from '@/lib/hooks';
 import { Link, useRouter } from '@/i18n/navigation';
+import {
+  AuthFieldLabel,
+  AuthSplitShell,
+} from '@/components/auth/AuthSplitShell';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
+  const tFooter = useTranslations('footer');
   const router = useRouter();
   const loginMutation = useLogin();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
   const [error, setError] = useState('');
   const [form] = Form.useForm();
 
-  const handleSubmit = (values: { email?: string; phone?: string; password: string }) => {
+  const handleSubmit = (values: {
+    email?: string;
+    phone?: string;
+    password: string;
+  }) => {
     setError('');
     loginMutation.mutate(
       mode === 'email'
@@ -27,98 +36,135 @@ export default function LoginPage() {
     );
   };
 
+  const termsFooter = (
+    <>
+      {t('authTermsContinue')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {t('authTermsOfService')}
+      </Link>{' '}
+      {t('authTermsAnd')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {tFooter('privacyPolicy')}
+      </Link>
+      .
+    </>
+  );
+
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] px-8 py-8 text-center">
-            <h1 className="text-2xl font-bold text-white">{t('loginTitle')}</h1>
-          </div>
+    <AuthSplitShell
+      formTitle={t('loginTitle')}
+      heroKicker={t('authHeroKicker')}
+      heroTitle={t('authHeroTitleLogin')}
+      heroSubtitle={t('authHeroSubtitleLogin')}
+      termsFooter={termsFooter}
+      footer={
+        <p className='text-center text-sm text-slate-600'>
+          {t('noAccount')}{' '}
+          <Link
+            href='/register'
+            className='font-bold text-[#1e3a8a] hover:underline'
+          >
+            {t('registerBtn')}
+          </Link>
+        </p>
+      }
+    >
+      <Form
+        form={form}
+        layout='vertical'
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <Form.Item className='mb-6'>
+          <Segmented
+            block
+            value={mode}
+            onChange={(v) => {
+              setMode(v as 'email' | 'phone');
+              form.resetFields();
+              setError('');
+            }}
+            options={[
+              { value: 'email', label: t('useEmail') },
+              { value: 'phone', label: t('usePhone') },
+            ]}
+          />
+        </Form.Item>
 
-          <div className="p-8">
-            <Form form={form} layout="vertical" onFinish={handleSubmit} className="space-y-0">
-              <Form.Item className="mb-5">
-                <Segmented
-                  block
-                  value={mode}
-                  onChange={(v) => {
-                    setMode(v as 'email' | 'phone');
-                    form.resetFields();
-                    setError('');
-                  }}
-                  options={[
-                    { value: 'email', label: t('useEmail') },
-                    { value: 'phone', label: t('usePhone') },
-                  ]}
-                />
-              </Form.Item>
+        {mode === 'email' ? (
+          <Form.Item
+            label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+            name='email'
+            rules={[{ required: true, type: 'email' }]}
+            className='mb-5'
+          >
+            <Input
+              type='email'
+              placeholder={t('placeholderEmailCompany')}
+              size='large'
+            />
+          </Form.Item>
+        ) : (
+          <Form.Item
+            label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+            name='phone'
+            rules={[{ required: true }]}
+            className='mb-5'
+          >
+            <Input type='tel' placeholder='+993 6X XXXXXX' size='large' />
+          </Form.Item>
+        )}
 
-              {mode === 'email' ? (
-                <Form.Item
-                  label={t('emailLabel')}
-                  name="email"
-                  rules={[{ required: true, type: 'email' }]}
-                >
-                  <Input type="email" placeholder="name@example.com" size="large" />
-                </Form.Item>
-              ) : (
-                <Form.Item
-                  label={t('phoneLabel')}
-                  name="phone"
-                  rules={[{ required: true }]}
-                >
-                  <Input type="tel" placeholder="+993 6X XXXXXX" size="large" />
-                </Form.Item>
-              )}
-
-              <Form.Item
-                label={t('passwordLabel')}
-                name="password"
-                rules={[{ required: true }]}
+        <Form.Item
+          label={
+            <div className='flex w-full items-center justify-between gap-3'>
+              <AuthFieldLabel>{t('passwordLabel')}</AuthFieldLabel>
+              <Link
+                href='/reset-password'
+                className='text-[11px] font-bold uppercase tracking-wide text-[#1e40af] hover:underline'
               >
-                <Input.Password placeholder="••••••••" size="large" />
-              </Form.Item>
+                {t('forgotPassword')}
+              </Link>
+            </div>
+          }
+          name='password'
+          rules={[{ required: true }]}
+          className='mb-2'
+        >
+          <Input.Password placeholder='••••••••' size='large' />
+        </Form.Item>
 
-              {error && (
-                <Form.Item>
-                  <Alert type="error" message={error} showIcon />
-                </Form.Item>
-              )}
+        {error && (
+          <Form.Item className='mb-4'>
+            <Alert type='error' title={error} showIcon />
+          </Form.Item>
+        )}
 
-              <Form.Item className="mb-4">
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  block
-                  size="large"
-                  loading={loginMutation.isPending}
-                  style={{
-                    background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-                    border: 'none',
-                    borderRadius: 12,
-                    height: 48,
-                    fontWeight: 500,
-                  }}
-                >
-                  {t('loginBtn')}
-                </Button>
-              </Form.Item>
-
-              <div className="text-center space-y-2 text-sm">
-                <Link href="/reset-password" className="block text-[#3D7EF9] hover:underline">
-                  {t('forgotPassword')}
-                </Link>
-                <p className="text-gray-500">
-                  {t('noAccount')}{' '}
-                  <Link href="/register" className="text-[#3D7EF9] font-medium hover:underline">
-                    {t('registerBtn')}
-                  </Link>
-                </p>
-              </div>
-            </Form>
-          </div>
+        <div className='mt-6 flex flex-col gap-3'>
+          <Button
+            type='primary'
+            htmlType='submit'
+            block
+            size='large'
+            loading={loginMutation.isPending}
+            className='auth-split-primary-btn'
+          >
+            {t('loginBtn')}
+          </Button>
+          <Link
+            href='/register'
+            className='flex h-12 w-full items-center justify-center rounded-lg border border-sky-200 bg-white text-xs font-semibold uppercase tracking-[0.08em] text-[#1e3a8a] transition-colors hover:border-[#1e3a8a] hover:bg-slate-50'
+          >
+            {t('registerBtn')}
+          </Link>
         </div>
-      </div>
-    </div>
+      </Form>
+    </AuthSplitShell>
   );
 }

@@ -327,7 +327,7 @@ export default function ListingsPage({
             open={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
             placement='left'
-            width='min(100vw, 400px)'
+            size='min(100vw, 400px)'
             styles={{
               body: { padding: 0, background: '#EAF2FC' },
               header: { display: 'none' },

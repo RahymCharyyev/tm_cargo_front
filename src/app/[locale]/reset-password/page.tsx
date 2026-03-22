@@ -10,9 +10,14 @@ import {
   useResetPasswordPhone,
 } from '@/lib/hooks';
 import { Link, useRouter } from '@/i18n/navigation';
+import {
+  AuthFieldLabel,
+  AuthSplitShell,
+} from '@/components/auth/AuthSplitShell';
 
 export default function ResetPasswordPage() {
   const t = useTranslations('auth');
+  const tFooter = useTranslations('footer');
   const router = useRouter();
   const [mode, setMode] = useState<'email' | 'phone'>('email');
   const [step, setStep] = useState<'input' | 'verify'>('input');
@@ -85,156 +90,219 @@ export default function ResetPasswordPage() {
     );
   };
 
-  const primaryButtonStyle = {
-    background: 'linear-gradient(to right, #3D7EF9, #2B529B)',
-    border: 'none',
-    borderRadius: 12,
-    height: 48,
-    fontWeight: 500,
-  };
+  const termsFooter = (
+    <>
+      {t('authTermsContinue')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {t('authTermsOfService')}
+      </Link>{' '}
+      {t('authTermsAnd')}{' '}
+      <Link
+        href='/privacy-policy'
+        className='font-semibold text-[#1e40af] hover:underline'
+      >
+        {tFooter('privacyPolicy')}
+      </Link>
+      .
+    </>
+  );
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-[#3D7EF9] to-[#2B529B] px-8 py-8 text-center">
-            <h1 className="text-2xl font-bold text-white">{t('resetPasswordTitle')}</h1>
-          </div>
+    <AuthSplitShell
+      formTitle={t('resetPasswordTitle')}
+      heroKicker={t('authHeroKicker')}
+      heroTitle={t('authHeroTitleReset')}
+      heroSubtitle={t('authHeroSubtitleReset')}
+      termsFooter={termsFooter}
+      footer={
+        <p className='text-center text-sm text-slate-600'>
+          <Link
+            href='/login'
+            className='font-bold text-[#1e3a8a] hover:underline'
+          >
+            ← {t('loginBtn')}
+          </Link>
+        </p>
+      }
+    >
+      <div className='space-y-6'>
+        <Segmented
+          block
+          value={mode}
+          onChange={(v) => {
+            setMode(v as 'email' | 'phone');
+            setStep('input');
+            setPhoneStep('input');
+            setError('');
+            setSuccess('');
+            emailForm.resetFields();
+            verifyForm.resetFields();
+            phoneForm.resetFields();
+            phonePassForm.resetFields();
+          }}
+          options={[
+            { value: 'email', label: t('useEmail') },
+            { value: 'phone', label: t('usePhone') },
+          ]}
+        />
 
-          <div className="p-8 space-y-5">
-            <Segmented
-              block
-              value={mode}
-              onChange={(v) => {
-                setMode(v as 'email' | 'phone');
-                setStep('input');
-                setPhoneStep('input');
-                setError('');
-                setSuccess('');
-                emailForm.resetFields();
-                verifyForm.resetFields();
-                phoneForm.resetFields();
-                phonePassForm.resetFields();
-              }}
-              options={[
-                { value: 'email', label: t('useEmail') },
-                { value: 'phone', label: t('usePhone') },
-              ]}
-            />
-
-            {mode === 'email' ? (
-              step === 'input' ? (
-                <Form form={emailForm} layout="vertical" onFinish={handleEmailStep1}>
-                  <Form.Item
-                    label={t('emailLabel')}
-                    name="email"
-                    rules={[{ required: true, type: 'email' }]}
-                  >
-                    <Input type="email" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                  {success && <Alert type="success" message={success} showIcon className="mb-4" />}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    block
-                    size="large"
-                    loading={resetPassword.isPending}
-                    style={primaryButtonStyle}
-                  >
-                    {t('sendOtpBtn')}
-                  </Button>
-                </Form>
-              ) : (
-                <Form form={verifyForm} layout="vertical" onFinish={handleEmailVerify}>
-                  <Alert
-                    type="info"
-                    message={`${t('otpSent')} ${email}`}
-                    showIcon
-                    className="mb-4"
-                  />
-                  <Form.Item
-                    label={t('otpLabel')}
-                    name="otp"
-                    rules={[{ required: true }]}
-                  >
-                    <Input size="large" />
-                  </Form.Item>
-                  <Form.Item
-                    label={t('enterNewPassword')}
-                    name="password"
-                    rules={[{ required: true }]}
-                  >
-                    <Input.Password placeholder="••••••••" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                  {success && <Alert type="success" message={success} showIcon className="mb-4" />}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    block
-                    size="large"
-                    loading={resetPasswordVerify.isPending}
-                    style={primaryButtonStyle}
-                  >
-                    {t('resetBtn')}
-                  </Button>
-                </Form>
-              )
-            ) : (
-              phoneStep === 'input' ? (
-                <Form form={phoneForm} layout="vertical" onFinish={handlePhoneStep1}>
-                  <Form.Item
-                    label={t('phoneLabel')}
-                    name="phone"
-                    rules={[{ required: true }]}
-                  >
-                    <Input type="tel" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    block
-                    size="large"
-                    loading={resetPhoneStart.isPending}
-                    style={primaryButtonStyle}
-                  >
-                    {t('sendOtpBtn')}
-                  </Button>
-                </Form>
-              ) : (
-                <Form form={phonePassForm} layout="vertical" onFinish={handlePhoneReset}>
-                  <Form.Item
-                    label={t('enterNewPassword')}
-                    name="password"
-                    rules={[{ required: true }]}
-                  >
-                    <Input.Password placeholder="••••••••" size="large" />
-                  </Form.Item>
-                  {error && <Alert type="error" message={error} showIcon className="mb-4" />}
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    block
-                    size="large"
-                    loading={resetPhone.isPending}
-                    style={primaryButtonStyle}
-                  >
-                    {t('resetBtn')}
-                  </Button>
-                </Form>
-              )
+        {mode === 'email' ? (
+          step === 'input' ? (
+            <Form
+              form={emailForm}
+              layout='vertical'
+              onFinish={handleEmailStep1}
+              requiredMark={false}
+            >
+              <Form.Item
+                label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+                name='email'
+                rules={[{ required: true, type: 'email' }]}
+                className='mb-5'
+              >
+                <Input
+                  type='email'
+                  placeholder={t('placeholderEmailCompany')}
+                  size='large'
+                />
+              </Form.Item>
+              {error && (
+                <Alert type='error' title={error} showIcon className='mb-4' />
+              )}
+              {success && (
+                <Alert
+                  type='success'
+                  message={success}
+                  showIcon
+                  className='mb-4'
+                />
+              )}
+              <Button
+                type='primary'
+                htmlType='submit'
+                block
+                size='large'
+                loading={resetPassword.isPending}
+                className='auth-split-primary-btn'
+              >
+                {t('sendOtpBtn')}
+              </Button>
+            </Form>
+          ) : (
+            <Form
+              form={verifyForm}
+              layout='vertical'
+              onFinish={handleEmailVerify}
+              requiredMark={false}
+            >
+              <Alert
+                type='info'
+                message={`${t('otpSent')} ${email}`}
+                showIcon
+                className='mb-5'
+              />
+              <Form.Item
+                label={<AuthFieldLabel>{t('otpLabel')}</AuthFieldLabel>}
+                name='otp'
+                rules={[{ required: true }]}
+                className='mb-4'
+              >
+                <Input size='large' />
+              </Form.Item>
+              <Form.Item
+                label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+                name='password'
+                rules={[{ required: true }]}
+                className='mb-4'
+              >
+                <Input.Password placeholder='••••••••' size='large' />
+              </Form.Item>
+              {error && (
+                <Alert type='error' message={error} showIcon className='mb-4' />
+              )}
+              {success && (
+                <Alert
+                  type='success'
+                  message={success}
+                  showIcon
+                  className='mb-4'
+                />
+              )}
+              <Button
+                type='primary'
+                htmlType='submit'
+                block
+                size='large'
+                loading={resetPasswordVerify.isPending}
+                className='auth-split-primary-btn'
+              >
+                {t('resetBtn')}
+              </Button>
+            </Form>
+          )
+        ) : phoneStep === 'input' ? (
+          <Form
+            form={phoneForm}
+            layout='vertical'
+            onFinish={handlePhoneStep1}
+            requiredMark={false}
+          >
+            <Form.Item
+              label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+              name='phone'
+              rules={[{ required: true }]}
+              className='mb-5'
+            >
+              <Input type='tel' size='large' />
+            </Form.Item>
+            {error && (
+              <Alert type='error' message={error} showIcon className='mb-4' />
             )}
-
-            <p className="text-center text-sm text-gray-500">
-              <Link href="/login" className="text-[#3D7EF9] font-medium hover:underline">
-                {t('loginBtn')}
-              </Link>
-            </p>
-          </div>
-        </div>
+            <Button
+              type='primary'
+              htmlType='submit'
+              block
+              size='large'
+              loading={resetPhoneStart.isPending}
+              className='auth-split-primary-btn'
+            >
+              {t('sendOtpBtn')}
+            </Button>
+          </Form>
+        ) : (
+          <Form
+            form={phonePassForm}
+            layout='vertical'
+            onFinish={handlePhoneReset}
+            requiredMark={false}
+          >
+            <Form.Item
+              label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+              name='password'
+              rules={[{ required: true }]}
+              className='mb-5'
+            >
+              <Input.Password placeholder='••••••••' size='large' />
+            </Form.Item>
+            {error && (
+              <Alert type='error' message={error} showIcon className='mb-4' />
+            )}
+            <Button
+              type='primary'
+              htmlType='submit'
+              block
+              size='large'
+              loading={resetPhone.isPending}
+              className='auth-split-primary-btn'
+            >
+              {t('resetBtn')}
+            </Button>
+          </Form>
+        )}
       </div>
-    </div>
+    </AuthSplitShell>
   );
 }

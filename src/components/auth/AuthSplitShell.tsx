@@ -107,7 +107,7 @@ export function AuthSplitShell({
       {/* Left — hero */}
       <div className='relative h-52 shrink-0 sm:h-64 lg:h-auto lg:min-h-dvh lg:w-1/2'>
         <Image
-          src='/truck.webp'
+          src='/truck_login.webp'
           alt=''
           fill
           priority

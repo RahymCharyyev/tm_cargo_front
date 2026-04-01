@@ -117,13 +117,13 @@ export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Var
     >
       <button
         type='button'
-        className='inline-flex h-10 items-center gap-2 rounded-full border border-[#2B5399]/25 bg-white px-3.5 text-sm font-semibold text-[#214076] shadow-sm transition hover:border-[#2B5399]/45 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3D7EF9]/40'
+        className='group inline-flex h-10 items-center gap-2 rounded-[15px] border-2 border-[#2B5399] bg-transparent px-5 text-sm font-semibold text-[#214076] transition hover:bg-[#2B5399] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3D7EF9]/40'
         aria-label='Language'
       >
-        <GlobalOutlined className='text-base text-[#2B5399]' />
+        <GlobalOutlined className='text-base' />
         <span className='tabular-nums'>{current.short}</span>
         <svg
-          className='h-3.5 w-3.5 text-slate-400'
+          className='h-3.5 w-3.5 text-current opacity-70 transition group-hover:opacity-100'
           fill='none'
           viewBox='0 0 24 24'
           stroke='currentColor'

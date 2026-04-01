@@ -121,9 +121,9 @@ export default function HomePage() {
                 <Link
                   key={cat.key}
                   href={cat.link}
-                  className={`relative ${cat.bgClass} rounded-[20px] sm:rounded-[30px] h-[120px] sm:h-[140px] p-4 sm:p-5 overflow-hidden hover:brightness-95 transition-all`}
+                  className={`relative ${cat.bgClass} rounded-[20px] sm:rounded-[30px] h-[120px] sm:h-[140px] p-4 sm:p-[15px] overflow-hidden hover:brightness-95 transition-all`}
                 >
-                  <span className='absolute z-10 left-4 top-4 sm:left-5 sm:top-5 text-[13px] sm:text-[16px] leading-[1.2] font-semibold text-white max-w-[66%] whitespace-nowrap'>
+                  <span className='absolute z-10 left-4 top-4 sm:left-[15px] sm:top-[15px] text-[13px] sm:text-[16px] leading-[1.2] font-semibold text-white max-w-[66%] whitespace-nowrap'>
                     {t(cat.key)}
                   </span>
 
@@ -137,7 +137,7 @@ export default function HomePage() {
                           className='object-contain object-left-bottom'
                         />
                       </div>
-                      <div className='absolute right-3 top-1/2 -translate-y-1/2 sm:right-4 w-[25%] h-[60%]'>
+                      <div className='absolute right-3 top-1/2 -translate-y-1/2 sm:right-[15px] w-[25%] h-[60%]'>
                         <Image
                           src={cat.secondaryImage}
                           alt=''
@@ -180,7 +180,7 @@ export default function HomePage() {
                           className='object-contain object-center'
                         />
                       </div>
-                      <div className='absolute right-3 bottom-2 sm:right-4 sm:bottom-3 w-[24%] h-[26%]'>
+                      <div className='absolute right-3 bottom-2 sm:right-[15px] sm:bottom-[15px] w-[24%] h-[26%]'>
                         <Image
                           src={cat.secondaryImage}
                           alt=''
@@ -201,7 +201,7 @@ export default function HomePage() {
                           className='object-contain object-center'
                         />
                       </div>
-                      <div className='absolute right-3 bottom-2 sm:right-4 sm:bottom-3 w-[28%] h-[24%]'>
+                      <div className='absolute right-3 bottom-2 sm:right-[15px] sm:bottom-[15px] w-[28%] h-[24%]'>
                         <Image
                           src={cat.secondaryImage}
                           alt=''

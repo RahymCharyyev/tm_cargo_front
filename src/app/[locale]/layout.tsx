@@ -85,7 +85,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} data-scroll-behavior='smooth'>
       <body className={`font-sans antialiased bg-[#E8F2FF]`}>
         <GoogleAnalytics />
         <YandexMetrika />

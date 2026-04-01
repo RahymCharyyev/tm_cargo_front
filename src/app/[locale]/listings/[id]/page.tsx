@@ -68,18 +68,25 @@ export default function ListingDetailPage({
   const [activeImg, setActiveImg] = useState(0);
   const [fullscreen, setFullscreen] = useState(false);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!fullscreen) return;
-    if (e.key === 'Escape') setFullscreen(false);
-    if (e.key === 'ArrowRight') setActiveImg((prev) => {
-      const imgs = listing?.images ?? [];
-      return imgs.length > 0 ? (prev + 1) % imgs.length : prev;
-    });
-    if (e.key === 'ArrowLeft') setActiveImg((prev) => {
-      const imgs = listing?.images ?? [];
-      return imgs.length > 0 ? (prev - 1 + imgs.length) % imgs.length : prev;
-    });
-  }, [fullscreen, listing?.images]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!fullscreen) return;
+      if (e.key === 'Escape') setFullscreen(false);
+      if (e.key === 'ArrowRight')
+        setActiveImg((prev) => {
+          const imgs = listing?.images ?? [];
+          return imgs.length > 0 ? (prev + 1) % imgs.length : prev;
+        });
+      if (e.key === 'ArrowLeft')
+        setActiveImg((prev) => {
+          const imgs = listing?.images ?? [];
+          return imgs.length > 0
+            ? (prev - 1 + imgs.length) % imgs.length
+            : prev;
+        });
+    },
+    [fullscreen, listing?.images],
+  );
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -281,8 +288,18 @@ export default function ListingDetailPage({
                       className='object-cover'
                     />
                     <div className='absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center'>
-                      <svg className='w-10 h-10 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7' />
+                      <svg
+                        className='w-10 h-10 text-white opacity-0 group-hover:opacity-80 transition-opacity drop-shadow-lg'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
+                          d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7'
+                        />
                       </svg>
                     </div>
                   </div>
@@ -388,17 +405,25 @@ export default function ListingDetailPage({
                 type='text'
                 shape='circle'
                 onClick={handleFavorite}
-                title={listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
+                title={
+                  listing.isFavorite ? t('removeFavorite') : t('addFavorite')
+                }
                 icon={
                   <svg
                     className='w-6 h-6'
                     fill={listing.isFavorite ? 'currentColor' : 'none'}
                     stroke='currentColor'
-                    style={{ color: listing.isFavorite ? '#ef4444' : '#9ca3af' }}
+                    style={{
+                      color: listing.isFavorite ? '#ef4444' : '#9ca3af',
+                    }}
                     viewBox='0 0 24 24'
                   >
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
-                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+                    />
                   </svg>
                 }
               />
@@ -501,8 +526,8 @@ export default function ListingDetailPage({
                         label={`${t('weight')}:`}
                         value={
                           listing.cargo.weight_kg >= 1000
-                            ? `${(listing.cargo.weight_kg / 1000).toFixed(listing.cargo.weight_kg % 1000 === 0 ? 0 : 1)} т`
-                            : `${listing.cargo.weight_kg} кг`
+                            ? `${(listing.cargo.weight_kg / 1000).toFixed(listing.cargo.weight_kg % 1000 === 0 ? 0 : 1)} ${t('tonn')}`
+                            : `${listing.cargo.weight_kg} ${t('kg')}`
                         }
                       />
                     )}
@@ -527,8 +552,8 @@ export default function ListingDetailPage({
                         label={`${t('weight')}:`}
                         value={
                           listing.vehicle.weight_kg >= 1000
-                            ? `${(listing.vehicle.weight_kg / 1000).toFixed(listing.vehicle.weight_kg % 1000 === 0 ? 0 : 1)} т`
-                            : `${listing.vehicle.weight_kg} кг`
+                            ? `${(listing.vehicle.weight_kg / 1000).toFixed(listing.vehicle.weight_kg % 1000 === 0 ? 0 : 1)} ${t('tonn')}`
+                            : `${listing.vehicle.weight_kg} ${t('kg')}`
                         }
                       />
                     )}
@@ -580,8 +605,8 @@ export default function ListingDetailPage({
                         label={`${t('weight')}:`}
                         value={
                           listing.load.weight_kg >= 1000
-                            ? `${(listing.load.weight_kg / 1000).toFixed(listing.load.weight_kg % 1000 === 0 ? 0 : 1)} т`
-                            : `${listing.load.weight_kg} кг`
+                            ? `${(listing.load.weight_kg / 1000).toFixed(listing.load.weight_kg % 1000 === 0 ? 0 : 1)} ${t('tonn')}`
+                            : `${listing.load.weight_kg} ${t('kg')}`
                         }
                       />
                     )}
@@ -667,7 +692,11 @@ export default function ListingDetailPage({
                     block
                     size='large'
                     icon={
-                      <svg className='w-5 h-5' fill='currentColor' viewBox='0 0 24 24'>
+                      <svg
+                        className='w-5 h-5'
+                        fill='currentColor'
+                        viewBox='0 0 24 24'
+                      >
                         <path d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' />
                       </svg>
                     }
@@ -692,12 +721,26 @@ export default function ListingDetailPage({
                     block
                     size='large'
                     icon={
-                      <svg className='w-5 h-5 text-[#2B529B]' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
-                          d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' />
+                      <svg
+                        className='w-5 h-5 text-[#2B529B]'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
+                          d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+                        />
                       </svg>
                     }
-                    style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
+                    style={{
+                      borderRadius: 20,
+                      height: 54,
+                      fontWeight: 600,
+                      fontSize: 16,
+                    }}
                   >
                     {t('writeEmail')}
                   </Button>
@@ -715,11 +758,20 @@ export default function ListingDetailPage({
                     stroke='currentColor'
                     viewBox='0 0 24 24'
                   >
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2'
-                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
+                    />
                   </svg>
                 }
-                style={{ borderRadius: 20, height: 54, fontWeight: 600, fontSize: 16 }}
+                style={{
+                  borderRadius: 20,
+                  height: 54,
+                  fontWeight: 600,
+                  fontSize: 16,
+                }}
               >
                 {listing.isFavorite ? t('removeFavorite') : t('addFavorite')}
               </Button>
@@ -739,8 +791,18 @@ export default function ListingDetailPage({
             onClick={() => setFullscreen(false)}
             className='absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
           >
-            <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
+            <svg
+              className='w-6 h-6'
+              fill='none'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M6 18L18 6M6 6l12 12'
+              />
             </svg>
           </button>
 
@@ -751,11 +813,25 @@ export default function ListingDetailPage({
             {images.length > 1 && (
               <button
                 type='button'
-                onClick={() => setActiveImg((prev) => (prev - 1 + images.length) % images.length)}
+                onClick={() =>
+                  setActiveImg(
+                    (prev) => (prev - 1 + images.length) % images.length,
+                  )
+                }
                 className='absolute left-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
               >
-                <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M15 19l-7-7 7-7' />
+                <svg
+                  className='w-6 h-6'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M15 19l-7-7 7-7'
+                  />
                 </svg>
               </button>
             )}
@@ -771,11 +847,23 @@ export default function ListingDetailPage({
             {images.length > 1 && (
               <button
                 type='button'
-                onClick={() => setActiveImg((prev) => (prev + 1) % images.length)}
+                onClick={() =>
+                  setActiveImg((prev) => (prev + 1) % images.length)
+                }
                 className='absolute right-4 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors'
               >
-                <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 5l7 7-7 7' />
+                <svg
+                  className='w-6 h-6'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M9 5l7 7-7 7'
+                  />
                 </svg>
               </button>
             )}
@@ -786,9 +874,14 @@ export default function ListingDetailPage({
               {images.map((img, idx) => (
                 <button
                   key={img.id}
-                  onClick={(e) => { e.stopPropagation(); setActiveImg(idx); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImg(idx);
+                  }}
                   className={`shrink-0 rounded-lg overflow-hidden border-2 transition-all ${
-                    idx === activeImg ? 'border-white scale-105' : 'border-transparent opacity-60 hover:opacity-100'
+                    idx === activeImg
+                      ? 'border-white scale-105'
+                      : 'border-transparent opacity-60 hover:opacity-100'
                   }`}
                 >
                   <Image

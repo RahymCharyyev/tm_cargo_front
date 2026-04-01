@@ -133,9 +133,10 @@ export default function ListingFilterContent({
   const subLabels = getSubcategoryLabels(category, t as (key: string) => string);
 
   return (
-    <section
-      className={`w-full rounded-[24px] bg-[#EAF2FC] p-4 sm:p-5 ${className ?? ''}`.trim()}
-    >
+    <>
+      <section
+        className={`filter-no-stroke w-full rounded-[24px] bg-[#EAF2FC] p-4 sm:p-5 ${className ?? ''}`.trim()}
+      >
       <div className="mb-5 flex items-center justify-between gap-4">
         <h2 className="flex items-center gap-2 text-[18px] font-semibold text-[#264A84]">
           <Image src="/Options.svg" alt="filter" width={24} height={24} />
@@ -219,7 +220,7 @@ export default function ListingFilterContent({
             placeholder={t('weightNotEntered')}
             min={0}
             step={0.1}
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: 40 }}
             onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
           />
         </div>
@@ -233,7 +234,7 @@ export default function ListingFilterContent({
             placeholder={t('volumeNotEntered')}
             min={0}
             step={0.1}
-            style={{ width: '100%' }}
+            style={{ width: '100%', height: 40 }}
             onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
           />
         </div>
@@ -309,6 +310,27 @@ export default function ListingFilterContent({
           {t('apply')}
         </Button>
       </div>
-    </section>
+      </section>
+      <style jsx global>{`
+        .filter-no-stroke .ant-select-selector,
+        .filter-no-stroke .ant-picker,
+        .filter-no-stroke .ant-input-number,
+        .filter-no-stroke .ant-input-number-affix-wrapper {
+          border: none !important;
+          box-shadow: none !important;
+        }
+
+        .filter-no-stroke .ant-select-focused .ant-select-selector,
+        .filter-no-stroke .ant-select-open .ant-select-selector,
+        .filter-no-stroke .ant-picker-focused,
+        .filter-no-stroke .ant-input-number-focused,
+        .filter-no-stroke .ant-input-number:hover,
+        .filter-no-stroke .ant-picker:hover,
+        .filter-no-stroke .ant-select:hover .ant-select-selector {
+          border: none !important;
+          box-shadow: none !important;
+        }
+      `}</style>
+    </>
   );
 }

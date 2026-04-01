@@ -80,9 +80,9 @@ export default function ListingCard({ listing, from }: Props) {
   const volumeM3 = listing.cargo?.volume_m3 ?? listing.vehicle?.volume_m3;
   const weightStr =
     weightKg != null
-      ? `${weightKg >= 1000 ? (weightKg / 1000).toFixed(0) : weightKg}${weightKg >= 1000 ? 'т' : ' кг'}`
-      : '—';
-  const volumeStr = volumeM3 != null ? `${volumeM3}м³` : '—';
+      ? `${weightKg >= 1000 ? (weightKg / 1000).toFixed(0) : weightKg}${weightKg >= 1000 ? t('tonn') : t('kg')}`
+      : null;
+  const volumeStr = volumeM3 != null ? `${volumeM3} ${t('m3')}` : null;
 
   const currencyLabel = listing.currency
     ? currencySymbols[listing.currency]
@@ -90,7 +90,7 @@ export default function ListingCard({ listing, from }: Props) {
   const priceStr =
     listing.price != null
       ? `${listing.price.toLocaleString()} ${currencyLabel}`
-      : '—';
+      : t('notSpecified');
 
   return (
     <Link
@@ -117,12 +117,13 @@ export default function ListingCard({ listing, from }: Props) {
         </div>
 
         <div className='px-4 pt-3 pb-4 flex flex-col flex-1 text-[15px] leading-[1.6]'>
-          <h3 className='text-[18px] font-bold text-black mb-2 line-clamp-1'>
+          <h3 className='text-[18px] font-medium text-black mb-2 line-clamp-1'>
             {listing.title}
           </h3>
 
-          {/* Route with flags */}
-          <div className='flex items-center gap-1.5 mb-2 text-black'>
+          <div className='flex flex-col gap-[15px]'>
+            {/* Route with flags */}
+            <div className='flex items-center gap-1.5 text-black'>
             <Image
               src={'/Location.svg'}
               alt=''
@@ -158,45 +159,56 @@ export default function ListingCard({ listing, from }: Props) {
               <span className='w-2 h-2 rounded-full bg-blue-500 shrink-0' />
             )}
             <span className='truncate'>{toName}</span>
+            </div>
+
+            {/* Категория: название и тип */}
+            <div className='flex gap-1'>
+              <span className='text-[#4D4D4D]'>{t('categoryLabel')}:</span>
+              <span className='text-black ml-1 font-medium'>{categoryName}</span>
+              <span className='text-[#B3B3B3]'>|</span>
+              <span className='text-black font-medium'>
+                {t(listing.type + 'ListingType')}
+              </span>
+            </div>
+
+            {/* Вес | Объём | Дата — названия и значения */}
+            <div className='flex items-center flex-wrap gap-x-1.5'>
+              {weightStr && (
+                <>
+                  <span className='text-[#4D4D4D]'>{t('weightShort')}:</span>
+                  <span className='text-black font-medium'>{weightStr}</span>
+                  <span className='text-[#B3B3B3]'>|</span>
+                </>
+              )}
+              {volumeStr && (
+                <>
+                  <span className='text-[#4D4D4D]'>{t('volumeShort')}:</span>
+                  <span className='text-black font-medium'>{volumeStr}</span>
+                  <span className='text-[#B3B3B3]'>|</span>
+                </>
+              )}
+              <span className='text-[#4D4D4D]'>{t('date')}:</span>
+              <span className='text-black font-medium'>{dateDisplay}</span>
+            </div>
           </div>
 
-          {/* Категория: название и тип */}
-          <div className='mb-2 flex gap-1'>
-            <span className='text-[#4D4D4D]'>{t('categoryLabel')}:</span>
-            <span className='text-black ml-1 font-medium'>{categoryName}</span>
-            <span className='text-[#B3B3B3]'>|</span>
-            <span className='text-black font-medium'>
-              {t(listing.type + 'ListingType')}
-            </span>
-          </div>
-
-          {/* Вес | Объём | Дата — названия и значения */}
-          <div className='flex items-center flex-wrap gap-x-1.5 mb-3'>
-            <span className='text-[#4D4D4D]'>{t('weightShort')}:</span>
-            <span className='text-black font-medium'>{weightStr}</span>
-            <span className='text-[#B3B3B3]'>|</span>
-            <span className='text-[#4D4D4D]'>{t('volumeShort')}:</span>
-            <span className='text-black font-medium'>{volumeStr}</span>
-            <span className='text-[#B3B3B3]'>|</span>
-            <span className='text-[#4D4D4D]'>{t('date')}:</span>
-            <span className='text-black font-medium'>{dateDisplay}</span>
-          </div>
-
-          {/* Цена: название и значение */}
-          <div className='mt-auto mb-1'>
-            <span className='text-[#4D4D4D]'>{t('priceLabel')}:</span>
-            <span className='text-black font-bold ml-1'>{priceStr}</span>
-          </div>
-          {/* Выставлено: Сегодня / дата */}
-          <div>
-            <span className='text-[#4D4D4D]'>{t('postedLabel')}:</span>
-            <span className='text-black ml-1'>
-              {isToday ? t('today') : dateDisplay}
-            </span>
-          </div>
-          <div>
-            <span className='text-[#4D4D4D]'>{t('authorLabel')}:</span>
-            <span className='text-black ml-1'>{senderName}</span>
+          <div className='mt-auto flex flex-col gap-[15px]'>
+            {/* Цена: название и значение */}
+            <div>
+              <span className='text-[#4D4D4D]'>{t('priceLabel')}:</span>
+              <span className='text-black font-medium ml-1'>{priceStr}</span>
+            </div>
+            {/* Выставлено: Сегодня / дата */}
+            <div>
+              <span className='text-[#4D4D4D]'>{t('postedLabel')}:</span>
+              <span className='text-black ml-1'>
+                {isToday ? t('today') : dateDisplay}
+              </span>
+            </div>
+            <div>
+              <span className='text-[#4D4D4D]'>{t('authorLabel')}:</span>
+              <span className='text-black ml-1'>{senderName}</span>
+            </div>
           </div>
         </div>
       </div>

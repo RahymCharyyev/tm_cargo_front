@@ -64,6 +64,8 @@ export default function LoginPage() {
       formTitle={t('loginTitle')}
       heroTitle={t('authHeroTitleLogin')}
       heroSubtitle={t('authHeroSubtitleLogin')}
+      showHeroOverlay={false}
+      showHeroText={false}
       termsFooter={termsFooter}
       footer={
         <p className='text-center text-sm text-slate-600'>

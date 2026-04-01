@@ -137,15 +137,15 @@ export default function Navbar() {
                   placement='bottomRight'
                 >
                   <Button
-                    className='!flex items-center gap-2 !border-[#2B5399] !text-[#171717] !rounded-full !font-semibold'
+                    className='group !flex items-center gap-2 !border-2 !border-[#2B5399] !bg-transparent !text-[#171717] !rounded-[15px] !font-semibold hover:!bg-[#2B5399] hover:!text-white'
                     style={{ height: 40, paddingInline: 20 }}
                   >
                     <Image
                       src='/Person.svg'
                       alt=''
-                      width={17}
-                      height={17}
-                      className='opacity-80'
+                      width={10}
+                      height={10}
+                      className='transition group-hover:brightness-0 group-hover:invert'
                     />
                     <span className='max-w-[120px] truncate'>
                       {user?.phone || user?.email || user?.fullName || 'User'}
@@ -156,27 +156,36 @@ export default function Navbar() {
             ) : (
               <Link href='/login' className='hidden lg:block'>
                 <Button
-                  className='!flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold'
+                  className='group !flex items-center gap-2 !border-2 !border-[#2B5399] !bg-transparent !rounded-[15px] !font-semibold hover:!bg-[#2B5399] hover:!text-white'
                   style={{ height: 40, paddingInline: 20 }}
                 >
                   <Image
                     src='/Person.svg'
                     alt=''
-                    width={17}
-                    height={17}
-                    className='opacity-80'
+                    width={12}
+                    height={12}
+                    className='transition group-hover:brightness-0 group-hover:invert'
                   />
                   {t('loginAndRegister')}
                 </Button>
               </Link>
             )}
 
-            <Link href={isAuthenticated ? '/listings/create' : '/login'} className='hidden lg:block'>
+            <Link
+              href={isAuthenticated ? '/listings/create' : '/login'}
+              className='hidden lg:block'
+            >
               <Button
-                className='!flex items-center gap-2 !border-2 !border-[#2B5399] !rounded-[15px] !font-semibold shadow-sm'
+                className='group !flex items-center gap-2 !border-2 !border-[#2B5399] !bg-transparent !rounded-[15px] !font-semibold shadow-sm hover:!bg-[#2B5399] hover:!text-white'
                 style={{ height: 40, paddingInline: 20 }}
               >
-                <Image src='/Add Circle.svg' alt='' width={17} height={17} />
+                <Image
+                  src='/Add Circle.svg'
+                  alt=''
+                  width={17}
+                  height={17}
+                  className='transition group-hover:brightness-0 group-hover:invert'
+                />
                 {t('placeAd')}
               </Button>
             </Link>

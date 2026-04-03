@@ -94,7 +94,7 @@ export default function LanguageSwitcher({
       >
         <button
           type='button'
-          className='inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:bg-white/20 hover:text-white focus:outline-none'
+          className='inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-[16px] font-medium text-white/90 transition-colors hover:bg-white/20 hover:text-white focus:outline-none'
           aria-label='Language'
         >
           <GlobalOutlined className='text-sm' />

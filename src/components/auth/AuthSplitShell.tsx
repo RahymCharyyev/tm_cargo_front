@@ -37,11 +37,11 @@ function AuthGlassHeader() {
         className='mx-3 mt-3 rounded-2xl border border-white/20 px-4 py-3 sm:mx-5 sm:mt-4 sm:px-6'
         style={{
           background:
-            'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%)',
+            'linear-gradient(135deg, rgba(15,23,42,0.42) 0%, rgba(15,23,42,0.28) 100%)',
           backdropFilter: 'blur(20px) saturate(1.4)',
           WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
           boxShadow:
-            '0 8px 32px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.2)',
+            '0 10px 36px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.14)',
         }}
       >
         <div className='flex items-center justify-between gap-6'>
@@ -58,7 +58,7 @@ function AuthGlassHeader() {
           <nav className='hidden sm:flex items-center gap-1 ml-auto'>
             <Link
               href='/'
-              className='flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white'
+              className='flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[16px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white'
             >
               <svg
                 className='w-3.5 h-3.5 opacity-80'
@@ -77,7 +77,7 @@ function AuthGlassHeader() {
             </Link>
             <a
               href='/download'
-              className='flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white'
+              className='flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[16px] font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white'
             >
               <Image
                 src='/Arrow Download.svg'

@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Form, Input, Segmented, Space } from 'antd';
+import { Alert, Button, Form, Input, Segmented } from 'antd';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import {
@@ -98,24 +98,22 @@ export default function ResetPasswordPage() {
         href='/privacy-policy'
         className='font-semibold text-[#1e40af] hover:underline'
       >
-        {t('authTermsOfService')}
-      </Link>{' '}
-      {t('authTermsAnd')}{' '}
-      <Link
-        href='/privacy-policy'
-        className='font-semibold text-[#1e40af] hover:underline'
-      >
         {tFooter('privacyPolicy')}
       </Link>
       .
     </>
   );
 
+  const inputClass = '!h-[46px] !rounded-[15px]';
+
   return (
     <AuthSplitShell
       formTitle={t('resetPasswordTitle')}
       heroTitle={t('authHeroTitleReset')}
       heroSubtitle={t('authHeroSubtitleReset')}
+      showHeroOverlay={false}
+      showHeroText={false}
+      formPaneClassName='!bg-[#E8F2FF] lg:!bg-[#E8F2FF]'
       termsFooter={termsFooter}
       footer={
         <p className='text-center text-sm text-slate-600'>
@@ -128,8 +126,9 @@ export default function ResetPasswordPage() {
         </p>
       }
     >
-      <div className='space-y-6'>
+      <div className='mb-6'>
         <Segmented
+          className='login-mode-segmented'
           block
           value={mode}
           onChange={(v) => {
@@ -148,38 +147,44 @@ export default function ResetPasswordPage() {
             { value: 'phone', label: t('usePhone') },
           ]}
         />
+      </div>
 
-        {mode === 'email' ? (
-          step === 'input' ? (
-            <Form
-              form={emailForm}
-              layout='vertical'
-              onFinish={handleEmailStep1}
-              requiredMark={false}
+      {mode === 'email' ? (
+        step === 'input' ? (
+          <Form
+            form={emailForm}
+            className='auth-pane-form'
+            layout='vertical'
+            onFinish={handleEmailStep1}
+            requiredMark={false}
+          >
+            <Form.Item
+              label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+              name='email'
+              rules={[
+                { required: true, message: t('validationEmailRequired') },
+                { type: 'email', message: t('validationEmailInvalid') },
+              ]}
+              className='mb-5'
             >
-              <Form.Item
-                label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
-                name='email'
-                rules={[{ required: true, type: 'email' }]}
-                className='mb-5'
-              >
-                <Input
-                  type='email'
-                  placeholder={t('placeholderEmailCompany')}
-                  size='large'
-                />
+              <Input
+                type='email'
+                placeholder={t('placeholderEmailCompany')}
+                size='large'
+                className={inputClass}
+              />
+            </Form.Item>
+            {error && (
+              <Form.Item className='mb-4'>
+                <Alert type='error' title={error} showIcon />
               </Form.Item>
-              {error && (
-                <Alert type='error' title={error} showIcon className='mb-4' />
-              )}
-              {success && (
-                <Alert
-                  type='success'
-                  message={success}
-                  showIcon
-                  className='mb-4'
-                />
-              )}
+            )}
+            {success && (
+              <Form.Item className='mb-4'>
+                <Alert type='success' message={success} showIcon />
+              </Form.Item>
+            )}
+            <div className='mt-[25px]'>
               <Button
                 type='primary'
                 htmlType='submit'
@@ -190,47 +195,55 @@ export default function ResetPasswordPage() {
               >
                 {t('sendOtpBtn')}
               </Button>
-            </Form>
-          ) : (
-            <Form
-              form={verifyForm}
-              layout='vertical'
-              onFinish={handleEmailVerify}
-              requiredMark={false}
+            </div>
+          </Form>
+        ) : (
+          <Form
+            form={verifyForm}
+            className='auth-pane-form'
+            layout='vertical'
+            onFinish={handleEmailVerify}
+            requiredMark={false}
+          >
+            <Alert
+              type='info'
+              message={`${t('otpSent')} ${email}`}
+              showIcon
+              className='mb-5'
+            />
+            <Form.Item
+              label={<AuthFieldLabel>{t('otpLabel')}</AuthFieldLabel>}
+              name='otp'
+              rules={[{ required: true, message: t('validationOtpRequired') }]}
+              className='mb-4'
             >
-              <Alert
-                type='info'
-                message={`${t('otpSent')} ${email}`}
-                showIcon
-                className='mb-5'
+              <Input placeholder='123456' size='large' className={inputClass} />
+            </Form.Item>
+            <Form.Item
+              label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+              name='password'
+              rules={[
+                { required: true, message: t('validationPasswordRequired') },
+              ]}
+              className='mb-4'
+            >
+              <Input.Password
+                placeholder='••••••••'
+                size='large'
+                className={inputClass}
               />
-              <Form.Item
-                label={<AuthFieldLabel>{t('otpLabel')}</AuthFieldLabel>}
-                name='otp'
-                rules={[{ required: true }]}
-                className='mb-4'
-              >
-                <Input size='large' />
+            </Form.Item>
+            {error && (
+              <Form.Item className='mb-4'>
+                <Alert type='error' title={error} showIcon />
               </Form.Item>
-              <Form.Item
-                label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
-                name='password'
-                rules={[{ required: true }]}
-                className='mb-4'
-              >
-                <Input.Password placeholder='••••••••' size='large' />
+            )}
+            {success && (
+              <Form.Item className='mb-4'>
+                <Alert type='success' message={success} showIcon />
               </Form.Item>
-              {error && (
-                <Alert type='error' message={error} showIcon className='mb-4' />
-              )}
-              {success && (
-                <Alert
-                  type='success'
-                  message={success}
-                  showIcon
-                  className='mb-4'
-                />
-              )}
+            )}
+            <div className='mt-[25px]'>
               <Button
                 type='primary'
                 htmlType='submit'
@@ -241,31 +254,37 @@ export default function ResetPasswordPage() {
               >
                 {t('resetBtn')}
               </Button>
-            </Form>
-          )
-        ) : phoneStep === 'input' ? (
-          <Form
-            form={phoneForm}
-            layout='vertical'
-            onFinish={handlePhoneStep1}
-            requiredMark={false}
+            </div>
+          </Form>
+        )
+      ) : phoneStep === 'input' ? (
+        <Form
+          form={phoneForm}
+          className='auth-pane-form'
+          layout='vertical'
+          onFinish={handlePhoneStep1}
+          requiredMark={false}
+        >
+          <Form.Item
+            label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+            name='phone'
+            rules={[{ required: true, message: t('validationPhoneRequired') }]}
+            className='mb-5'
           >
-            <Form.Item
-              label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
-              name='phone'
-              rules={[{ required: true }]}
-              className='mb-5'
-            >
-              <Input
-                prefix='+993'
-                type='tel'
-                placeholder='6X XXXXXX'
-                size='large'
-              />
+            <Input
+              prefix='+993'
+              type='tel'
+              placeholder='6X XXXXXX'
+              size='large'
+              className={inputClass}
+            />
+          </Form.Item>
+          {error && (
+            <Form.Item className='mb-4'>
+              <Alert type='error' title={error} showIcon />
             </Form.Item>
-            {error && (
-              <Alert type='error' message={error} showIcon className='mb-4' />
-            )}
+          )}
+          <div className='mt-[25px]'>
             <Button
               type='primary'
               htmlType='submit'
@@ -276,25 +295,34 @@ export default function ResetPasswordPage() {
             >
               {t('sendOtpBtn')}
             </Button>
-          </Form>
-        ) : (
-          <Form
-            form={phonePassForm}
-            layout='vertical'
-            onFinish={handlePhoneReset}
-            requiredMark={false}
+          </div>
+        </Form>
+      ) : (
+        <Form
+          form={phonePassForm}
+          className='auth-pane-form'
+          layout='vertical'
+          onFinish={handlePhoneReset}
+          requiredMark={false}
+        >
+          <Form.Item
+            label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+            name='password'
+            rules={[{ required: true, message: t('validationPasswordRequired') }]}
+            className='mb-5'
           >
-            <Form.Item
-              label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
-              name='password'
-              rules={[{ required: true }]}
-              className='mb-5'
-            >
-              <Input.Password placeholder='••••••••' size='large' />
+            <Input.Password
+              placeholder='••••••••'
+              size='large'
+              className={inputClass}
+            />
+          </Form.Item>
+          {error && (
+            <Form.Item className='mb-4'>
+              <Alert type='error' title={error} showIcon />
             </Form.Item>
-            {error && (
-              <Alert type='error' message={error} showIcon className='mb-4' />
-            )}
+          )}
+          <div className='mt-[25px]'>
             <Button
               type='primary'
               htmlType='submit'
@@ -305,9 +333,9 @@ export default function ResetPasswordPage() {
             >
               {t('resetBtn')}
             </Button>
-          </Form>
-        )}
-      </div>
+          </div>
+        </Form>
+      )}
     </AuthSplitShell>
   );
 }

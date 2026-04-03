@@ -116,7 +116,7 @@ export default function ListingCard({ listing, from }: Props) {
           )}
         </div>
 
-        <div className='px-4 pt-3 pb-4 flex flex-col flex-1 text-[15px] leading-[1.6]'>
+        <div className='px-4 pt-3 pb-4 flex flex-col gap-4 flex-1 text-[15px] leading-normal'>
           <h3 className='text-[18px] font-medium text-black mb-2 line-clamp-1'>
             {listing.title}
           </h3>

@@ -70,7 +70,7 @@
     "upload": "Загрузить изображение"
   },
   "auth": {
-    "loginTitle": "Вход",
+    "loginTitle": "Войти в аккаунт",
     "registerTitle": "Регистрация",
     "resetPasswordTitle": "Сброс пароля",
     "emailLabel": "Email",
@@ -103,11 +103,17 @@
     "authHeroTitleReset": "Восстановление доступа.",
     "authHeroSubtitleReset": "Безопасно сбросьте пароль и продолжайте работу с объявлениями.",
     "authFormKickerReset": "БЕЗОПАСНОСТЬ АККАУНТА",
-    "authTermsContinue": "Продолжая, вы соглашаетесь с нашими",
+    "authTermsContinue": "Продолжая, вы соглашаетесь с нашей",
     "authTermsOfService": "Условиями",
     "authTermsAnd": "и",
     "placeholderFullName": "Введите полное имя",
-    "placeholderEmailCompany": "name@company.com"
+    "placeholderEmailCompany": "name@example.com",
+    "validationEmailRequired": "Укажите email",
+    "validationEmailInvalid": "Введите корректный email",
+    "validationPasswordRequired": "Введите пароль",
+    "validationPhoneRequired": "Укажите номер телефона",
+    "validationOtpRequired": "Введите код подтверждения",
+    "validationFullNameRequired": "Введите полное имя"
   },
   "listing": {
     "title": "Название",

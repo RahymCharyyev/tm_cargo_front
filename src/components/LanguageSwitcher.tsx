@@ -14,7 +14,11 @@ const locales = [
 
 type Variant = 'navbar' | 'drawer' | 'glass';
 
-export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Variant }) {
+export default function LanguageSwitcher({
+  variant = 'navbar',
+}: {
+  variant?: Variant;
+}) {
   const tNav = useTranslations('nav');
   const router = useRouter();
   const pathname = usePathname();
@@ -95,8 +99,19 @@ export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Var
         >
           <GlobalOutlined className='text-sm' />
           <span className='tabular-nums'>{current.short}</span>
-          <svg className='h-3 w-3 opacity-70' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden>
-            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 9l-7 7-7-7' />
+          <svg
+            className='h-3 w-3 opacity-70'
+            fill='none'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+            aria-hidden
+          >
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={2}
+              d='M19 9l-7 7-7-7'
+            />
           </svg>
         </button>
       </Dropdown>
@@ -117,13 +132,15 @@ export default function LanguageSwitcher({ variant = 'navbar' }: { variant?: Var
     >
       <button
         type='button'
-        className='group inline-flex h-10 items-center gap-2 rounded-[15px] border-2 border-[#2B5399] bg-transparent px-5 text-sm font-semibold text-[#214076] transition hover:bg-[#2B5399] hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3D7EF9]/40'
+        className='group inline-flex h-10 cursor-pointer items-center gap-2 rounded-[15px] border-2 border-[#2B5399] bg-transparent px-5 text-sm font-semibold transition hover:bg-[#2B5399] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3D7EF9]/40'
         aria-label='Language'
       >
-        <GlobalOutlined className='text-base' />
-        <span className='tabular-nums'>{current.short}</span>
+        <GlobalOutlined className='text-base transition lang-btn-icon' />
+        <span className='tabular-nums transition lang-btn-text'>
+          {current.short}
+        </span>
         <svg
-          className='h-3.5 w-3.5 text-current opacity-70 transition group-hover:opacity-100'
+          className='h-3.5 w-3.5 opacity-70 transition lang-btn-icon group-hover:opacity-100'
           fill='none'
           viewBox='0 0 24 24'
           stroke='currentColor'

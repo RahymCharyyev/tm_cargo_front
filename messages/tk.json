@@ -107,7 +107,13 @@
     "authTermsOfService": "Ulanyş şertleri",
     "authTermsAnd": "we",
     "placeholderFullName": "Doly adyňyzy giriziň",
-    "placeholderEmailCompany": "name@company.com"
+    "placeholderEmailCompany": "name@example.com",
+    "validationEmailRequired": "Email giriziň",
+    "validationEmailInvalid": "Dogry email giriziň",
+    "validationPasswordRequired": "Açar sözüňizi giriziň",
+    "validationPhoneRequired": "Telefon belginizi giriziň",
+    "validationOtpRequired": "Tassyklama kodyny giriziň",
+    "validationFullNameRequired": "Doly adyňyzy giriziň"
   },
   "listing": {
     "title": "Ady",

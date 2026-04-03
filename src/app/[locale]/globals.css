@@ -81,12 +81,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #3D7EF9, #2B529B);
+  background: linear-gradient(to bottom, #3d7ef9, #2b529b);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #2B529B, #1a3d7a);
+  background: linear-gradient(to bottom, #2b529b, #1a3d7a);
 }
 
 /* Auth split layout — antd inputs */
@@ -95,8 +95,7 @@ html {
 .auth-split-form .ant-input-password {
   background-color: #e5e7eb !important;
   border: none !important;
-  border-radius: 0.5rem !important;
-  min-height: 2.75rem;
+  border-radius: 15px !important;
 }
 
 .auth-split-form .ant-input-affix-wrapper .ant-input {
@@ -117,29 +116,76 @@ html {
 }
 
 .auth-split-form .ant-segmented-item-selected {
-  background: #fff !important;
+  background: #2f5aa6 !important;
   border-radius: 9999px !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: none !important;
+}
+
+.auth-split-form .ant-segmented-item-selected .ant-segmented-item-label {
+  color: #fff !important;
+}
+
+/* Auth flow panes (login, register, reset) — white inputs on tinted pane */
+.auth-split-form .auth-pane-form .ant-input,
+.auth-split-form .auth-pane-form .ant-input-affix-wrapper,
+.auth-split-form .auth-pane-form .ant-input-password {
+  background-color: #fff !important;
+}
+
+.auth-split-form .login-mode-segmented.ant-segmented {
+  background: #fff !important;
+  height: 40px !important;
+  padding: 3px !important;
+}
+
+.auth-split-form .login-mode-segmented.ant-segmented .ant-segmented-group {
+  height: 100% !important;
+}
+
+.auth-split-form .login-mode-segmented.ant-segmented .ant-segmented-item {
+  min-height: 34px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.auth-split-form .auth-pane-form .login-password-row.ant-form-item {
+  margin-bottom: 8px !important;
+}
+
+.auth-split-form .auth-pane-form .login-password-row .ant-form-item-label {
+  padding-bottom: 6px !important;
+}
+
+.auth-split-form .login-register-link.auth-split-outline-btn,
+.auth-split-form .auth-outline-cta.auth-split-outline-btn {
+  background-color: #fff !important;
+}
+
+.auth-split-form .login-register-link.auth-split-outline-btn:hover,
+.auth-split-form .auth-outline-cta.auth-split-outline-btn:hover {
+  background-color: #2b5399 !important;
+  border-color: #2b5399 !important;
+  color: #fff !important;
 }
 
 .auth-split-primary-btn.ant-btn-primary {
-  height: 3rem !important;
-  border-radius: 0.5rem !important;
+  height: 46px !important;
+  border-radius: 15px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
-  background: #1e3a8a !important;
+  background: #2b5399 !important;
   border: none !important;
-  box-shadow: 0 12px 28px -12px rgba(30, 58, 138, 0.55) !important;
 }
 
 .auth-split-primary-btn.ant-btn-primary:hover {
-  background: #172554 !important;
+  background: #2b5399 !important;
 }
 
 .auth-split-outline-btn {
-  height: 3rem !important;
-  border-radius: 0.5rem !important;
+  height: 46px !important;
+  border-radius: 15px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
@@ -148,8 +194,8 @@ html {
 }
 
 .auth-split-outline-btn:hover {
-  border-color: #1e3a8a !important;
-  color: #172554 !important;
+  border-color: #2b5399 !important;
+  color: #2b5399 !important;
 }
 
 /* Create listing form — antd Select, DatePicker, InputNumber, TextArea, Upload */
@@ -226,10 +272,32 @@ html {
   border-radius: 0 !important;
 }
 
-.create-listing-page-form .create-listing-loc .ant-select-focused .ant-select-selector {
+.create-listing-page-form
+  .create-listing-loc
+  .ant-select-focused
+  .ant-select-selector {
   box-shadow: none !important;
 }
 
 .create-listing-page-form .create-listing-loc-wrap:focus-within {
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+/* Language switcher button — icon blue, text black, both white on hover */
+.lang-btn-icon,
+.lang-btn-icon.anticon {
+  color: #2b5399 !important;
+}
+
+.lang-btn-text {
+  color: #000 !important;
+}
+
+.group:hover .lang-btn-icon,
+.group:hover .lang-btn-icon.anticon {
+  color: #fff !important;
+}
+
+.group:hover .lang-btn-text {
+  color: #fff !important;
 }

@@ -107,7 +107,13 @@
     "authTermsOfService": "Terms of Service",
     "authTermsAnd": "and",
     "placeholderFullName": "Enter your full name",
-    "placeholderEmailCompany": "name@company.com"
+    "placeholderEmailCompany": "name@example.com",
+    "validationEmailRequired": "Please enter your email",
+    "validationEmailInvalid": "Please enter a valid email address",
+    "validationPasswordRequired": "Please enter your password",
+    "validationPhoneRequired": "Please enter your phone number",
+    "validationOtpRequired": "Please enter the verification code",
+    "validationFullNameRequired": "Please enter your full name"
   },
   "listing": {
     "title": "Title",

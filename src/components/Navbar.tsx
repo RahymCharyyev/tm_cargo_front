@@ -145,7 +145,7 @@ export default function Navbar() {
                       alt=''
                       width={10}
                       height={10}
-                      className='transition group-hover:brightness-0 group-hover:invert'
+                      className='size-[10px] shrink-0 transition group-hover:brightness-0 group-hover:invert'
                     />
                     <span className='max-w-[120px] truncate'>
                       {user?.phone || user?.email || user?.fullName || 'User'}
@@ -164,7 +164,7 @@ export default function Navbar() {
                     alt=''
                     width={12}
                     height={12}
-                    className='transition group-hover:brightness-0 group-hover:invert'
+                    className='size-3 shrink-0 transition group-hover:brightness-0 group-hover:invert'
                   />
                   {t('loginAndRegister')}
                 </Button>
@@ -246,7 +246,13 @@ export default function Navbar() {
                     type='primary'
                     block
                     icon={
-                      <Image src='/Person.svg' alt='' width={18} height={18} />
+                      <Image
+                        src='/Person.svg'
+                        alt=''
+                        width={18}
+                        height={18}
+                        className='size-[18px] shrink-0'
+                      />
                     }
                     style={{ backgroundColor: '#2d4f87' }}
                   >

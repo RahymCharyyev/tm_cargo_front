@@ -21,6 +21,7 @@ export type AuthSplitShellProps = {
   showHeroLine?: boolean;
   showHeroOverlay?: boolean;
   showHeroText?: boolean;
+  formPaneClassName?: string;
   children: ReactNode;
   footer?: ReactNode;
   showTrustBar?: boolean;
@@ -102,6 +103,7 @@ export function AuthSplitShell({
   showHeroLine = true,
   showHeroOverlay = true,
   showHeroText = true,
+  formPaneClassName,
   children,
   footer,
   termsFooter,
@@ -142,7 +144,9 @@ export function AuthSplitShell({
       </div>
 
       {/* Right — form */}
-      <div className='flex flex-1 flex-col bg-[#EDF3FB] lg:w-1/2 lg:bg-white'>
+      <div
+        className={`flex flex-1 flex-col bg-[#EDF3FB] lg:w-1/2 lg:bg-white ${formPaneClassName ?? ''}`.trim()}
+      >
         <div className='flex flex-1 flex-col justify-center px-5 py-10 sm:px-8 lg:px-14 lg:py-14 xl:px-20'>
           <div className='mx-auto w-full max-w-md'>
             <h1 className='mb-8 text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl'>

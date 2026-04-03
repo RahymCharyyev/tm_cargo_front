@@ -12,10 +12,7 @@ import {
   Space,
   Upload,
 } from 'antd';
-import {
-  CameraOutlined,
-  EnvironmentOutlined,
-} from '@ant-design/icons';
+import { CameraOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd';
 import dayjs from 'dayjs';
 import { useTranslations, useLocale } from 'next-intl';
@@ -26,10 +23,15 @@ import LocationSelect from '@/components/LocationSelect';
 import VehicleTypeSelect from '@/components/VehicleTypeSelect';
 import { AuthFieldLabel } from '@/components/auth/AuthSplitShell';
 
-const CREATE_CATEGORIES = ['international', 'intercity', 'local', 'traveler', 'load'] as const;
+const CREATE_CATEGORIES = [
+  'international',
+  'intercity',
+  'local',
+  'traveler',
+  'load',
+] as const;
 type CreateCategory = (typeof CREATE_CATEGORIES)[number];
 
-const ROUTE_TYPES = ['international', 'intercity', 'local'] as const;
 const CURRENCIES = ['manat', 'dollar', 'euro'] as const;
 
 const blockLetters: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -53,8 +55,16 @@ function getSubcategoryOptions(
   ];
 }
 
-function deriveApiFields(category: CreateCategory, subcategory: string, routeType?: string) {
-  if (category === 'international' || category === 'intercity' || category === 'local') {
+function deriveApiFields(
+  category: CreateCategory,
+  subcategory: string,
+  routeType?: string,
+) {
+  if (
+    category === 'international' ||
+    category === 'intercity' ||
+    category === 'local'
+  ) {
     return {
       locationType: category,
       type: subcategory === 'sub1' ? 'cargo' : 'vehicle',
@@ -133,7 +143,9 @@ export default function CreateListingPage() {
       fromLocationId: values.fromLocationId,
       toLocationId: values.toLocationId,
       description: values.description || undefined,
-      phone: values.phone ? `+993${String(values.phone).replace(/^\+993/, '')}` : undefined,
+      phone: values.phone
+        ? `+993${String(values.phone).replace(/^\+993/, '')}`
+        : undefined,
       email: values.email || undefined,
       price: values.price ? Number(values.price) : undefined,
       currency: values.price ? values.currency : undefined,
@@ -174,15 +186,30 @@ export default function CreateListingPage() {
     });
   };
 
-  const categoryOptions = CREATE_CATEGORIES.map((cat) => ({
-    value: cat,
-    label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
-  }));
-
-  const routeTypeOptions = ROUTE_TYPES.map((rt) => ({
-    value: rt,
-    label: t(`filterCat${rt.charAt(0).toUpperCase()}${rt.slice(1)}` as never),
-  }));
+  const categoryOptions = [
+    {
+      label: 'Грузоперевозки',
+      options: CREATE_CATEGORIES.filter((cat) =>
+        ['international', 'intercity', 'local'].includes(cat),
+      ).map((cat) => ({
+        value: cat,
+        label: t(
+          `filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never,
+        ),
+      })),
+    },
+    {
+      label: 'Мелкие перевозки',
+      options: CREATE_CATEGORIES.filter((cat) =>
+        ['traveler', 'load'].includes(cat),
+      ).map((cat) => ({
+        value: cat,
+        label: t(
+          `filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never,
+        ),
+      })),
+    },
+  ];
 
   return (
     <div className='min-h-[calc(100dvh-4rem)] bg-[#f4f6f9]'>
@@ -241,46 +268,30 @@ export default function CreateListingPage() {
                     />
                   </Form.Item>
 
-                  <Form.Item noStyle shouldUpdate={(prev, cur) => prev.category !== cur.category}>
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prev, cur) => prev.category !== cur.category}
+                  >
                     {({ getFieldValue }) => {
                       const cat = getFieldValue('category') as CreateCategory;
-                      const opts = getSubcategoryOptions(cat, t as (key: string) => string);
+                      const opts = getSubcategoryOptions(
+                        cat,
+                        t as (key: string) => string,
+                      );
                       return (
                         <Form.Item
-                          label={<AuthFieldLabel>{t('createIAmA')}</AuthFieldLabel>}
+                          label={
+                            <AuthFieldLabel>{t('createIAmA')}</AuthFieldLabel>
+                          }
                           name='subcategory'
                           rules={[{ required: true }]}
                         >
-                          <Segmented
-                            block
-                            options={opts}
-                          />
+                          <Segmented block options={opts} />
                         </Form.Item>
                       );
                     }}
                   </Form.Item>
                 </div>
-
-                {/* Route type — only for traveler / load */}
-                <Form.Item noStyle shouldUpdate={(prev, cur) => prev.category !== cur.category}>
-                  {({ getFieldValue }) => {
-                    const cat = getFieldValue('category') as CreateCategory;
-                    if (cat !== 'traveler' && cat !== 'load') return null;
-                    return (
-                      <Form.Item
-                        label={<AuthFieldLabel>{t('locationType')}</AuthFieldLabel>}
-                        name='routeType'
-                        rules={[{ required: true, message: t('selectLocationType') }]}
-                      >
-                        <Select
-                          size='large'
-                          options={routeTypeOptions}
-                          popupMatchSelectWidth={false}
-                        />
-                      </Form.Item>
-                    );
-                  }}
-                </Form.Item>
 
                 <Form.Item
                   label={
@@ -355,11 +366,16 @@ export default function CreateListingPage() {
                     const sub = getFieldValue('subcategory') as string;
                     const derived = deriveApiFields(cat, sub);
 
-                    if (derived.type === 'cargo' || derived.type === 'vehicle') {
+                    if (
+                      derived.type === 'cargo' ||
+                      derived.type === 'vehicle'
+                    ) {
                       return (
                         <div className='mt-2 grid gap-4 sm:grid-cols-3'>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>
+                            }
                             name='weight_tons'
                           >
                             <InputNumber
@@ -372,7 +388,9 @@ export default function CreateListingPage() {
                             />
                           </Form.Item>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('volumeM3')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('volumeM3')}</AuthFieldLabel>
+                            }
                             name='volume_m3'
                           >
                             <InputNumber
@@ -385,7 +403,9 @@ export default function CreateListingPage() {
                             />
                           </Form.Item>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
+                            }
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -398,7 +418,9 @@ export default function CreateListingPage() {
                       return (
                         <div className='mt-2 grid gap-4 sm:grid-cols-2'>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('bodyCount')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('bodyCount')}</AuthFieldLabel>
+                            }
                             name='bodyCount'
                           >
                             <InputNumber
@@ -408,7 +430,9 @@ export default function CreateListingPage() {
                             />
                           </Form.Item>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
+                            }
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -421,7 +445,9 @@ export default function CreateListingPage() {
                       return (
                         <div className='mt-2 grid gap-4 sm:grid-cols-2'>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('weightTons')}</AuthFieldLabel>
+                            }
                             name='weight_tons'
                           >
                             <InputNumber
@@ -434,7 +460,9 @@ export default function CreateListingPage() {
                             />
                           </Form.Item>
                           <Form.Item
-                            label={<AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>}
+                            label={
+                              <AuthFieldLabel>{t('bodyType')}</AuthFieldLabel>
+                            }
                             name='vehicleTypeId'
                           >
                             <VehicleTypeSelect />
@@ -456,23 +484,23 @@ export default function CreateListingPage() {
                     }
                     name='price'
                   >
-                    <Space.Compact>
+                    <Space.Compact className='create-listing-price-wrap w-full'>
                       <InputNumber
                         size='large'
                         min={0}
                         placeholder={t('placeholderPriceFlexible')}
-                        className='w-full'
+                        className='w-full create-listing-price-input'
                       />
                       {
                         <Form.Item name='currency' noStyle>
                           <Select
-                            variant='borderless'
+                            variant='filled'
                             popupMatchSelectWidth={false}
                             options={CURRENCIES.map((c) => ({
                               value: c,
                               label: t(c),
                             }))}
-                            className='min-w-[4.5rem]'
+                            className='min-w-[5.5rem] create-listing-currency-select'
                           />
                         </Form.Item>
                       }
@@ -537,10 +565,11 @@ export default function CreateListingPage() {
                     name='phone'
                   >
                     <Input
+                      prefix='+993'
                       type='tel'
                       size='large'
-                      addonBefore='+993'
                       placeholder='6X XXXXXX'
+                      className='create-listing-phone-input'
                     />
                   </Form.Item>
                   <Form.Item
@@ -558,7 +587,7 @@ export default function CreateListingPage() {
                 {error ? (
                   <Alert
                     type='error'
-                    message={error}
+                    title={error}
                     showIcon
                     className='mb-6 mt-2'
                   />

@@ -8,7 +8,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export function AuthFieldLabel({ children }: { children: ReactNode }) {
   return (
-    <span className='block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500'>
+    <span className='block text-[11px] font-semibold  tracking-[0.14em] text-slate-500'>
       {children}
     </span>
   );

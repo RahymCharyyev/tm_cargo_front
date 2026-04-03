@@ -132,6 +132,27 @@ html {
   background-color: #fff !important;
 }
 
+.auth-split-form .auth-pane-form .ant-input:-webkit-autofill,
+.auth-split-form .auth-pane-form .ant-input:-webkit-autofill:hover,
+.auth-split-form .auth-pane-form .ant-input:-webkit-autofill:focus,
+.auth-split-form
+  .auth-pane-form
+  .ant-input-affix-wrapper
+  input:-webkit-autofill,
+.auth-split-form
+  .auth-pane-form
+  .ant-input-affix-wrapper
+  input:-webkit-autofill:hover,
+.auth-split-form
+  .auth-pane-form
+  .ant-input-affix-wrapper
+  input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #111827 !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
 .auth-split-form .login-mode-segmented.ant-segmented {
   background: #fff !important;
   height: 40px !important;
@@ -173,7 +194,6 @@ html {
   height: 46px !important;
   border-radius: 15px !important;
   font-weight: 600 !important;
-  text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
   background: #2b5399 !important;
   border: none !important;
@@ -187,7 +207,6 @@ html {
   height: 46px !important;
   border-radius: 15px !important;
   font-weight: 600 !important;
-  text-transform: uppercase !important;
   letter-spacing: 0.06em !important;
   border-color: #bfdbfe !important;
   color: #1e3a8a !important;
@@ -196,6 +215,11 @@ html {
 .auth-split-outline-btn:hover {
   border-color: #2b5399 !important;
   color: #2b5399 !important;
+}
+
+.auth-no-caps {
+  text-transform: none !important;
+  letter-spacing: normal !important;
 }
 
 /* Create listing form — antd Select, DatePicker, InputNumber, TextArea, Upload */
@@ -281,6 +305,57 @@ html {
 
 .create-listing-page-form .create-listing-loc-wrap:focus-within {
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
+}
+
+.create-listing-page-form .create-listing-price-wrap .ant-input-number {
+  background: #e5e7eb !important;
+  border-radius: 0.75rem 0 0 0.75rem !important;
+}
+
+.create-listing-page-form
+  .create-listing-price-wrap
+  .create-listing-currency-select.ant-select
+  .ant-select-selector {
+  background: #e5e7eb !important;
+  border-radius: 0 0.75rem 0.75rem 0 !important;
+  min-height: 2.75rem !important;
+}
+
+.create-listing-page-form .create-listing-phone-input.ant-input-affix-wrapper {
+  background: #e5e7eb !important;
+}
+
+.create-listing-page-form .create-listing-phone-input.ant-input-group-wrapper {
+  width: 100%;
+}
+
+.create-listing-page-form .create-listing-phone-input .ant-input-group {
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+.create-listing-page-form .create-listing-phone-prefix {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  color: #334155;
+}
+
+.create-listing-page-form .ant-input-group-addon:has(.create-listing-phone-prefix) {
+  background: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0.75rem 0 0 0.75rem !important;
+  padding-inline: 0.75rem !important;
+  min-height: 2.75rem !important;
+}
+
+.create-listing-page-form .create-listing-phone-input .ant-input-affix-wrapper {
+  flex: 1 1 auto !important;
+  background: #e5e7eb !important;
+  border: none !important;
+  border-radius: 0 0.75rem 0.75rem 0 !important;
+  min-height: 2.75rem !important;
+  box-shadow: none !important;
 }
 
 /* Language switcher button — icon blue, text black, both white on hover */

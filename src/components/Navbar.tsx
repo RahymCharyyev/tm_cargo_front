@@ -45,7 +45,10 @@ export default function Navbar() {
     {
       key: 'logout',
       label: (
-        <span className='text-red-500' onClick={() => logoutMutation.mutate()}>
+        <span
+          className='block rounded-md px-2 py-1 transition-colors hover:text-white'
+          onClick={() => logoutMutation.mutate()}
+        >
           {t('logout')}
         </span>
       ),
@@ -273,7 +276,12 @@ export default function Navbar() {
                   >
                     {t('favorites')}
                   </Link>
-                  <Button danger block onClick={() => logoutMutation.mutate()}>
+                  <Button
+                    danger
+                    block
+                    className='hover:!bg-red-500 hover:!border-red-500 hover:!text-white'
+                    onClick={() => logoutMutation.mutate()}
+                  >
                     {t('logout')}
                   </Button>
                 </>

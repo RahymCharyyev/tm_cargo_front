@@ -32,7 +32,6 @@ import Image from 'next/image';
 const CREATE_CATEGORIES = ['international', 'intercity', 'local', 'traveler', 'load'] as const;
 type CreateCategory = (typeof CREATE_CATEGORIES)[number];
 
-const ROUTE_TYPES = ['international', 'intercity', 'local'] as const;
 const CURRENCIES = ['manat', 'dollar', 'euro'] as const;
 
 const blockLetters: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -143,7 +142,6 @@ export default function EditListingPage({
       form.setFieldsValue({
         category: cat,
         subcategory: sub,
-        routeType: (cat === 'traveler' || cat === 'load') ? listing.locationType : 'international',
         title: listing.title,
         fromLocationId: listing.fromLocationId,
         toLocationId: listing.toLocationId,
@@ -253,15 +251,26 @@ export default function EditListingPage({
     });
   };
 
-  const categoryOptions = CREATE_CATEGORIES.map((cat) => ({
-    value: cat,
-    label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
-  }));
-
-  const routeTypeOptions = ROUTE_TYPES.map((rt) => ({
-    value: rt,
-    label: t(`filterCat${rt.charAt(0).toUpperCase()}${rt.slice(1)}` as never),
-  }));
+  const categoryOptions = [
+    {
+      label: 'Грузоперевозки',
+      options: CREATE_CATEGORIES.filter((cat) =>
+        ['international', 'intercity', 'local'].includes(cat),
+      ).map((cat) => ({
+        value: cat,
+        label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
+      })),
+    },
+    {
+      label: 'Мелкие перевозки',
+      options: CREATE_CATEGORIES.filter((cat) => ['traveler', 'load'].includes(cat)).map(
+        (cat) => ({
+          value: cat,
+          label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
+        }),
+      ),
+    },
+  ];
 
   return (
     <div className='min-h-[calc(100dvh-4rem)] bg-[#f4f6f9]'>
@@ -311,7 +320,6 @@ export default function EditListingPage({
                 initialValues={{
                   category: 'international' as CreateCategory,
                   subcategory: 'sub1',
-                  routeType: 'international',
                   currency: 'manat',
                   bodyCount: 1,
                   isActive: true,
@@ -357,27 +365,6 @@ export default function EditListingPage({
                     }}
                   </Form.Item>
                 </div>
-
-                {/* Route type — only for traveler / load */}
-                <Form.Item noStyle shouldUpdate={(prev, cur) => prev.category !== cur.category}>
-                  {({ getFieldValue }) => {
-                    const cat = getFieldValue('category') as CreateCategory;
-                    if (cat !== 'traveler' && cat !== 'load') return null;
-                    return (
-                      <Form.Item
-                        label={<AuthFieldLabel>{t('locationType')}</AuthFieldLabel>}
-                        name='routeType'
-                        rules={[{ required: true, message: t('selectLocationType') }]}
-                      >
-                        <Select
-                          size='large'
-                          options={routeTypeOptions}
-                          popupMatchSelectWidth={false}
-                        />
-                      </Form.Item>
-                    );
-                  }}
-                </Form.Item>
 
                 <Form.Item
                   label={
@@ -553,23 +540,23 @@ export default function EditListingPage({
                     }
                     name='price'
                   >
-                    <Space.Compact>
+                    <Space.Compact className='create-listing-price-wrap w-full'>
                       <InputNumber
                         size='large'
                         min={0}
                         placeholder={t('placeholderPriceFlexible')}
-                        className='w-full'
+                        className='w-full create-listing-price-input'
                       />
                       {
                         <Form.Item name='currency' noStyle>
                           <Select
-                            variant='borderless'
+                            variant='filled'
                             popupMatchSelectWidth={false}
                             options={CURRENCIES.map((c) => ({
                               value: c,
                               label: t(c),
                             }))}
-                            className='min-w-[4.5rem]'
+                            className='min-w-[5.5rem] create-listing-currency-select'
                           />
                         </Form.Item>
                       }
@@ -645,10 +632,11 @@ export default function EditListingPage({
                     name='phone'
                   >
                     <Input
+                      prefix='+993'
                       type='tel'
                       size='large'
-                      addonBefore='+993'
                       placeholder='6X XXXXXX'
+                      className='create-listing-phone-input'
                     />
                   </Form.Item>
                   <Form.Item

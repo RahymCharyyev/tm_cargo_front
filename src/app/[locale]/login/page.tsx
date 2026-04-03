@@ -73,7 +73,11 @@ export default function LoginPage() {
 
         {mode === 'email' ? (
           <Form.Item
-            label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+            label={
+              <span className='text-sm font-medium text-black'>
+                {t('emailLabel')}
+              </span>
+            }
             name='email'
             rules={[
               { required: true, message: t('validationEmailRequired') },
@@ -90,7 +94,9 @@ export default function LoginPage() {
           </Form.Item>
         ) : (
           <Form.Item
-            label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+            label={
+              <span className='text-sm font-medium text-black'>{t('phoneLabel')}</span>
+            }
             name='phone'
             rules={[{ required: true, message: t('validationPhoneRequired') }]}
             className='mb-5'
@@ -106,7 +112,11 @@ export default function LoginPage() {
         )}
 
         <Form.Item
-          label={<AuthFieldLabel>{t('passwordLabel')}</AuthFieldLabel>}
+          label={
+            <span className='text-sm font-medium text-black'>
+              {t('passwordLabel')}
+            </span>
+          }
           className='login-password-row mb-2'
         >
           <div className='relative'>
@@ -152,7 +162,7 @@ export default function LoginPage() {
           <p className='text-center text-sm text-slate-600'>{t('noAccount')}</p>
           <Link
             href='/register'
-            className='login-register-link auth-split-outline-btn flex h-[46px] w-full items-center justify-center rounded-[15px] border border-sky-200 bg-white text-[15px] font-semibold uppercase tracking-[0.08em] text-[#1e3a8a] transition-colors'
+            className='login-register-link auth-split-outline-btn auth-no-caps flex h-[46px] w-full items-center justify-center rounded-[15px] border border-sky-200 bg-white text-[15px] font-semibold text-[#1e3a8a] transition-colors'
           >
             {t('registerBtn')}
           </Link>

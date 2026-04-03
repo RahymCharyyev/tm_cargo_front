@@ -128,7 +128,7 @@ export default function RegisterPage() {
   const secondaryLogin = (
     <Link
       href='/login'
-      className='auth-outline-cta auth-split-outline-btn flex h-[46px] w-full items-center justify-center rounded-[15px] border border-sky-200 bg-white text-[15px] font-semibold uppercase tracking-[0.08em] text-[#1e3a8a] transition-colors'
+      className='auth-outline-cta auth-split-outline-btn auth-no-caps flex h-[46px] w-full items-center justify-center rounded-[15px] border border-sky-200 bg-white text-[15px] font-semibold text-[#1e3a8a] transition-colors'
     >
       {t('loginBtn')}
     </Link>
@@ -303,7 +303,11 @@ export default function RegisterPage() {
               requiredMark={false}
             >
               <Form.Item
-                label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+                label={
+                  <span className='text-sm font-medium text-black'>
+                    {t('phoneLabel')}
+                  </span>
+                }
                 name='phone'
                 rules={[
                   { required: true, message: t('validationPhoneRequired') },
@@ -330,7 +334,7 @@ export default function RegisterPage() {
                   block
                   size='large'
                   loading={isPhoneRegisterable.isPending}
-                  className='auth-split-primary-btn'
+                className='auth-split-primary-btn auth-no-caps'
                 >
                   {t('sendOtpBtn')}
                 </Button>
@@ -399,7 +403,7 @@ export default function RegisterPage() {
                   block
                   size='large'
                   loading={registerByPhone.isPending}
-                  className='auth-split-primary-btn'
+                  className='auth-split-primary-btn auth-no-caps'
                 >
                   {t('registerBtn')}
                 </Button>

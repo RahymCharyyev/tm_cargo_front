@@ -159,7 +159,11 @@ export default function ResetPasswordPage() {
             requiredMark={false}
           >
             <Form.Item
-              label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+              label={
+                <span className='text-sm font-medium text-black'>
+                  {t('emailLabel')}
+                </span>
+              }
               name='email'
               rules={[
                 { required: true, message: t('validationEmailRequired') },
@@ -181,7 +185,7 @@ export default function ResetPasswordPage() {
             )}
             {success && (
               <Form.Item className='mb-4'>
-                <Alert type='success' message={success} showIcon />
+                <Alert type='success' title={success} showIcon />
               </Form.Item>
             )}
             <div className='mt-[25px]'>
@@ -207,7 +211,7 @@ export default function ResetPasswordPage() {
           >
             <Alert
               type='info'
-              message={`${t('otpSent')} ${email}`}
+              title={`${t('otpSent')} ${email}`}
               showIcon
               className='mb-5'
             />
@@ -220,7 +224,11 @@ export default function ResetPasswordPage() {
               <Input placeholder='123456' size='large' className={inputClass} />
             </Form.Item>
             <Form.Item
-              label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+              label={
+                <span className='text-sm font-medium text-black'>
+                  {t('enterNewPassword')}
+                </span>
+              }
               name='password'
               rules={[
                 { required: true, message: t('validationPasswordRequired') },
@@ -240,7 +248,7 @@ export default function ResetPasswordPage() {
             )}
             {success && (
               <Form.Item className='mb-4'>
-                <Alert type='success' message={success} showIcon />
+                <Alert type='success' title={success} showIcon />
               </Form.Item>
             )}
             <div className='mt-[25px]'>
@@ -266,7 +274,11 @@ export default function ResetPasswordPage() {
           requiredMark={false}
         >
           <Form.Item
-            label={<AuthFieldLabel>{t('phoneLabel')}</AuthFieldLabel>}
+            label={
+              <span className='text-sm font-medium text-black'>
+                {t('phoneLabel')}
+              </span>
+            }
             name='phone'
             rules={[{ required: true, message: t('validationPhoneRequired') }]}
             className='mb-5'
@@ -306,9 +318,15 @@ export default function ResetPasswordPage() {
           requiredMark={false}
         >
           <Form.Item
-            label={<AuthFieldLabel>{t('enterNewPassword')}</AuthFieldLabel>}
+            label={
+              <span className='text-sm font-medium text-black'>
+                {t('enterNewPassword')}
+              </span>
+            }
             name='password'
-            rules={[{ required: true, message: t('validationPasswordRequired') }]}
+            rules={[
+              { required: true, message: t('validationPasswordRequired') },
+            ]}
             className='mb-5'
           >
             <Input.Password

@@ -128,7 +128,7 @@ export default function RegisterPage() {
   const secondaryLogin = (
     <Link
       href='/login'
-      className='auth-outline-cta auth-split-outline-btn auth-no-caps flex h-[46px] w-full items-center justify-center rounded-[15px] border border-sky-200 bg-white text-[15px] font-semibold text-[#1e3a8a] transition-colors'
+      className='auth-outline-cta auth-split-outline-btn flex h-[46px] w-full items-center justify-center rounded-[15px] border bg-white text-[15px] font-semibold transition-colors'
     >
       {t('loginBtn')}
     </Link>
@@ -146,15 +146,12 @@ export default function RegisterPage() {
       formPaneClassName='!bg-[#E8F2FF] lg:!bg-[#E8F2FF]'
       termsFooter={termsFooter}
       footer={
-        <p className='text-center text-sm text-slate-600'>
-          {t('hasAccount')}{' '}
-          <Link
-            href='/login'
-            className='font-bold text-[#1e3a8a] hover:underline'
-          >
-            {t('loginBtn')}
-          </Link>
-        </p>
+        <div className='mt-[25px] flex flex-col gap-[25px]'>
+          <p className='text-center text-sm text-slate-600'>
+            {t('hasAccount')}
+          </p>
+          {secondaryLogin}
+        </div>
       }
     >
       <div className='mb-6'>
@@ -188,7 +185,11 @@ export default function RegisterPage() {
             requiredMark={false}
           >
             <Form.Item
-              label={<AuthFieldLabel>{t('emailLabel')}</AuthFieldLabel>}
+              label={
+                <span className='text-sm font-medium text-black'>
+                  {t('emailLabel')}
+                </span>
+              }
               name='email'
               rules={[
                 { required: true, message: t('validationEmailRequired') },
@@ -219,7 +220,6 @@ export default function RegisterPage() {
               >
                 {t('sendOtpBtn')}
               </Button>
-              {secondaryLogin}
             </div>
           </Form>
         ) : (
@@ -288,7 +288,6 @@ export default function RegisterPage() {
               >
                 {t('registerBtn')}
               </Button>
-              {secondaryLogin}
             </div>
           </Form>
         )
@@ -334,11 +333,10 @@ export default function RegisterPage() {
                   block
                   size='large'
                   loading={isPhoneRegisterable.isPending}
-                className='auth-split-primary-btn auth-no-caps'
+                  className='auth-split-primary-btn auth-no-caps'
                 >
                   {t('sendOtpBtn')}
                 </Button>
-                {secondaryLogin}
               </div>
             </Form>
           )}
@@ -407,7 +405,6 @@ export default function RegisterPage() {
                 >
                   {t('registerBtn')}
                 </Button>
-                {secondaryLogin}
               </div>
             </Form>
           )}

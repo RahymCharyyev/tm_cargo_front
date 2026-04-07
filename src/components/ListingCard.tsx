@@ -116,55 +116,57 @@ export default function ListingCard({ listing, from }: Props) {
           )}
         </div>
 
-        <div className='px-4 pt-3 pb-4 flex flex-col gap-4 flex-1 text-[15px] leading-normal'>
+        <div className='px-4 pt-3 pb-4 flex flex-col gap-4 flex-1 text-[15px]'>
           <h3 className='text-[18px] font-medium text-black mb-2 line-clamp-1'>
             {listing.title}
           </h3>
 
           <div className='flex flex-col gap-[15px]'>
             {/* Route with flags */}
-            <div className='flex items-center gap-1.5 text-black'>
-            <Image
-              src={'/Location.svg'}
-              alt=''
-              width={14}
-              height={20}
-              className='w-[14px] h-[20px] object-cover shrink-0'
-              crossOrigin='anonymous'
-            />
-            {fromFlag ? (
+            <div className='flex items-center gap-1.5 text-black leading-[17px]'>
               <Image
-                src={fromFlag}
+                src={'/Location.svg'}
                 alt=''
-                width={24}
-                height={16}
-                className='w-6 h-4 object-cover rounded-[2px] shrink-0'
+                width={14}
+                height={20}
+                className='w-[14px] h-[20px] object-cover shrink-0'
                 crossOrigin='anonymous'
               />
-            ) : (
-              <span className='w-2 h-2 rounded-full bg-red-500 shrink-0' />
-            )}
-            <span className='truncate'>{fromName}</span>
-            <span className='text-[#B3B3B3] mx-0.5'>—</span>
-            {toFlag ? (
-              <Image
-                src={toFlag}
-                alt=''
-                width={24}
-                height={16}
-                className='w-6 h-4 object-cover rounded-[2px] shrink-0'
-                crossOrigin='anonymous'
-              />
-            ) : (
-              <span className='w-2 h-2 rounded-full bg-blue-500 shrink-0' />
-            )}
-            <span className='truncate'>{toName}</span>
+              {fromFlag ? (
+                <Image
+                  src={fromFlag}
+                  alt=''
+                  width={24}
+                  height={16}
+                  className='w-6 h-4 object-cover rounded-[2px] shrink-0'
+                  crossOrigin='anonymous'
+                />
+              ) : (
+                <span className='w-2 h-2 rounded-full bg-red-500 shrink-0' />
+              )}
+              <span className='truncate'>{fromName}</span>
+              <span className='text-[#B3B3B3] mx-0.5'>—</span>
+              {toFlag ? (
+                <Image
+                  src={toFlag}
+                  alt=''
+                  width={24}
+                  height={16}
+                  className='w-6 h-4 object-cover rounded-[2px] shrink-0'
+                  crossOrigin='anonymous'
+                />
+              ) : (
+                <span className='w-2 h-2 rounded-full bg-blue-500 shrink-0' />
+              )}
+              <span className='truncate'>{toName}</span>
             </div>
 
             {/* Категория: название и тип */}
-            <div className='flex gap-1'>
+            <div className='flex gap-1 leading-[17px]'>
               <span className='text-[#4D4D4D]'>{t('categoryLabel')}:</span>
-              <span className='text-black ml-1 font-medium'>{categoryName}</span>
+              <span className='text-black ml-1 font-medium'>
+                {categoryName}
+              </span>
               <span className='text-[#B3B3B3]'>|</span>
               <span className='text-black font-medium'>
                 {t(listing.type + 'ListingType')}
@@ -172,7 +174,7 @@ export default function ListingCard({ listing, from }: Props) {
             </div>
 
             {/* Вес | Объём | Дата — названия и значения */}
-            <div className='flex items-center flex-wrap gap-x-1.5'>
+            <div className='flex items-center flex-wrap gap-x-1.5 leading-[17px]'>
               {weightStr && (
                 <>
                   <span className='text-[#4D4D4D]'>{t('weightShort')}:</span>
@@ -192,7 +194,7 @@ export default function ListingCard({ listing, from }: Props) {
             </div>
           </div>
 
-          <div className='mt-auto flex flex-col gap-[15px]'>
+          <div className='mt-auto flex flex-col gap-[15px] leading-[17px]'>
             {/* Цена: название и значение */}
             <div>
               <span className='text-[#4D4D4D]'>{t('priceLabel')}:</span>
@@ -201,13 +203,13 @@ export default function ListingCard({ listing, from }: Props) {
             {/* Выставлено: Сегодня / дата */}
             <div>
               <span className='text-[#4D4D4D]'>{t('postedLabel')}:</span>
-              <span className='text-black ml-1'>
+              <span className='text-black ml-1 font-medium'>
                 {isToday ? t('today') : dateDisplay}
               </span>
             </div>
             <div>
               <span className='text-[#4D4D4D]'>{t('authorLabel')}:</span>
-              <span className='text-black ml-1'>{senderName}</span>
+              <span className='text-black ml-1 font-medium'>{senderName}</span>
             </div>
           </div>
         </div>

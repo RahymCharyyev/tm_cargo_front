@@ -123,6 +123,7 @@ html {
 
 .auth-split-form .ant-segmented-item-selected .ant-segmented-item-label {
   color: #fff !important;
+  font-weight: 500 !important;
 }
 
 /* Auth flow panes (login, register, reset) — white inputs on tinted pane */
@@ -183,11 +184,30 @@ html {
   background-color: #fff !important;
 }
 
+.auth-outline-cta.auth-split-outline-btn {
+  background-color: #fff !important;
+}
+
 .auth-split-form .login-register-link.auth-split-outline-btn:hover,
 .auth-split-form .auth-outline-cta.auth-split-outline-btn:hover {
   background-color: #2b5399 !important;
   border-color: #2b5399 !important;
   color: #fff !important;
+}
+
+.auth-outline-cta.auth-split-outline-btn:hover {
+  background-color: #2b5399 !important;
+  border-color: #2b5399 !important;
+  color: #fff !important;
+}
+
+.auth-signin-outline-btn {
+  border-color: #2b5399 !important;
+  color: #000 !important;
+  transition:
+    background-color 400ms ease,
+    border-color 400ms ease,
+    color 400ms ease !important;
 }
 
 .auth-split-primary-btn.ant-btn-primary {
@@ -197,10 +217,21 @@ html {
   letter-spacing: 0.06em !important;
   background: #2b5399 !important;
   border: none !important;
+  transition:
+    background-color 400ms ease,
+    border-color 400ms ease,
+    color 400ms ease !important;
 }
 
 .auth-split-primary-btn.ant-btn-primary:hover {
-  background: #2b5399 !important;
+  border-color: #2b5399 !important;
+  border: 1px solid #2b5399 !important;
+  color: #000 !important;
+  background-color: #fff !important;
+  transition:
+    background-color 400ms ease,
+    border-color 400ms ease,
+    color 400ms ease !important;
 }
 
 .auth-split-outline-btn {
@@ -208,13 +239,12 @@ html {
   border-radius: 15px !important;
   font-weight: 600 !important;
   letter-spacing: 0.06em !important;
-  border-color: #bfdbfe !important;
-  color: #1e3a8a !important;
-}
-
-.auth-split-outline-btn:hover {
   border-color: #2b5399 !important;
-  color: #2b5399 !important;
+  color: #000 !important;
+  transition:
+    background-color 400ms ease,
+    border-color 400ms ease,
+    color 400ms ease !important;
 }
 
 .auth-no-caps {
@@ -341,7 +371,8 @@ html {
   color: #334155;
 }
 
-.create-listing-page-form .ant-input-group-addon:has(.create-listing-phone-prefix) {
+.create-listing-page-form
+  .ant-input-group-addon:has(.create-listing-phone-prefix) {
   background: #e5e7eb !important;
   border: none !important;
   border-radius: 0.75rem 0 0 0.75rem !important;

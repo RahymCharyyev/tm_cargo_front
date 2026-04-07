@@ -50,7 +50,7 @@ export default function HomePage() {
   const { data: banners } = useBanners({ type: bannerType });
   const { data: listings, isLoading } = useListings({
     page: 1,
-    perPage: 16,
+    perPage: 24,
     sort: 'newest',
   });
 
@@ -60,6 +60,7 @@ export default function HomePage() {
   );
   const firstBlock = listings?.data?.slice(0, 8) ?? [];
   const secondBlock = listings?.data?.slice(8, 16) ?? [];
+  const thirdBlock = listings?.data?.slice(16, 24) ?? [];
 
   return (
     <div className='min-h-screen bg-[#E8F2FF]'>
@@ -271,6 +272,18 @@ export default function HomePage() {
               {secondBlock.length > 0 && (
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px] mt-6'>
                   {secondBlock.map((listing) => (
+                    <ListingCard
+                      key={listing.id}
+                      listing={listing}
+                      from='home'
+                    />
+                  ))}
+                </div>
+              )}
+
+              {thirdBlock.length > 0 && (
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[10px] mt-6'>
+                  {thirdBlock.map((listing) => (
                     <ListingCard
                       key={listing.id}
                       listing={listing}

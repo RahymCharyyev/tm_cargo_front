@@ -106,7 +106,9 @@ export default function ListingFilterContent({
     { value: '' as FilterCategory, label: tc('all') },
     ...FILTER_CATEGORIES.map((cat) => ({
       value: cat,
-      label: t(`filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never),
+      label: t(
+        `filterCat${cat.charAt(0).toUpperCase()}${cat.slice(1)}` as never,
+      ),
     })),
   ];
 
@@ -130,194 +132,256 @@ export default function ListingFilterContent({
     { value: 'price_desc', label: t('priceHighLow') },
   ];
 
-  const subLabels = getSubcategoryLabels(category, t as (key: string) => string);
+  const subLabels = getSubcategoryLabels(
+    category,
+    t as (key: string) => string,
+  );
+  const hasActiveFilters = Boolean(
+    category ||
+    from ||
+    to ||
+    weight ||
+    volume ||
+    executionDate ||
+    kind ||
+    sort ||
+    senderSelected ||
+    carrierSelected,
+  );
 
   return (
     <>
       <section
         className={`filter-no-stroke w-full rounded-[24px] bg-[#EAF2FC] p-4 sm:p-5 ${className ?? ''}`.trim()}
       >
-      <div className="mb-5 flex items-center justify-between gap-4">
-        <h2 className="flex items-center gap-2 text-[18px] font-semibold text-[#264A84]">
-          <Image src="/Options.svg" alt="filter" width={24} height={24} />
-          <span>{t('filter')}</span>
-        </h2>
-        <div className="flex items-center gap-3">
-          <Button
-            type="link"
-            danger
-            size="small"
-            onClick={onClear}
-            className="!p-0 !text-[#C53939] hover:!text-[#A82F2F] font-medium"
-          >
-            {t('clearFilters')}
-          </Button>
-          {onClose && (
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Закрыть"
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-white/70 text-[#364860] hover:bg-white transition-colors"
+        <div className='mb-5 flex items-center justify-between gap-4'>
+          <h2 className='flex items-center gap-2 text-[18px] font-semibold text-[#264A84]'>
+            <Image src='/Options.svg' alt='filter' width={24} height={24} />
+            <span>{t('filter')}</span>
+          </h2>
+          <div className='flex items-center gap-3'>
+            <Button
+              type='link'
+              danger
+              size='small'
+              onClick={onClear}
+              disabled={!hasActiveFilters}
+              className={`!p-0 !text-[#C53939] hover:!text-[#A82F2F] ${
+                hasActiveFilters ? '!font-semibold' : '!font-medium'
+              }`}
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        {/* Category */}
-        <div>
-          <label className={labelClass}>{t('category')}</label>
-          <Select
-            value={category}
-            onChange={(val) => onCategoryChange(val as FilterCategory)}
-            options={categoryOptions}
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        {/* Subcategory checkboxes — labels change per category */}
-        {subLabels && (
-          <div className="flex flex-wrap gap-6">
-            <Checkbox checked={senderSelected} onChange={onSenderToggle}>
-              <span className="text-[15px] font-medium text-[#111827]">{subLabels.label1}</span>
-            </Checkbox>
-            <Checkbox checked={carrierSelected} onChange={onCarrierToggle}>
-              <span className="text-[15px] font-medium text-[#111827]">{subLabels.label2}</span>
-            </Checkbox>
+              {t('clearFilters')}
+            </Button>
+            {onClose && (
+              <button
+                type='button'
+                onClick={onClose}
+                aria-label='Закрыть'
+                className='flex items-center justify-center w-8 h-8 rounded-full bg-white/70 text-[#364860] hover:bg-white transition-colors'
+              >
+                <svg
+                  className='w-4 h-4'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M6 18L18 6M6 6l12 12'
+                  />
+                </svg>
+              </button>
+            )}
           </div>
-        )}
-
-        {/* From */}
-        <div>
-          <label className={labelClass}>{tc('from')}</label>
-          <LocationSelect
-            value={from}
-            onChange={onFromChange}
-            placeholder={t('enterLocation')}
-          />
         </div>
 
-        {/* To */}
-        <div>
-          <label className={labelClass}>{t('toLocation')}</label>
-          <LocationSelect
-            value={to}
-            onChange={onToChange}
-            placeholder={t('enterLocation')}
-          />
-        </div>
+        <div className='space-y-4'>
+          {/* Category */}
+          <div>
+            <label className={labelClass}>{t('category')}</label>
+            <Select
+              value={category}
+              onChange={(val) => onCategoryChange(val as FilterCategory)}
+              options={categoryOptions}
+              style={{ width: '100%' }}
+            />
+          </div>
 
-        {/* Weight */}
-        <div>
-          <label className={labelClass}>{t('weightTons')}</label>
-          <InputNumber
-            value={weight ? Number(weight) : undefined}
-            onChange={(val) => onWeightChange(val?.toString() ?? '')}
-            placeholder={t('weightNotEntered')}
-            min={0}
-            step={0.1}
-            style={{ width: '100%', height: 40 }}
-            onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
-          />
-        </div>
+          {/* Subcategory checkboxes — labels change per category */}
+          {subLabels && (
+            <div className='flex flex-wrap gap-6'>
+              <Checkbox checked={senderSelected} onChange={onSenderToggle}>
+                <span className='text-[15px] font-medium text-[#111827]'>
+                  {subLabels.label1}
+                </span>
+              </Checkbox>
+              <Checkbox checked={carrierSelected} onChange={onCarrierToggle}>
+                <span className='text-[15px] font-medium text-[#111827]'>
+                  {subLabels.label2}
+                </span>
+              </Checkbox>
+            </div>
+          )}
 
-        {/* Volume */}
-        <div>
-          <label className={labelClass}>{t('volumeM3')}</label>
-          <InputNumber
-            value={volume ? Number(volume) : undefined}
-            onChange={(val) => onVolumeChange(val?.toString() ?? '')}
-            placeholder={t('volumeNotEntered')}
-            min={0}
-            step={0.1}
-            style={{ width: '100%', height: 40 }}
-            onKeyDown={(e) => { if (!e.ctrlKey && !e.metaKey && !e.altKey && /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)) e.preventDefault(); }}
-          />
-        </div>
+          {/* From */}
+          <div>
+            <label className={labelClass}>{tc('from')}</label>
+            <LocationSelect
+              value={from}
+              onChange={onFromChange}
+              placeholder={t('enterLocation')}
+            />
+          </div>
 
-        {/* Body type */}
-        <div>
-          <label className={labelClass}>{t('bodyType')}</label>
-          <Select
-            value={kind || ''}
-            onChange={onKindChange}
-            options={vehicleTypeOptions}
-            optionRender={(option) => {
-              const icon = (option.data as { icon?: string | null }).icon;
-              return (
-                <div className="flex items-center gap-2">
-                  {icon ? (
-                    <Image
-                      src={icon}
-                      alt=""
-                      width={22}
-                      height={22}
-                      className="w-[22px] h-[22px] object-contain shrink-0"
-                      crossOrigin="anonymous"
-                      unoptimized
-                    />
-                  ) : option.value ? (
-                    <span className="w-[22px] h-[22px] shrink-0 inline-block" />
-                  ) : null}
-                  <span>{option.label as string}</span>
-                </div>
-              );
+          {/* To */}
+          <div>
+            <label className={labelClass}>{t('toLocation')}</label>
+            <LocationSelect
+              value={to}
+              onChange={onToChange}
+              placeholder={t('enterLocation')}
+            />
+          </div>
+
+          {/* Weight */}
+          <div>
+            <label className={labelClass}>{t('weightTons')}</label>
+            <InputNumber
+              value={weight ? Number(weight) : undefined}
+              onChange={(val) => onWeightChange(val?.toString() ?? '')}
+              placeholder={t('weightNotEntered')}
+              min={0}
+              step={0.1}
+              style={{ width: '100%', height: 40 }}
+              onKeyDown={(e) => {
+                if (
+                  !e.ctrlKey &&
+                  !e.metaKey &&
+                  !e.altKey &&
+                  /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)
+                )
+                  e.preventDefault();
+              }}
+            />
+          </div>
+
+          {/* Volume */}
+          <div>
+            <label className={labelClass}>{t('volumeM3')}</label>
+            <InputNumber
+              value={volume ? Number(volume) : undefined}
+              onChange={(val) => onVolumeChange(val?.toString() ?? '')}
+              placeholder={t('volumeNotEntered')}
+              min={0}
+              step={0.1}
+              style={{ width: '100%', height: 40 }}
+              onKeyDown={(e) => {
+                if (
+                  !e.ctrlKey &&
+                  !e.metaKey &&
+                  !e.altKey &&
+                  /[a-zA-Zа-яА-ЯёЁ]/.test(e.key)
+                )
+                  e.preventDefault();
+              }}
+            />
+          </div>
+
+          {/* Body type */}
+          <div>
+            <label className={labelClass}>{t('bodyType')}</label>
+            <Select
+              value={kind || ''}
+              onChange={onKindChange}
+              options={vehicleTypeOptions}
+              optionRender={(option) => {
+                const icon = (option.data as { icon?: string | null }).icon;
+                return (
+                  <div className='flex items-center gap-2'>
+                    {icon ? (
+                      <Image
+                        src={icon}
+                        alt=''
+                        width={22}
+                        height={22}
+                        className='w-[22px] h-[22px] object-contain shrink-0'
+                        crossOrigin='anonymous'
+                        unoptimized
+                      />
+                    ) : option.value ? (
+                      <span className='w-[22px] h-[22px] shrink-0 inline-block' />
+                    ) : null}
+                    <span>{option.label as string}</span>
+                  </div>
+                );
+              }}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          {/* Execution date */}
+          <div>
+            <label className={labelClass}>{t('executionDate')}</label>
+            <DatePicker
+              value={executionDate ? dayjs(executionDate) : null}
+              onChange={(date) =>
+                onExecutionDateChange(date ? date.format('YYYY-MM-DD') : '')
+              }
+              format='DD.MM.YYYY'
+              style={{ width: '100%', height: 40 }}
+            />
+          </div>
+
+          {/* Sort */}
+          <div>
+            <label className={labelClass}>{tc('sort')}</label>
+            <Select
+              value={sort || ''}
+              onChange={onSortChange}
+              options={sortOptions}
+              style={{ width: '100%' }}
+            />
+          </div>
+
+          <Button
+            type='primary'
+            block
+            size='large'
+            onClick={onApply}
+            style={{
+              marginTop: 4,
+              height: 40,
+              borderRadius: 15,
+              backgroundColor: '#2F5AA6',
+              fontSize: 16,
+              fontWeight: 600,
             }}
-            style={{ width: '100%' }}
-          />
+          >
+            {t('apply')}
+          </Button>
         </div>
-
-        {/* Execution date */}
-        <div>
-          <label className={labelClass}>{t('executionDate')}</label>
-          <DatePicker
-            value={executionDate ? dayjs(executionDate) : null}
-            onChange={(date) => onExecutionDateChange(date ? date.format('YYYY-MM-DD') : '')}
-            format="DD.MM.YYYY"
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        {/* Sort */}
-        <div>
-          <label className={labelClass}>{tc('sort')}</label>
-          <Select
-            value={sort || ''}
-            onChange={onSortChange}
-            options={sortOptions}
-            style={{ width: '100%' }}
-          />
-        </div>
-
-        <Button
-          type="primary"
-          block
-          size="large"
-          onClick={onApply}
-          style={{
-            marginTop: 4,
-            height: 52,
-            borderRadius: 18,
-            backgroundColor: '#2F5AA6',
-            fontSize: 16,
-            fontWeight: 600,
-          }}
-        >
-          {t('apply')}
-        </Button>
-      </div>
       </section>
       <style jsx global>{`
+        .filter-no-stroke .ant-select,
         .filter-no-stroke .ant-select-selector,
+        .filter-no-stroke .ant-select-outlined .ant-select-selector,
+        .filter-no-stroke .ant-select-focused .ant-select-selector,
+        .filter-no-stroke .ant-select-open .ant-select-selector,
+        .filter-no-stroke
+          .ant-select-single.ant-select-open
+          .ant-select-selector,
+        .filter-no-stroke
+          .ant-select-single.ant-select-focused
+          .ant-select-selector,
         .filter-no-stroke .ant-picker,
         .filter-no-stroke .ant-input-number,
         .filter-no-stroke .ant-input-number-affix-wrapper {
           border: none !important;
+          border-color: transparent !important;
           box-shadow: none !important;
+          outline: none !important;
         }
 
         .filter-no-stroke .ant-select-focused .ant-select-selector,
@@ -326,9 +390,13 @@ export default function ListingFilterContent({
         .filter-no-stroke .ant-input-number-focused,
         .filter-no-stroke .ant-input-number:hover,
         .filter-no-stroke .ant-picker:hover,
-        .filter-no-stroke .ant-select:hover .ant-select-selector {
+        .filter-no-stroke .ant-select:hover .ant-select-selector,
+        .filter-no-stroke .ant-select-outlined:hover .ant-select-selector,
+        .filter-no-stroke .ant-select-outlined .ant-select-selector:hover {
           border: none !important;
+          border-color: transparent !important;
           box-shadow: none !important;
+          outline: none !important;
         }
       `}</style>
     </>

@@ -146,9 +146,9 @@ export default function Navbar() {
                     <Image
                       src='/Person.svg'
                       alt=''
-                      width={10}
-                      height={10}
-                      className='size-[10px] shrink-0 transition group-hover:brightness-0 group-hover:invert'
+                      width={17}
+                      height={17}
+                      className='size-[17px] shrink-0 transition group-hover:brightness-0 group-hover:invert'
                     />
                     <span className='max-w-[120px] truncate'>
                       {user?.phone || user?.email || user?.fullName || 'User'}
@@ -165,9 +165,9 @@ export default function Navbar() {
                   <Image
                     src='/Person.svg'
                     alt=''
-                    width={12}
-                    height={12}
-                    className='size-3 shrink-0 transition group-hover:brightness-0 group-hover:invert'
+                    width={17}
+                    height={17}
+                    className='size-[17px] shrink-0 transition group-hover:brightness-0 group-hover:invert'
                   />
                   {t('loginAndRegister')}
                 </Button>

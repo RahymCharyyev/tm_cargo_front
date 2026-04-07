@@ -40,8 +40,10 @@ function getName(
 function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className='flex items-start gap-2'>
-      <span className='text-[#595959] text-sm whitespace-nowrap'>{label}</span>
-      <span className='text-black text-sm font-medium'>{value}</span>
+      <span className='text-[#595959] text-[16px] whitespace-nowrap'>
+        {label}
+      </span>
+      <span className='text-black text-[16px] font-medium'>{value}</span>
     </div>
   );
 }
@@ -351,12 +353,12 @@ export default function ListingDetailPage({
             {listing.description && (
               <div className='bg-white rounded-[30px] px-6 py-6'>
                 <p
-                  className='text-sm font-medium mb-4'
+                  className='text-[16px] font-normal mb-4'
                   style={{ color: '#595959' }}
                 >
                   {tc('description')}
                 </p>
-                <p className='text-black leading-relaxed whitespace-pre-wrap text-sm'>
+                <p className='text-black text-[18px] leading-relaxed whitespace-pre-wrap'>
                   {listing.description}
                 </p>
               </div>
@@ -373,6 +375,8 @@ export default function ListingDetailPage({
                     style={{
                       backgroundColor: '#2B529B',
                       borderColor: '#2B529B',
+                      border: 'none',
+                      boxShadow: 'none',
                       borderRadius: 20,
                       height: 52,
                       fontWeight: 600,
@@ -386,7 +390,13 @@ export default function ListingDetailPage({
                   size='large'
                   onClick={handleDelete}
                   loading={deleteMutation.isPending}
-                  style={{ borderRadius: 20, height: 52, fontWeight: 600 }}
+                  style={{
+                    borderRadius: 20,
+                    height: 52,
+                    fontWeight: 600,
+                    border: 'none',
+                    boxShadow: 'none',
+                  }}
                 >
                   {tc('delete')}
                 </Button>
@@ -397,36 +407,10 @@ export default function ListingDetailPage({
           {/* ===== RIGHT COLUMN ===== */}
           <div className='flex flex-col gap-6 lg:flex-[554_1_0%]'>
             {/* Section heading */}
-            <div className='flex items-center justify-between'>
-              <h2 className='text-xl font-bold text-black'>
+            <div className='flex items-center'>
+              <h2 className='text-xl font-normal text-black'>
                 {t('detailInfo')}
               </h2>
-              <Button
-                type='text'
-                shape='circle'
-                onClick={handleFavorite}
-                title={
-                  listing.isFavorite ? t('removeFavorite') : t('addFavorite')
-                }
-                icon={
-                  <svg
-                    className='w-6 h-6'
-                    fill={listing.isFavorite ? 'currentColor' : 'none'}
-                    stroke='currentColor'
-                    style={{
-                      color: listing.isFavorite ? '#ef4444' : '#9ca3af',
-                    }}
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-                    />
-                  </svg>
-                }
-              />
             </div>
 
             {/* Info panel card */}
@@ -444,7 +428,7 @@ export default function ListingDetailPage({
                     />
                   </div>
                   <span
-                    className='text-sm font-medium'
+                    className='text-[16px] font-medium'
                     style={{ color: '#595959', minWidth: '52px' }}
                   >
                     {tc('from')}
@@ -454,7 +438,7 @@ export default function ListingDetailPage({
                     style={{ borderColor: '#595959' }}
                   />
                   <div className='flex items-center gap-2 flex-1 min-w-0'>
-                    <span className='text-sm font-semibold text-black truncate'>
+                    <span className='text-[16px] font-semibold text-black truncate'>
                       {fromName}
                       {fromParent ? `, ${fromParent}` : ''}
                       {fromCountry ? `, ${fromCountry}` : ''}
@@ -484,7 +468,7 @@ export default function ListingDetailPage({
                     />
                   </div>
                   <span
-                    className='text-sm font-medium'
+                    className='text-[16px] font-medium'
                     style={{ color: '#595959', minWidth: '52px' }}
                   >
                     {tc('to')}
@@ -494,7 +478,7 @@ export default function ListingDetailPage({
                     style={{ borderColor: '#595959' }}
                   />
                   <div className='flex items-center gap-2 flex-1 min-w-0'>
-                    <span className='text-sm font-semibold text-black truncate'>
+                    <span className='text-[16px] font-semibold text-black truncate'>
                       {toName}
                       {toParent ? `, ${toParent}` : ''}
                       {toCountry ? `, ${toCountry}` : ''}
@@ -692,17 +676,13 @@ export default function ListingDetailPage({
                     block
                     size='large'
                     icon={
-                      <svg
-                        className='w-5 h-5'
-                        fill='currentColor'
-                        viewBox='0 0 24 24'
-                      >
-                        <path d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' />
-                      </svg>
+                      <Image src='/phone.svg' alt='' width={14} height={20} />
                     }
                     style={{
                       backgroundColor: '#3D991A',
                       borderColor: '#3D991A',
+                      border: 'none',
+                      boxShadow: 'none',
                       color: 'white',
                       borderRadius: 20,
                       height: 54,
@@ -721,21 +701,11 @@ export default function ListingDetailPage({
                     block
                     size='large'
                     icon={
-                      <svg
-                        className='w-5 h-5 text-[#2B529B]'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth='2'
-                          d='M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
-                        />
-                      </svg>
+                      <Image src='/mail.svg' alt='' width={14} height={20} />
                     }
                     style={{
+                      border: 'none',
+                      boxShadow: 'none',
                       borderRadius: 20,
                       height: 54,
                       fontWeight: 600,
@@ -752,21 +722,11 @@ export default function ListingDetailPage({
                 size='large'
                 onClick={handleFavorite}
                 icon={
-                  <svg
-                    className='w-5 h-5 text-[#2B529B]'
-                    fill={listing.isFavorite ? 'currentColor' : 'none'}
-                    stroke='currentColor'
-                    viewBox='0 0 24 24'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
-                    />
-                  </svg>
+                  <Image src='/favorite.svg' alt='' width={14} height={20} />
                 }
                 style={{
+                  border: 'none',
+                  boxShadow: 'none',
                   borderRadius: 20,
                   height: 54,
                   fontWeight: 600,

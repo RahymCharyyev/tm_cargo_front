@@ -28,8 +28,8 @@ export default function Footer() {
                   width={36}
                   height={36}
                   className='h-9 w-9 object-contain'
-                  src='/icon.webp'
-                  alt=''
+                  src='/icon.svg'
+                  alt='TM CARgo'
                 />
               </div>
               <div>
@@ -37,7 +37,7 @@ export default function Footer() {
                   {t('brandTagline')}
                 </p>
                 <h2 className='text-xl font-bold tracking-tight text-[#1c3560]'>
-                  Cargo TM
+                  TM CARgo
                 </h2>
               </div>
             </div>
@@ -109,7 +109,7 @@ export default function Footer() {
 
         <div className='mt-12 flex flex-col items-start justify-between gap-4 border-t border-slate-100 pt-8 sm:flex-row sm:items-center'>
           <p className='text-xs text-slate-500'>
-            &copy; {new Date().getFullYear()} Cargo TM. {t('rights')}
+            &copy; {new Date().getFullYear()} TM CARgo. {t('rights')}
           </p>
           <p className='text-xs font-medium tabular-nums text-slate-400'>
             tm-cargo.com.tm

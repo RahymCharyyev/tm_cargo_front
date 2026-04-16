@@ -11,7 +11,7 @@ import Image from 'next/image';
 const CATEGORIES = [
   {
     key: 'international',
-    image: '/cargo_tm.svg',
+    image: '/tm_cargo.svg',
     secondaryImage: '/ball.svg',
     bgClass: 'bg-gradient-to-br from-[#67B2FF] to-[#2990FF]',
     link: '/listings?locationType=international',

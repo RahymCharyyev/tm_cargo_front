@@ -2,8 +2,8 @@
 
 import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Button, Drawer, Grid } from 'antd';
-import { FilterOutlined } from '@ant-design/icons';
+import { Button, Drawer, FloatButton, Grid } from 'antd';
+import { FilterOutlined, VerticalAlignTopOutlined } from '@ant-design/icons';
 import { useInfiniteListings, useVehicleTypes, useBanners } from '@/lib/hooks';
 import { useBannerType } from '@/lib/useBannerType';
 import ListingCard from '@/components/ListingCard';
@@ -272,6 +272,11 @@ export default function ListingsPage({
 
   return (
     <div className='min-h-screen pb-12'>
+      <FloatButton.BackTop
+        icon={<VerticalAlignTopOutlined style={{ color: '#fff' }} />}
+        style={{ backgroundColor: '#2F5AA6' }}
+        tooltip='Back to top'
+      />
       <div className='max-w-[1400px] mx-auto px-4 sm:px-6'>
         {/* Реклама 1 */}
         <section className='mb-6'>
@@ -301,7 +306,7 @@ export default function ListingsPage({
         <div className='flex flex-col lg:flex-row gap-[20px]'>
           {/* Sidebar - Фильтры */}
           <aside className='hidden lg:block w-[330px] shrink-0'>
-            <div className='sticky top-0'>
+            <div className='sticky top-0 max-h-screen overflow-y-auto py-1 scrollbar-thin'>
               <ListingFilterContent {...filterProps} />
             </div>
           </aside>
@@ -395,14 +400,14 @@ export default function ListingsPage({
             placement='left'
             size='min(100vw, 400px)'
             styles={{
-              body: { padding: 0, background: '#EAF2FC' },
+              body: { padding: 0, background: '#EAF2FC', overflowY: 'auto' },
               header: { display: 'none' },
             }}
           >
             <ListingFilterContent
               {...filterProps}
               onClose={() => setIsFilterOpen(false)}
-              className='min-h-screen rounded-none'
+              className='min-h-full rounded-none'
             />
           </Drawer>
         )}

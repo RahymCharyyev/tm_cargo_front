@@ -67,7 +67,7 @@ export default function Navbar() {
                 width={96}
                 height={48}
                 className='w-[96px] h-[48px] object-contain'
-                src='/icon.webp'
+                src='/icon.svg'
                 alt='TM Cargo'
               />
             </Link>
@@ -216,8 +216,8 @@ export default function Navbar() {
           styles={{ body: { padding: 0 } }}
           title={
             <Image
-              src='/icon.webp'
-              alt='TM Cargo'
+              src='/icon.svg'
+              alt='TM CARgo'
               width={80}
               height={40}
               className='object-contain'

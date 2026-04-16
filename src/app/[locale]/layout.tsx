@@ -20,41 +20,41 @@ export async function generateMetadata({
 
   const metadataByLocale: Record<string, Metadata> = {
     ru: {
-      title: 'Cargo TM — Грузоперевозки по всей Азии',
+      title: 'TM CARgo — Грузоперевозки по всей Азии',
       description:
-        'Cargo TM — платформа для быстрого поиска и размещения грузов и транспорта по всей Азии.',
+        'TM CARgo — платформа для быстрого поиска и размещения грузов и транспорта по всей Азии.',
       keywords: [
         'груз',
         'транспорт',
         'перевозка',
         'Туркменистан',
-        'cargo tm',
+        'tm cargo',
         'логистика',
       ],
     },
     en: {
-      title: 'Cargo TM — Cargo and Transport Services Across Asia',
+      title: 'TM CARgo — Cargo and Transport Services Across Asia',
       description:
-        'Cargo TM — a platform for quick cargo and transport search and posting across Asia.',
+        'TM CARgo — a platform for quick cargo and transport search and posting across Asia.',
       keywords: [
         'cargo',
         'transport',
         'logistics',
         'Turkmenistan',
-        'cargo tm',
+        'tm cargo',
         'shipping',
       ],
     },
     tk: {
-      title: 'Cargo TM — Aziýa boýunça ýük we ulag hyzmatlary',
+      title: 'TM CARgo — Aziýa boýunça ýük we ulag hyzmatlary',
       description:
-        'Cargo TM — Aziýa boýunça ýük we ulag tapmak we ýerleşdirmek üçin platforma.',
+        'TM CARgo — Aziýa boýunça ýük we ulag tapmak we ýerleşdirmek üçin platforma.',
       keywords: [
         'ýük',
         'ulag',
         'logistika',
         'Türkmenistan',
-        'cargo tm',
+        'tm cargo',
         'daşamak',
       ],
     },
@@ -67,7 +67,7 @@ export async function generateMetadata({
     robots: 'index, follow',
     icons: {
       icon: '/favicon.ico',
-      apple: '/icon.webp',
+      apple: '/icon.svg',
     },
   };
 }

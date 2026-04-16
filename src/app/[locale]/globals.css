@@ -407,3 +407,34 @@ html {
 .group:hover .lang-btn-text {
   color: #fff !important;
 }
+
+/* BackTop button — white icon on blue background */
+.ant-float-btn-body {
+  background-color: #2F5AA6 !important;
+}
+
+.ant-float-btn-body .ant-float-btn-icon {
+  color: #fff !important;
+}
+
+.ant-float-btn-body:hover {
+  background-color: #264A84 !important;
+}
+
+/* Thin scrollbar for sidebar filter */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(47, 90, 166, 0.3);
+  border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(47, 90, 166, 0.5);
+}

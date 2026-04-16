@@ -50,8 +50,8 @@ function AuthGlassHeader() {
               width={80}
               height={40}
               className='w-[70px] h-[35px] sm:w-[80px] sm:h-[40px] object-contain brightness-0 invert'
-              src='/icon.webp'
-              alt='Cargo TM'
+              src='/icon.svg'
+              alt='TM CARgo'
             />
           </Link>
 

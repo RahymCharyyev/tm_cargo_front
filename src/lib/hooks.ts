@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@/i18n/navigation';
 import { api } from './api-client';
 import { useAuthStore } from './auth-store';
 
@@ -307,12 +308,14 @@ export function useResetPasswordPhone() {
 export function useLogout() {
   const { logout } = useAuthStore();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: () => api.get<{ success: boolean }>('/auth/logout'),
-    onSuccess: () => {
+    onSettled: () => {
       logout();
       queryClient.clear();
+      router.push('/');
     },
   });
 }

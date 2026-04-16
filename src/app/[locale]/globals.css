@@ -126,6 +126,41 @@ html {
   font-weight: 500 !important;
 }
 
+.create-listing-page-form .ant-segmented {
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 1rem !important;
+  padding: 3px !important;
+  min-height: 2.75rem !important;
+}
+
+.create-listing-page-form .ant-segmented-item {
+  border-radius: 0.375rem !important;
+  min-height: calc(2.75rem - 8px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Active tab: rounded pill (thumb + selected item; antd may use either) */
+.create-listing-page-form .ant-segmented-thumb {
+  border-radius: calc(1rem - 3px) !important;
+}
+
+.create-listing-page-form .ant-segmented-item-selected {
+  background: #2f5aa6 !important;
+  border-radius: calc(1rem - 3px) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+.create-listing-page-form
+  .ant-segmented-item-selected
+  .ant-segmented-item-label {
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
 /* Auth flow panes (login, register, reset) — white inputs on tinted pane */
 .auth-split-form .auth-pane-form .ant-input,
 .auth-split-form .auth-pane-form .ant-input-affix-wrapper,
@@ -252,10 +287,23 @@ html {
   letter-spacing: normal !important;
 }
 
-/* Create listing form — antd Select, DatePicker, InputNumber, TextArea, Upload */
-.create-listing-page-form .ant-select .ant-select-selector {
-  background-color: #e5e7eb !important;
+/* Create listing form — outlined style: white bg + border on all inputs */
+.create-listing-page-form .ant-input,
+.create-listing-page-form .ant-input-affix-wrapper,
+.create-listing-page-form .ant-input-password {
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 0.5rem !important;
+}
+
+.create-listing-page-form .ant-input-affix-wrapper .ant-input {
+  background: transparent !important;
   border: none !important;
+}
+
+.create-listing-page-form .ant-select .ant-select-selector {
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
   border-radius: 0.5rem !important;
   min-height: 2.75rem !important;
   align-items: center !important;
@@ -263,25 +311,27 @@ html {
 
 .create-listing-page-form .ant-select-focused .ant-select-selector,
 .create-listing-page-form .ant-select-open .ant-select-selector {
+  border-color: #2b5399 !important;
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
 }
 
 .create-listing-page-form .ant-picker {
-  background-color: #e5e7eb !important;
-  border: none !important;
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
   border-radius: 0.5rem !important;
   width: 100%;
   padding-block: 0.35rem;
 }
 
 .create-listing-page-form .ant-picker-focused {
+  border-color: #2b5399 !important;
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
 }
 
 .create-listing-page-form .ant-input-number {
   width: 100%;
-  background-color: #e5e7eb !important;
-  border: none !important;
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
   border-radius: 0.5rem !important;
 }
 
@@ -290,23 +340,33 @@ html {
 }
 
 .create-listing-page-form .ant-input-number-focused {
+  border-color: #2b5399 !important;
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
 }
 
 .create-listing-page-form .ant-input-number-group-addon {
-  background: #e5e7eb !important;
-  border: none !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-left: none !important;
   border-radius: 0 0.5rem 0.5rem 0 !important;
 }
 
+.create-listing-page-form .ant-input:focus,
+.create-listing-page-form .ant-input-affix-wrapper:focus,
+.create-listing-page-form .ant-input-affix-wrapper-focused {
+  border-color: #2b5399 !important;
+  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
+}
+
 .create-listing-page-form textarea.ant-input {
-  background-color: #e5e7eb !important;
-  border: none !important;
+  background-color: #fff !important;
+  border: 1px solid #d9d9d9 !important;
   border-radius: 0.5rem !important;
   min-height: 8rem;
 }
 
 .create-listing-page-form textarea.ant-input:focus {
+  border-color: #2b5399 !important;
   box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2) !important;
 }
 
@@ -320,39 +380,29 @@ html {
   padding-bottom: 6px !important;
 }
 
-.create-listing-page-form .create-listing-loc .ant-select .ant-select-selector {
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-.create-listing-page-form
-  .create-listing-loc
-  .ant-select-focused
-  .ant-select-selector {
-  box-shadow: none !important;
-}
-
-.create-listing-page-form .create-listing-loc-wrap:focus-within {
-  box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.2);
-}
-
 .create-listing-page-form .create-listing-price-wrap .ant-input-number {
-  background: #e5e7eb !important;
-  border-radius: 0.75rem 0 0 0.75rem !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-right: none !important;
+  border-radius: 0.5rem 0 0 0.5rem !important;
 }
 
 .create-listing-page-form
   .create-listing-price-wrap
   .create-listing-currency-select.ant-select
   .ant-select-selector {
-  background: #e5e7eb !important;
-  border-radius: 0 0.75rem 0.75rem 0 !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-left: none !important;
+  border-radius: 0 0.5rem 0.5rem 0 !important;
   min-height: 2.75rem !important;
+  font-size: 12px !important;
+  color: #64748b !important;
 }
 
 .create-listing-page-form .create-listing-phone-input.ant-input-affix-wrapper {
-  background: #e5e7eb !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
 }
 
 .create-listing-page-form .create-listing-phone-input.ant-input-group-wrapper {
@@ -373,18 +423,20 @@ html {
 
 .create-listing-page-form
   .ant-input-group-addon:has(.create-listing-phone-prefix) {
-  background: #e5e7eb !important;
-  border: none !important;
-  border-radius: 0.75rem 0 0 0.75rem !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-right: none !important;
+  border-radius: 0.5rem 0 0 0.5rem !important;
   padding-inline: 0.75rem !important;
   min-height: 2.75rem !important;
 }
 
 .create-listing-page-form .create-listing-phone-input .ant-input-affix-wrapper {
   flex: 1 1 auto !important;
-  background: #e5e7eb !important;
-  border: none !important;
-  border-radius: 0 0.75rem 0.75rem 0 !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d9 !important;
+  border-left: none !important;
+  border-radius: 0 0.5rem 0.5rem 0 !important;
   min-height: 2.75rem !important;
   box-shadow: none !important;
 }
@@ -410,7 +462,7 @@ html {
 
 /* BackTop button — white icon on blue background */
 .ant-float-btn-body {
-  background-color: #2F5AA6 !important;
+  background-color: #2f5aa6 !important;
 }
 
 .ant-float-btn-body .ant-float-btn-icon {
@@ -418,7 +470,7 @@ html {
 }
 
 .ant-float-btn-body:hover {
-  background-color: #264A84 !important;
+  background-color: #264a84 !important;
 }
 
 /* Thin scrollbar for sidebar filter */

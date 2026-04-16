@@ -12,6 +12,8 @@ interface Props {
   placeholder?: string;
   className?: string;
   style?: React.CSSProperties;
+  prefix?: React.ReactNode;
+  size?: 'small' | 'middle' | 'large';
 }
 
 function getIconUrl(icon: string | null | undefined): string | null {
@@ -45,6 +47,8 @@ export default function LocationSelect({
   placeholder,
   className,
   style,
+  prefix,
+  size,
 }: Props) {
   const t = useTranslations('listing');
   const locale = useLocale();
@@ -87,7 +91,9 @@ export default function LocationSelect({
       placeholder={placeholder || t('selectLocation')}
       loading={isFetching}
       className={className}
+      size={size}
       style={{ width: '100%', ...style }}
+      prefix={prefix}
       optionRender={(option) => {
         const loc = (option.data as { loc: LocationData }).loc;
         const flagUrl = getLocationFlag(loc);

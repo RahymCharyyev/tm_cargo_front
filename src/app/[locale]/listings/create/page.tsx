@@ -91,6 +91,7 @@ function deriveApiFields(
 export default function CreateListingPage() {
   const t = useTranslations('listing');
   const tc = useTranslations('common');
+  const th = useTranslations('home');
   const tFooter = useTranslations('footer');
   const locale = useLocale();
   const router = useRouter();
@@ -188,7 +189,7 @@ export default function CreateListingPage() {
 
   const categoryOptions = [
     {
-      label: 'Грузоперевозки',
+      label: th('cargoTransport'),
       options: CREATE_CATEGORIES.filter((cat) =>
         ['international', 'intercity', 'local'].includes(cat),
       ).map((cat) => ({
@@ -199,7 +200,7 @@ export default function CreateListingPage() {
       })),
     },
     {
-      label: 'Мелкие перевозки',
+      label: th('smallTransport'),
       options: CREATE_CATEGORIES.filter((cat) =>
         ['traveler', 'load'].includes(cat),
       ).map((cat) => ({
@@ -307,56 +308,38 @@ export default function CreateListingPage() {
                 </Form.Item>
 
                 <div className='grid gap-4 sm:grid-cols-2'>
-                  <div>
-                    <div className='mb-1.5'>
+                  <Form.Item
+                    label={
                       <AuthFieldLabel>
                         {t('fromLocation')}{' '}
                         <span className='text-red-500'>*</span>
                       </AuthFieldLabel>
-                    </div>
-                    <div className='create-listing-loc-wrap flex min-h-[2.75rem] items-stretch overflow-hidden rounded-lg bg-gray-200'>
-                      <span className='flex shrink-0 items-center pl-3 pr-1 text-blue-600'>
-                        <EnvironmentOutlined className='text-lg' />
-                      </span>
-                      <Form.Item
-                        name='fromLocationId'
-                        noStyle
-                        rules={[
-                          { required: true, message: t('selectLocation') },
-                        ]}
-                      >
-                        <LocationSelect
-                          placeholder={t('placeholderFromTo')}
-                          className='create-listing-loc min-w-0 flex-1 border-0'
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                  <div>
-                    <div className='mb-1.5'>
+                    }
+                    name='fromLocationId'
+                    rules={[{ required: true, message: t('selectLocation') }]}
+                  >
+                    <LocationSelect
+                      size='large'
+                      placeholder={t('placeholderFromTo')}
+                      prefix={<EnvironmentOutlined className='text-blue-600' />}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label={
                       <AuthFieldLabel>
                         {t('toLocation')}{' '}
                         <span className='text-red-500'>*</span>
                       </AuthFieldLabel>
-                    </div>
-                    <div className='create-listing-loc-wrap flex min-h-[2.75rem] items-stretch overflow-hidden rounded-lg bg-gray-200'>
-                      <span className='flex shrink-0 items-center pl-3 pr-1 text-red-500'>
-                        <EnvironmentOutlined className='text-lg' />
-                      </span>
-                      <Form.Item
-                        name='toLocationId'
-                        noStyle
-                        rules={[
-                          { required: true, message: t('selectLocation') },
-                        ]}
-                      >
-                        <LocationSelect
-                          placeholder={t('placeholderFromTo')}
-                          className='create-listing-loc min-w-0 flex-1 border-0'
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
+                    }
+                    name='toLocationId'
+                    rules={[{ required: true, message: t('selectLocation') }]}
+                  >
+                    <LocationSelect
+                      size='large'
+                      placeholder={t('placeholderFromTo')}
+                      prefix={<EnvironmentOutlined className='text-red-500' />}
+                    />
+                  </Form.Item>
                 </div>
 
                 {/* Type-specific fields */}
@@ -494,13 +477,11 @@ export default function CreateListingPage() {
                       {
                         <Form.Item name='currency' noStyle>
                           <Select
-                            variant='filled'
-                            popupMatchSelectWidth={false}
                             options={CURRENCIES.map((c) => ({
                               value: c,
                               label: t(c),
                             }))}
-                            className='min-w-[5.5rem] create-listing-currency-select'
+                            className='max-w-[100px] create-listing-currency-select'
                           />
                         </Form.Item>
                       }
